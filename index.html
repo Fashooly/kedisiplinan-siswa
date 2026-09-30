@@ -1390,6 +1390,14 @@
   <div id="toastContainer" class="fixed top-3.5 sm:top-auto sm:bottom-5 left-3.5 right-3.5 sm:left-auto sm:right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
   <script>
+    /* ==========================================================================
+       KONFIGURASI OTOMATIS GOOGLE SHEETS
+       URL Web App Google Apps Script SDIT Az Zahra sudah terpasang aktif.
+       Aplikasi di Vercel / GitHub Pages akan LANGSUNG otomatis terhubung
+       ke Google Spreadsheet tanpa perlu setup manual di setiap HP!
+       ========================================================================== */
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3GSQUoqHGBIQgpDiyyGkFzq83x1f-3nkhVLtmLURsBwi5qkBJXytgazNVlp9TjyAi/exec";
+
     // State Aplikasi Terpadu
     const state = {
       siswa: [],
@@ -1403,7 +1411,9 @@
       selectedKelasWa: null,
       simulasiAcakList: [],
       tempImportListExcel: [],
-      apiEndpoint: localStorage.getItem('sdit_azzahra_api_url') || ''
+      apiEndpoint: (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith('http')) 
+        ? GOOGLE_SCRIPT_URL 
+        : (localStorage.getItem('sdit_azzahra_api_url') || '')
     };
 
     // 12 Nama Kelas Tokoh & Khalifah Islam Resmi SDIT Az Zahra
