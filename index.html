@@ -12,6 +12,14 @@
   <meta name="apple-mobile-web-app-title" content="Az Zahra">
   <meta name="theme-color" content="#064e3b">
 
+  <!-- Apple Touch Icon untuk Home Screen iPhone & iPad (Resolusi Retina HD) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+
+  <!-- Favicon Browser Tab (Desktop & Mobile) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
+  <link rel="shortcut icon" href="/logo.png">
+
   <!-- Google Fonts: Plus Jakarta Sans & Amiri -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -84,10 +92,15 @@
     <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between py-2 sm:py-3.5">
         
-        <!-- Logo & Identitas Sekolah -->
+        <!-- Logo & Identitas Sekolah Cerdas (Mendukung File Gambar Asli & Fallback Lambang Islami) -->
         <div class="flex items-center space-x-2.5 sm:space-x-3.5">
-          <div class="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner shrink-0">
-            <i class="fa-solid fa-mosque text-base sm:text-2xl text-emerald-300"></i>
+          <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-1 flex items-center justify-center shadow-inner shrink-0 overflow-hidden">
+            <!-- Jika file logo.png ada di GitHub, gambar ini otomatis tampil -->
+            <img src="/logo.png" alt="Logo SDIT Az Zahra" class="w-full h-full object-contain" onerror="this.classList.add('hidden'); document.getElementById('defaultLogoBadge').classList.remove('hidden');">
+            <!-- Fallback otomatis jika belum mengunggah gambar logo.png -->
+            <div id="defaultLogoBadge" class="hidden w-full h-full flex items-center justify-center text-emerald-300">
+              <i class="fa-solid fa-mosque text-base sm:text-xl"></i>
+            </div>
           </div>
           <div class="min-w-0">
             <div class="flex items-center gap-1.5 sm:gap-2">
