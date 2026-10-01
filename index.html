@@ -111,10 +111,10 @@
           </div>
         </div>
 
-        <!-- Indikator Koneksi Bulat & Tombol Segarkan -->
+        <!-- Indikator Koneksi 3-Status (Kuning -> Hijau -> Merah) & Tombol Segarkan -->
         <div class="flex items-center gap-2">
-          <div id="connStatusBadge" title="Status Sinkronisasi Google Sheets" class="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20 shadow-sm backdrop-blur">
-            <span id="connPulseDot" class="w-2.5 h-2.5 rounded-full bg-rose-500 transition-all duration-300"></span>
+          <div id="connStatusBadge" title="Sedang menghubungkan ke Google Sheets..." class="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20 shadow-sm backdrop-blur">
+            <span id="connPulseDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)] transition-all duration-300"></span>
           </div>
 
           <button onclick="sinkronkanUlangData()" title="Segarkan Data" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-90 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/10 cursor-pointer">
@@ -1349,11 +1349,12 @@
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
+  <!-- Toast Notification Container (Notch-safe) -->
   <div id="toastContainer" class="fixed sm:top-auto sm:bottom-5 left-3.5 right-3.5 sm:left-auto sm:right-5 z-50 flex flex-col space-y-2 pointer-events-none" style="top: calc(env(safe-area-inset-top, 0px) + 12px);"></div>
 
   <!-- ==================== LOGIKA UTAMA JAVASCRIPT ==================== -->
   <script>
+    // URL Web App Google Apps Script SDIT Az Zahra
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3GSQUoqHGBIQgpDiyyGkFzq83x1f-3nkhVLtmLURsBwi5qkBJXytgazNVlp9TjyAi/exec";
 
     const state = {
@@ -1404,7 +1405,7 @@
     async function panggilApiServer(action, dataPayload) {
       if (isAppsScriptEnvironment()) {
         return new Promise((resolve, reject) => {
-          if (action === 'getInitialData') {
+          if (action.startsWith('getInitialData')) {
             google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getInitialData();
           } else if (action === 'simpanCatatan') {
             google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).simpanCatatan(dataPayload);
@@ -1422,8 +1423,9 @@
         });
       } else if (state.apiEndpoint) {
         try {
-          if (action === 'getInitialData') {
-            const resp = await fetch(`${state.apiEndpoint}?action=getInitialData&t=${Date.now()}`);
+          if (action.startsWith('getInitialData') || action === 'ping') {
+            const separator = state.apiEndpoint.includes('?') ? '&' : '?';
+            const resp = await fetch(`${state.apiEndpoint}${separator}action=${action}&t=${Date.now()}`);
             if (!resp.ok) throw new Error('HTTP ' + resp.status);
             return await resp.json();
           } else {
@@ -1445,17 +1447,20 @@
       return { status: 'error', message: 'Endpoint belum dikonfigurasi' };
     }
 
-    function setConnectionStatus(isConnected) {
+    function setConnectionStatus(status) {
       const dot = document.getElementById('connPulseDot');
       const badge = document.getElementById('connStatusBadge');
       if (!dot) return;
 
-      if (isConnected) {
+      if (status === 'connected' || status === true) {
         dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]';
         if (badge) badge.title = 'Terhubung ke Google Sheets';
+      } else if (status === 'connecting' || status === 'loading') {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]';
+        if (badge) badge.title = 'Sedang menyinkronkan dengan Google Sheets...';
       } else {
         dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]';
-        if (badge) badge.title = 'Belum terhubung ke Google Sheets';
+        if (badge) badge.title = 'Koneksi terputus ke Google Sheets';
       }
     }
 
@@ -1559,11 +1564,12 @@
     }
 
     function sinkronkanUlangData() {
+      setConnectionStatus('connecting');
       showToast('Menyegarkan & mengambil data murni dari Google Sheets...', 'info');
       // Kosongkan cache lokal agar benar-benar mengikuti Google Sheets
       localStorage.removeItem('sdit_azzahra_siswa');
       localStorage.removeItem('sdit_azzahra_riwayat');
-      initApp();
+      initApp(true);
     }
 
     function dapatkanInfoWalas(kelas) {
@@ -2734,7 +2740,8 @@
       if (state.activeTab === 'input') filterPilihanSantri();
     }
 
-    function initApp() {
+    function initApp(bypassCache = false) {
+      setConnectionStatus('connecting');
       const tglLaporan = document.getElementById('tglLaporanWalas');
       if (tglLaporan) tglLaporan.value = new Date().toISOString().split('T')[0];
 
@@ -2745,10 +2752,11 @@
       loadLocalData();
 
       if (isAppsScriptEnvironment() || state.apiEndpoint) {
-        panggilApiServer('getInitialData')
+        const queryAction = bypassCache ? 'getInitialData&nocache=true' : 'getInitialData';
+        panggilApiServer(queryAction)
           .then(response => {
             if (response && response.status === 'success' && response.data) {
-              setConnectionStatus(true);
+              setConnectionStatus('connected');
               // Selalu ikuti kondisi database spreadsheet secara penuh
               state.siswa = response.data.siswa || [];
               state.riwayat = response.data.riwayat || [];
@@ -2757,18 +2765,18 @@
               saveLocalData();
               refreshAllViews();
             } else {
-              setConnectionStatus(false);
+              setConnectionStatus('error');
             }
           })
           .catch(() => {
-            setConnectionStatus(false);
+            setConnectionStatus('error');
           });
       } else {
-        setConnectionStatus(false);
+        setConnectionStatus('error');
       }
     }
 
-    window.addEventListener('DOMContentLoaded', initApp);
+    window.addEventListener('DOMContentLoaded', () => initApp(false));
   </script>
 </body>
 </html>
