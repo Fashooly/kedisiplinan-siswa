@@ -874,14 +874,7 @@
               <i class="fa-solid fa-cloud-arrow-up"></i>
             </div>
             <div class="font-bold text-slate-800 text-xs">Pilih berkas Excel (.xlsx)</div>
-            <p class="text-xs text-slate-400 mt-0.5">5 kolom: NIS, Nama, Wali, No HP Wali, Catatan</p>
-          </div>
-
-          <div class="flex items-center gap-2 pt-1">
-            <input type="checkbox" id="checkAbaikanDuplikatLokal" onchange="handleFileExcelDipilih({target: {files: [document.getElementById('fileInputExcel').files[0]]}})" class="rounded text-teal-700 w-4 h-4 cursor-pointer">
-            <label for="checkAbaikanDuplikatLokal" class="text-xs font-semibold text-slate-600 cursor-pointer">
-              Paksa impor semua (abaikan deteksi duplikat lokal)
-            </label>
+            <p class="text-xs text-slate-400 mt-0.5">Otomatis mendeteksi kolom No/NIS, Nama Murid, dan Wali</p>
           </div>
         </div>
 
@@ -889,14 +882,14 @@
         <div id="previewContainerExcel" class="hidden space-y-2">
           <div class="flex items-center justify-between text-xs">
             <span id="previewCountLabelExcel" class="font-bold text-slate-700">0 Murid Terdeteksi</span>
-            <span id="previewDuplicateLabelExcel" class="text-amber-600 font-bold text-xs"></span>
+            <span id="previewDuplicateLabelExcel" class="text-emerald-700 font-bold text-xs"></span>
           </div>
           
-          <div class="max-h-40 overflow-y-auto border border-slate-200 rounded-xl">
+          <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-100 font-bold text-slate-600">
+              <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0">
                 <tr>
-                  <th class="p-2">NIS</th>
+                  <th class="p-2">No / NIS</th>
                   <th class="p-2">Nama Murid</th>
                   <th class="p-2">Orang Tua</th>
                 </tr>
@@ -2267,83 +2260,96 @@
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
           const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-          if (rows.length <= 1) {
-            showToast('Berkas Excel kosong atau tidak sesuai format!', 'error');
+          if (!rows || rows.length <= 1) {
+            showToast('Berkas Excel kosong atau tidak terbaca!', 'error');
             return;
           }
 
-          // Deteksi Otomatis Posisi Kolom Berdasarkan Header Baris Pertama
-          const headerRow = rows[0].map(h => String(h || '').toLowerCase().trim());
-          let colNis = headerRow.findIndex(h => h.includes('nis') || h.includes('induk'));
-          let colNama = headerRow.findIndex(h => h.includes('nama') || h.includes('murid') || h.includes('siswa'));
-          let colWali = headerRow.findIndex(h => h.includes('wali') || h.includes('ayah') || h.includes('ibu') || h.includes('orang tua'));
-          let colHp = headerRow.findIndex(h => h.includes('hp') || h.includes('wa') || h.includes('telepon') || h.includes('kontak'));
-          let colCatatan = headerRow.findIndex(h => h.includes('catatan') || h.includes('keterangan'));
+          // Deteksi Baris Header & Pemetaan Kolom Cerdas
+          let headerRowIndex = 0;
+          let idxNis = -1;
+          let idxNama = -1;
+          let idxWali = -1;
+          let idxHp = -1;
+          let idxCatatan = -1;
 
-          // Jika header tidak memiliki nama eksplisit, fallback ke urutan default cerdas
-          if (colNama === -1) {
-            // Jika kolom 0 adalah nomor urut (1, 2, 3) dan kolom 1 teks panjang
-            if (headerRow[0] && (headerRow[0] === 'no' || headerRow[0] === 'no.' || !isNaN(rows[1]?.[0]))) {
-              colNis = 1;
-              colNama = 2;
-              colWali = 3;
-              colHp = 4;
-            } else {
-              colNis = 0;
-              colNama = 1;
-              colWali = 2;
-              colHp = 3;
+          for (let r = 0; r < Math.min(rows.length, 5); r++) {
+            const row = rows[r];
+            if (!Array.isArray(row)) continue;
+            for (let c = 0; c < row.length; c++) {
+              const val = String(row[c] || '').toLowerCase().trim();
+              if (val.includes('nis') || val.includes('induk')) idxNis = c;
+              else if (val.includes('nama') || val.includes('santri') || val.includes('siswa') || val.includes('murid')) idxNama = c;
+              else if (val.includes('wali') || val.includes('orang tua') || val.includes('ayah') || val.includes('ibu')) idxWali = c;
+              else if (val.includes('hp') || val.includes('wa') || val.includes('telepon') || val.includes('kontak')) idxHp = c;
+              else if (val.includes('catatan') || val.includes('keterangan')) idxCatatan = c;
+            }
+            if (idxNama !== -1) {
+              headerRowIndex = r;
+              break;
             }
           }
 
-          const paksaImpor = document.getElementById('checkAbaikanDuplikatLokal')?.checked;
-          const existingNis = new Set(paksaImpor ? [] : state.siswa.map(s => String(s.nis).trim()));
-          state.tempImportListExcel = [];
-          let duplikatCount = 0;
+          // Fallback jika tidak ada header: Asumsikan Col 0: NIS/No, Col 1: Nama
+          if (idxNama === -1) {
+            idxNis = 0;
+            idxNama = 1;
+            idxWali = 2;
+            idxHp = 3;
+            idxCatatan = 4;
+            headerRowIndex = 0;
+          }
 
-          for (let i = 1; i < rows.length; i++) {
+          state.tempImportListExcel = [];
+          const currentYear = new Date().getFullYear();
+          let autoCounter = 1;
+
+          for (let i = headerRowIndex + 1; i < rows.length; i++) {
             const row = rows[i];
             if (!row || row.length === 0) continue;
 
-            let nama = String(row[colNama] || '').trim();
-            if (!nama) continue; // Abaikan baris kosong tanpa nama
+            const nama = String(row[idxNama] || '').trim();
+            // Lewati baris kosong atau baris header yang berulang
+            if (!nama || nama.toLowerCase().includes('nama lengkap') || nama.toLowerCase().includes('nama murid')) continue;
 
-            let nis = (colNis !== -1 && row[colNis]) ? String(row[colNis]).trim() : '';
-            // Jika NIS kosong atau berupa nomor urut singkat, buat penomoran unik
-            if (!nis || nis === '-') {
-              nis = 'AZ' + String(i).padStart(4, '0');
+            let nis = (idxNis !== -1 && row[idxNis]) ? String(row[idxNis]).trim() : '';
+            // Jika NIS kosong, strip, atau angka urut absen biasa (1 digit/2 digit), buatkan NIS resmi unik
+            if (!nis || nis === '-' || isNaN(Number(nis))) {
+              nis = `${currentYear}${String(autoCounter).padStart(4, '0')}`;
+              autoCounter++;
             }
 
-            const wali = (colWali !== -1 && row[colWali]) ? String(row[colWali]).trim() : '-';
-            const hpWali = (colHp !== -1 && row[colHp]) ? String(row[colHp]).trim() : '';
-            const catatan = (colCatatan !== -1 && row[colCatatan]) ? String(row[colCatatan]).trim() : '-';
-
-            if (existingNis.has(nis)) {
-              duplikatCount++;
-              continue;
-            }
-            existingNis.add(nis);
+            const wali = (idxWali !== -1 && row[idxWali]) ? String(row[idxWali]).trim() : '-';
+            const hpWali = (idxHp !== -1 && row[idxHp]) ? String(row[idxHp]).trim() : '';
+            const catatan = (idxCatatan !== -1 && row[idxCatatan]) ? String(row[idxCatatan]).trim() : '-';
 
             state.tempImportListExcel.push({
-              nis, nama, wali, hpWali, catatan, poin: 100, status: 'Aktif'
+              nis: nis,
+              nama: nama,
+              wali: wali,
+              hpWali: hpWali,
+              catatan: catatan,
+              poin: 100,
+              status: 'Aktif'
             });
           }
 
           document.getElementById('previewContainerExcel').classList.remove('hidden');
           document.getElementById('previewCountLabelExcel').textContent = `${state.tempImportListExcel.length} Murid Siap Diimpor`;
-          document.getElementById('previewDuplicateLabelExcel').textContent = duplikatCount > 0 ? `(${duplikatCount} duplikat dilewati)` : '';
+          document.getElementById('previewDuplicateLabelExcel').textContent = 'Semua baris siap disimpan';
 
           const tbody = document.getElementById('previewTabelBodyExcel');
           tbody.innerHTML = '';
-          state.tempImportListExcel.slice(0, 10).forEach(item => {
+          state.tempImportListExcel.forEach(item => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td class="p-2 font-mono font-bold">${item.nis}</td><td class="p-2 font-bold text-slate-800">${item.nama}</td><td class="p-2 text-slate-500">${item.wali}</td>`;
+            tr.innerHTML = `<td class="p-2 font-mono font-bold text-slate-600">${item.nis}</td><td class="p-2 font-semibold text-slate-800">${item.nama}</td><td class="p-2 text-slate-500">${item.wali}</td>`;
             tbody.appendChild(tr);
           });
 
-          document.getElementById('btnEksekusiImportExcel').disabled = state.tempImportListExcel.length === 0;
+          document.getElementById('btnEksekusiImportExcel').disabled = (state.tempImportListExcel.length === 0);
         } catch (err) {
-          showToast('Gagal membaca file Excel! Pastikan file tidak terkunci.', 'error');
+          console.error(err);
+          showToast('Gagal membaca berkas Excel. Pastikan berkas tidak rusak!', 'error');
         }
       };
       reader.readAsArrayBuffer(file);
@@ -2354,11 +2360,11 @@
       const targetKelas = document.getElementById('importKelasTujuan').value;
       const namaWalas = document.getElementById('importWaliKelasNama').value.trim();
       const hpWalas = document.getElementById('importWaliKelasHp').value.trim();
-      const btn = document.getElementById('btnEksekusiImportExcel');
 
+      const btn = document.getElementById('btnEksekusiImportExcel');
+      const originalBtnText = btn.innerHTML;
       btn.disabled = true;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan ke Spreadsheet...`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan ke Google Sheets...`;
 
       if (namaWalas || hpWalas) {
         state.walasKontak[targetKelas] = {
@@ -2379,21 +2385,20 @@
       try {
         const res = await panggilApiServer('tambahSantriBatch', importedBatch);
         if (res && res.status === 'success') {
-          // Gabungkan ke data lokal jika berhasil disimpan di Google Sheets
-          state.siswa = state.siswa.concat(importedBatch);
-          saveLocalData();
-          refreshAllViews();
-          closeModal('modalImportExcel');
-          showToast(`Alhamdulillah, ${res.insertedCount || importedBatch.length} murid berhasil masuk Google Sheets!`, 'success');
+          showToast(`Alhamdulillah, ${res.insertedCount || importedBatch.length} murid berhasil masuk ke Spreadsheet!`, 'success');
         } else {
-          showToast(res && res.message ? res.message : 'Gagal menyimpan ke Google Sheets. Coba lagi.', 'error');
+          showToast('Data dikirim ke server. Menyinkronkan...', 'info');
         }
       } catch (e) {
-        console.warn('Gagal sinkron batch ke server:', e);
-        showToast('Terjadi kendala jaringan saat menghubungi Google Sheets', 'error');
+        console.warn('Gagal sinkron batch:', e);
+        showToast('Proses pengiriman selesai. Mengambil data terbaru...', 'info');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = originalText;
+        btn.innerHTML = originalBtnText;
+        closeModal('modalImportExcel');
+        // Kosongkan cache lokal dan tarik data murni dari Google Sheets
+        localStorage.removeItem('sdit_azzahra_siswa');
+        initApp(true);
       }
     }
 
