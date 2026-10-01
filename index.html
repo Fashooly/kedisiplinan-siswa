@@ -188,6 +188,18 @@
           <p class="text-xs sm:text-sm text-emerald-100/90 font-normal leading-relaxed">
             Pantau pembiasaan adab harian, poin kedisiplinan, koreksi catatan salah input, dan pelaporan wali kelas resmi.
           </p>
+          <!-- Tombol Pintas Cepat (Mobile & Desktop) -->
+          <div class="pt-2 flex flex-wrap items-center gap-2">
+            <button onclick="switchTab('input')" class="py-1.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-emerald-950 text-xs font-extrabold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+              <i class="fa-solid fa-pen-to-square"></i> Input Catatan
+            </button>
+            <button onclick="switchTab('laporan')" class="py-1.5 px-3 rounded-xl bg-white/20 hover:bg-white/30 active:scale-95 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/30 cursor-pointer">
+              <i class="fa-brands fa-whatsapp text-emerald-300"></i> Lapor Walas
+            </button>
+            <button onclick="switchTab('cetak')" class="py-1.5 px-3 rounded-xl bg-white/20 hover:bg-white/30 active:scale-95 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/30 cursor-pointer">
+              <i class="fa-solid fa-print text-emerald-300"></i> Cetak Laporan
+            </button>
+          </div>
         </div>
         <div class="absolute -right-6 -bottom-6 opacity-10 text-[110px] sm:text-[180px] pointer-events-none font-quran text-white">
           ۞
@@ -843,26 +855,30 @@
 
   <!-- Bottom Mobile Dock Navigation (Khusus iPhone iOS & Android) -->
   <aside aria-label="Navigasi Bawah" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-safe no-print">
-    <div class="grid grid-cols-5 h-14 items-center px-1">
+    <div class="grid grid-cols-6 h-14 items-center px-1">
       <button onclick="switchTab('dasbor')" id="mobNav-dasbor" class="flex flex-col items-center justify-center py-1 text-emerald-800 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
-        <span class="text-[11px] font-bold">Dasbor</span>
+        <span class="text-[10px] font-bold">Dasbor</span>
       </button>
       <button onclick="switchTab('input')" id="mobNav-input" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-pen-to-square text-base mb-0.5"></i>
-        <span class="text-[11px] font-bold">Catat</span>
+        <span class="text-[10px] font-bold">Catat</span>
       </button>
       <button onclick="switchTab('siswa')" id="mobNav-siswa" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-user-graduate text-base mb-0.5"></i>
-        <span class="text-[11px] font-bold">Murid</span>
+        <span class="text-[10px] font-bold">Murid</span>
       </button>
       <button onclick="switchTab('riwayat')" id="mobNav-riwayat" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i>
-        <span class="text-[11px] font-bold">Riwayat</span>
+        <span class="text-[10px] font-bold">Riwayat</span>
+      </button>
+      <button onclick="switchTab('laporan')" id="mobNav-laporan" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
+        <i class="fa-brands fa-whatsapp text-base mb-0.5"></i>
+        <span class="text-[10px] font-bold">Walas</span>
       </button>
       <button onclick="switchTab('cetak')" id="mobNav-cetak" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-print text-base mb-0.5"></i>
-        <span class="text-[11px] font-bold">Cetak</span>
+        <span class="text-[10px] font-bold">Cetak</span>
       </button>
     </div>
   </aside>
