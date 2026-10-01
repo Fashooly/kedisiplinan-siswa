@@ -1621,6 +1621,72 @@
       }
     }
 
+    async function handleTambahSantriManual(e) {
+      e.preventDefault();
+      const nis = document.getElementById('manualNis').value.trim();
+      const nama = document.getElementById('manualNama').value.trim();
+      const kelas = document.getElementById('manualKelas').value;
+      const wali = document.getElementById('manualWali').value.trim() || '-';
+      const hpWali = document.getElementById('manualHpWali').value.trim() || '';
+
+      if (!nis || !nama || !kelas) {
+        showToast('NIS, Nama, dan Kelas wajib diisi!', 'error');
+        return;
+      }
+
+      // Validasi pencegahan NIS ganda
+      const duplikat = state.siswa.some(s => String(s.nis).trim() === String(nis).trim());
+      if (duplikat) {
+        showToast(`Murid dengan NIS ${nis} sudah terdaftar!`, 'error');
+        return;
+      }
+
+      const walas = dapatkanInfoWalas(kelas);
+      const santriBaru = {
+        nis: nis,
+        nama: nama,
+        kelas: kelas,
+        poin: 100,
+        wali: wali,
+        hpWali: hpWali,
+        status: 'Aktif',
+        catatan: '-',
+        waliKelas: walas.nama || '',
+        hpWaliKelas: walas.wa || ''
+      };
+
+      const btnSubmit = e.target.querySelector('button[type="submit"]');
+      const btnOriginalText = btnSubmit ? btnSubmit.innerHTML : 'Simpan Murid';
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+      }
+
+      // Simpan langsung ke memori lokal & perbarui tampilan
+      state.siswa.push(santriBaru);
+      saveLocalData();
+      refreshAllViews();
+
+      try {
+        const res = await panggilApiServer('tambahSantriBaru', santriBaru);
+        if (res && res.status === 'success') {
+          showToast(`Alhamdulillah, murid ${nama} berhasil disimpan ke Spreadsheet!`, 'success');
+        } else {
+          showToast(res && res.message ? res.message : `Data tersimpan di HP, proses sinkronisasi server...`, 'info');
+        }
+      } catch (err) {
+        console.warn('Gagal sinkron ke server:', err);
+        showToast(`Data tersimpan di HP (Server offline/sedang sinkron)`, 'info');
+      } finally {
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.innerHTML = btnOriginalText;
+        }
+        document.getElementById('formTambahSantriManual').reset();
+        closeModal('modalTambahSiswa');
+      }
+    }
+
     function setJenisInput(jenis) {
       state.jenisInputAktif = jenis;
       const btnP = document.getElementById('toggleBtnPelanggaran');
