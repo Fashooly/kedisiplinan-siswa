@@ -303,12 +303,15 @@
     <!-- ==================== TAB 2: INPUT CATATAN HARIAN ==================== -->
     <section id="tab-input" class="tab-content hidden space-y-3.5 sm:space-y-6">
       
-      <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm p-4 sm:p-8 max-w-4xl mx-auto space-y-4">
+      <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm p-4 sm:p-7 max-w-4xl mx-auto space-y-4">
         
+        <!-- Header Formulir & Toggle Jenis Catatan -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div>
-            <h2 class="text-sm sm:text-xl font-bold text-slate-800">Formulir Catatan Harian</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Catat pelanggaran tata tertib atau apresiasi amal shalih murid</p>
+            <h2 class="text-sm sm:text-xl font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-pen-to-square text-emerald-800"></i> Input Catatan Harian
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Catat pelanggaran tata tertib atau apresiasi amal shalih murid secara kilat</p>
           </div>
 
           <div class="grid grid-cols-2 p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold w-full sm:w-auto">
@@ -321,20 +324,61 @@
           </div>
         </div>
 
+        <!-- Pemilih Metode Pencarian Siswa: Cari Cepat vs Checklist Sekelas -->
+        <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100/90 border border-slate-200 text-xs font-bold">
+          <button type="button" onclick="setMetodeInputSiswa('cari')" id="btnMetodeCari" class="flex-1 py-1.5 px-3 rounded-lg bg-white text-emerald-900 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-magnifying-glass text-emerald-700"></i> 1. Cari Nama & Multi-Pilih (Ketik 2 Huruf)
+          </button>
+          <button type="button" onclick="setMetodeInputSiswa('checklist')" id="btnMetodeChecklist" class="flex-1 py-1.5 px-3 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-list-check text-emerald-700"></i> 2. Checklist Rombel (Tap Nama Sekelas)
+          </button>
+        </div>
+
         <form id="formInputCatatan" onsubmit="handleFormSubmit(event)" class="space-y-4">
           
-          <div class="p-3 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
-            <div class="flex items-center justify-between text-xs">
-              <label class="font-bold text-slate-700 flex items-center gap-1.5 text-xs">
-                <i class="fa-solid fa-user-check text-emerald-700"></i> Pilih Murid Aktif *
+          <!-- AREA 1: METODE CARI NAMA CEPAT + MULTI TAGS -->
+          <div id="containerMetodeCari" class="p-3 sm:p-4 rounded-2xl bg-emerald-50/40 border border-emerald-200/80 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+              <label class="font-bold text-slate-800 flex items-center gap-1.5 text-xs">
+                <i class="fa-solid fa-users text-emerald-700"></i> Cari & Pilih Murid (Bisa Pilih Banyak Anak Sekaligus) *
               </label>
-              <span class="text-xs text-slate-400 hidden sm:inline">Saring kelas untuk kemudahan pencarian</span>
+              <span class="text-[11px] text-slate-500 italic">Ketik nama murid, klik untuk memasukkan ke daftar</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div>
-                <select id="inputFilterKelas" onchange="filterPilihanSantri()" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 bg-white focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-                  <option value="semua">Semua 12 Kelas</option>
+            <!-- Input Pencarian Realtime -->
+            <div class="relative">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-emerald-700 text-sm"></i>
+              <input type="text" id="inputPencarianSantriCepat" oninput="handlePencarianSantriRealtime(this.value)" placeholder="Ketik nama murid atau NIS (contoh: Yusuf / Farhan / 2024)..." class="w-full pl-10 pr-10 py-2.5 sm:py-3 text-base sm:text-xs font-semibold rounded-xl border border-emerald-300 bg-white focus:ring-2 focus:ring-emerald-600 focus:outline-none shadow-sm">
+              <button type="button" onclick="document.getElementById('inputPencarianSantriCepat').value=''; handlePencarianSantriRealtime('');" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 text-xs p-1">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </button>
+            </div>
+
+            <!-- Hasil Auto-Suggest Pencarian (Muncul saat mengetik) -->
+            <div id="hasilPencarianSantriDropdown" class="hidden max-h-48 overflow-y-auto bg-white border border-emerald-300 rounded-xl shadow-lg divide-y divide-slate-100 z-20"></div>
+
+            <!-- Kotak Tag Murid Terpilih (Chips Multi-Pilih) -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Murid yang Terpilih (<span id="jumlahSantriTerpilihBadge" class="text-emerald-800 font-extrabold">0</span> anak):</span>
+                <button type="button" onclick="kosongkanSemuaSantriTerpilih()" id="btnResetSantriTerpilih" class="hidden text-rose-600 hover:underline cursor-pointer">
+                  Hapus Semua Pilihan
+                </button>
+              </div>
+              <div id="chipsSantriTerpilihContainer" class="min-h-[42px] p-2 bg-white rounded-xl border border-slate-200 flex flex-wrap items-center gap-1.5">
+                <span id="placeholderSantriKosong" class="text-xs text-slate-400 italic">Belum ada murid dipilih. Ketik nama di atas untuk menambahkan.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AREA 2: METODE CHECKLIST ROMBEL SEKELAS (Untuk Sidak / Halaqah / Sholat) -->
+          <div id="containerMetodeChecklist" class="hidden p-3 sm:p-4 rounded-2xl bg-teal-50/40 border border-teal-200/80 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2">
+                <label class="font-bold text-slate-800 flex items-center gap-1.5 text-xs">
+                  <i class="fa-solid fa-list-check text-teal-700"></i> Pilih Kelas:
+                </label>
+                <select id="checklistFilterKelas" onchange="renderGridChecklistKelas()" class="text-base sm:text-xs font-bold rounded-xl border border-teal-300 p-2 bg-white focus:ring-2 focus:ring-teal-600 focus:outline-none">
                   <optgroup label="Kelas 1">
                     <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
                     <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
@@ -362,34 +406,19 @@
                 </select>
               </div>
 
-              <div class="sm:col-span-2">
-                <select id="inputSantriPilihan" required onchange="updateKartuInfoSantri()" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 bg-white focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-                  <option value="">-- Pilih Murid --</option>
-                </select>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="togglePilihSemuaChecklist()" class="text-teal-800 hover:underline font-bold text-xs cursor-pointer">
+                  Pilih / Batal Semua
+                </button>
               </div>
             </div>
 
-            <!-- Kartu Pratinjau Murid -->
-            <div id="kartuInfoSantri" class="hidden p-3 bg-white rounded-xl border border-slate-200 text-xs flex items-center justify-between gap-2 shadow-sm">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div id="avatarSantriTerpilih" class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 font-extrabold flex items-center justify-center text-xs shrink-0 shadow-inner">
-                  AZ
-                </div>
-                <div class="min-w-0 truncate">
-                  <div id="namaSantriTerpilih" class="font-bold text-slate-800 text-xs sm:text-sm truncate">-</div>
-                  <div class="text-xs text-slate-400 truncate">
-                    NIS: <span id="nisSantriTerpilih" class="font-mono font-bold">-</span> | 
-                    <span id="kelasSantriTerpilih" class="font-semibold text-emerald-700">-</span>
-                  </div>
-                </div>
-              </div>
-              <div class="text-right shrink-0">
-                <div class="text-[11px] uppercase font-bold text-slate-400">Saldo Poin</div>
-                <div id="poinSantriTerpilih" class="text-sm sm:text-base font-extrabold text-emerald-700">100 pt</div>
-              </div>
-            </div>
+            <!-- Grid Tap Kartu Nama Sekelas -->
+            <div id="gridKartuNamaSiswaChecklist" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-56 overflow-y-auto p-1 custom-scrollbar"></div>
+            <p class="text-[11px] text-slate-500 italic">* Cukup ketuk (tap) kartu nama anak yang melanggar atau beramal shalih. Kartu yang terpilih akan berwarna hijau.</p>
           </div>
 
+          <!-- Detail Input Catatan -->
           <div class="space-y-3">
             <div>
               <label id="labelJenisCatatan" class="block text-xs font-bold text-slate-700 mb-1">
@@ -439,7 +468,7 @@
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">
+                <label class="block font-bold text-slate-700 mb-1 text-xs">
                   Tanggal Kejadian *
                 </label>
                 <input type="date" id="inputTanggalPeristiwa" required class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
@@ -448,12 +477,13 @@
 
           </div>
 
+          <!-- Tombol Aksi Simpan -->
           <div class="pt-2.5 border-t border-slate-100 flex items-center justify-end gap-2">
             <button type="button" onclick="resetFormCatatan()" class="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 transition active:scale-95 cursor-pointer">
-              Reset
+              Reset Form
             </button>
-            <button type="submit" id="btnSubmitCatatan" class="flex-1 sm:flex-initial py-2.5 px-5 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
-              <i class="fa-solid fa-floppy-disk"></i> Simpan Catatan
+            <button type="submit" id="btnSubmitCatatan" class="flex-1 sm:flex-initial py-2.5 px-6 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan Catatan (<span id="btnSubmitCountLabel">0 Murid</span>)
             </button>
           </div>
 
@@ -1743,6 +1773,8 @@
       walasKontak: {},
       selectedNisStatus: null,
       selectedNisInput: null,
+      selectedSantriListInput: [], // Menampung array NIS murid yang dipilih untuk input batch
+      metodeInputAktif: 'cari',   // 'cari' atau 'checklist'
       jenisInputAktif: 'pelanggaran',
       activeTab: 'dasbor',
       selectedKelasWa: null,
@@ -2314,61 +2346,236 @@
       }
     }
 
-    function setPresetPoin(val) {
-      const input = document.getElementById('inputPoin');
-      if (input) input.value = val;
+    function setMetodeInputSiswa(metode) {
+      state.metodeInputAktif = metode;
+      const btnCari = document.getElementById('btnMetodeCari');
+      const btnChecklist = document.getElementById('btnMetodeChecklist');
+      const boxCari = document.getElementById('containerMetodeCari');
+      const boxChecklist = document.getElementById('containerMetodeChecklist');
+
+      if (metode === 'cari') {
+        btnCari.className = 'flex-1 py-1.5 px-3 rounded-lg bg-white text-emerald-900 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer';
+        btnChecklist.className = 'flex-1 py-1.5 px-3 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer';
+        boxCari.classList.remove('hidden');
+        boxChecklist.classList.add('hidden');
+      } else {
+        btnChecklist.className = 'flex-1 py-1.5 px-3 rounded-lg bg-white text-teal-900 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer';
+        btnCari.className = 'flex-1 py-1.5 px-3 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer';
+        boxChecklist.classList.remove('hidden');
+        boxCari.classList.add('hidden');
+        renderGridChecklistKelas();
+      }
+    }
+
+    function handlePencarianSantriRealtime(keyword) {
+      const dropdown = document.getElementById('hasilPencarianSantriDropdown');
+      const kw = (keyword || '').toLowerCase().trim();
+      if (!kw || kw.length < 1) {
+        dropdown.classList.add('hidden');
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      const hasil = state.siswa.filter(s =>
+        s.status === 'Aktif' &&
+        (s.nama.toLowerCase().includes(kw) || String(s.nis).includes(kw) || s.kelas.toLowerCase().includes(kw))
+      ).slice(0, 8);
+
+      dropdown.innerHTML = '';
+      if (hasil.length === 0) {
+        dropdown.innerHTML = '<div class="p-3 text-xs text-slate-400 text-center">Nama atau NIS tidak ditemukan</div>';
+        dropdown.classList.remove('hidden');
+        return;
+      }
+
+      hasil.forEach(s => {
+        const sudahDipilih = state.selectedSantriListInput.includes(String(s.nis).trim());
+        const item = document.createElement('div');
+        item.className = `p-2.5 px-3 flex items-center justify-between text-xs hover:bg-emerald-50/80 cursor-pointer transition ${sudahDipilih ? 'bg-emerald-50/50 opacity-75' : ''}`;
+        item.innerHTML = `
+          <div class="min-w-0 pr-2">
+            <div class="font-bold text-slate-800 truncate">${s.nama}</div>
+            <div class="text-[11px] text-slate-500 font-mono">NIS: ${s.nis} | <span class="font-semibold text-emerald-800">${s.kelas}</span></div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="font-mono font-bold text-xs ${s.poin < 75 ? 'text-rose-600' : 'text-emerald-700'}">${s.poin} pt</span>
+            <span class="px-2 py-1 rounded-lg text-[11px] font-bold ${sudahDipilih ? 'bg-emerald-200 text-emerald-900' : 'bg-emerald-800 text-white'}">
+              ${sudahDipilih ? 'Terpilih ✓' : '+ Pilih'}
+            </span>
+          </div>
+        `;
+        item.onclick = () => {
+          tambahSantriKePilihan(s.nis);
+          document.getElementById('inputPencarianSantriCepat').value = '';
+          dropdown.classList.add('hidden');
+          document.getElementById('inputPencarianSantriCepat').focus();
+        };
+        dropdown.appendChild(item);
+      });
+      dropdown.classList.remove('hidden');
+    }
+
+    function tambahSantriKePilihan(nis) {
+      const cleanNis = String(nis).trim();
+      if (!state.selectedSantriListInput.includes(cleanNis)) {
+        state.selectedSantriListInput.push(cleanNis);
+      }
+      renderChipsSantriTerpilih();
+      updateSyncChecklistState();
+    }
+
+    function hapusSantriDariPilihan(nis) {
+      const cleanNis = String(nis).trim();
+      state.selectedSantriListInput = state.selectedSantriListInput.filter(n => n !== cleanNis);
+      renderChipsSantriTerpilih();
+      updateSyncChecklistState();
+    }
+
+    function kosongkanSemuaSantriTerpilih() {
+      state.selectedSantriListInput = [];
+      renderChipsSantriTerpilih();
+      updateSyncChecklistState();
+    }
+
+    function renderChipsSantriTerpilih() {
+      const container = document.getElementById('chipsSantriTerpilihContainer');
+      const badgeCount = document.getElementById('jumlahSantriTerpilihBadge');
+      const btnReset = document.getElementById('btnResetSantriTerpilih');
+      const btnSubmitCount = document.getElementById('btnSubmitCountLabel');
+
+      const count = state.selectedSantriListInput.length;
+      badgeCount.textContent = count;
+      btnSubmitCount.textContent = `${count} Murid`;
+
+      if (count === 0) {
+        container.innerHTML = '<span id="placeholderSantriKosong" class="text-xs text-slate-400 italic">Belum ada murid dipilih. Ketik nama di atas atau gunakan checklist sekelas.</span>';
+        btnReset.classList.add('hidden');
+        return;
+      }
+
+      btnReset.classList.remove('hidden');
+      container.innerHTML = '';
+
+      state.selectedSantriListInput.forEach(nis => {
+        const s = state.siswa.find(x => String(x.nis).trim() === nis);
+        if (!s) return;
+
+        const chip = document.createElement('div');
+        chip.className = 'inline-flex items-center gap-1.5 py-1 px-2.5 rounded-xl bg-emerald-100/90 text-emerald-950 border border-emerald-300 text-xs font-semibold shadow-xs animate-fadeIn';
+        chip.innerHTML = `
+          <span class="truncate max-w-[140px] sm:max-w-[200px]">${s.nama}</span>
+          <span class="text-[10px] text-emerald-700 font-mono">(${s.kelas.split(' ')[0]})</span>
+          <button type="button" onclick="hapusSantriDariPilihan('${s.nis}')" class="text-emerald-800 hover:text-rose-600 ml-0.5 p-0.5 rounded cursor-pointer" title="Hapus anak ini">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        `;
+        container.appendChild(chip);
+      });
+    }
+
+    function renderGridChecklistKelas() {
+      const kelas = document.getElementById('checklistFilterKelas').value;
+      const grid = document.getElementById('gridKartuNamaSiswaChecklist');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const muridKelas = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
+      if (muridKelas.length === 0) {
+        grid.innerHTML = '<div class="col-span-full p-4 text-center text-slate-400 text-xs">Belum ada data murid aktif di kelas ini</div>';
+        return;
+      }
+
+      muridKelas.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(s => {
+        const cleanNis = String(s.nis).trim();
+        const terpilih = state.selectedSantriListInput.includes(cleanNis);
+        const card = document.createElement('div');
+        card.id = `cardChecklist-${cleanNis}`;
+        card.onclick = () => toggleChecklistMurid(cleanNis);
+        card.className = `p-2 rounded-xl border text-xs font-semibold cursor-pointer transition select-none flex items-center justify-between gap-1.5 ${
+          terpilih
+            ? 'bg-emerald-700 text-white border-emerald-800 shadow-sm scale-98'
+            : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200'
+        }`;
+        card.innerHTML = `
+          <div class="min-w-0 truncate">
+            <div class="font-bold truncate text-[11px] sm:text-xs">${s.nama}</div>
+            <div class="text-[10px] ${terpilih ? 'text-emerald-100' : 'text-slate-400'} font-mono">${s.poin} pt</div>
+          </div>
+          <div class="w-4 h-4 rounded-full flex items-center justify-center shrink-0 border ${
+            terpilih ? 'bg-white text-emerald-700 border-white' : 'border-slate-300'
+          }">
+            ${terpilih ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleChecklistMurid(nis) {
+      const cleanNis = String(nis).trim();
+      if (state.selectedSantriListInput.includes(cleanNis)) {
+        hapusSantriDariPilihan(cleanNis);
+      } else {
+        tambahSantriKePilihan(cleanNis);
+      }
+    }
+
+    function togglePilihSemuaChecklist() {
+      const kelas = document.getElementById('checklistFilterKelas').value;
+      const muridKelas = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
+      if (muridKelas.length === 0) return;
+
+      const semuaterpilih = muridKelas.every(s => state.selectedSantriListInput.includes(String(s.nis).trim()));
+
+      if (semuaterpilih) {
+        muridKelas.forEach(s => {
+          hapusSantriDariPilihan(s.nis);
+        });
+      } else {
+        muridKelas.forEach(s => {
+          const cleanNis = String(s.nis).trim();
+          if (!state.selectedSantriListInput.includes(cleanNis)) {
+            state.selectedSantriListInput.push(cleanNis);
+          }
+        });
+        renderChipsSantriTerpilih();
+        updateSyncChecklistState();
+      }
+    }
+
+    function updateSyncChecklistState() {
+      const cards = document.querySelectorAll('[id^="cardChecklist-"]');
+      cards.forEach(c => {
+        const nis = c.id.replace('cardChecklist-', '');
+        const terpilih = state.selectedSantriListInput.includes(nis);
+        if (terpilih) {
+          c.className = 'p-2 rounded-xl border text-xs font-semibold cursor-pointer transition select-none flex items-center justify-between gap-1.5 bg-emerald-700 text-white border-emerald-800 shadow-sm scale-98';
+          const iconBox = c.querySelector('div:last-child');
+          if (iconBox) {
+            iconBox.className = 'w-4 h-4 rounded-full flex items-center justify-center shrink-0 border bg-white text-emerald-700 border-white';
+            iconBox.innerHTML = '<i class="fa-solid fa-check text-[10px]"></i>';
+          }
+        } else {
+          c.className = 'p-2 rounded-xl border text-xs font-semibold cursor-pointer transition select-none flex items-center justify-between gap-1.5 bg-white hover:bg-slate-50 text-slate-800 border-slate-200';
+          const iconBox = c.querySelector('div:last-child');
+          if (iconBox) {
+            iconBox.className = 'w-4 h-4 rounded-full flex items-center justify-center shrink-0 border border-slate-300';
+            iconBox.innerHTML = '';
+          }
+        }
+      });
     }
 
     function filterPilihanSantri() {
-      const kelasFilter = document.getElementById('inputFilterKelas').value;
-      const selectSantri = document.getElementById('inputSantriPilihan');
-      if (!selectSantri) return;
-
-      selectSantri.innerHTML = '<option value="">-- Pilih Murid --</option>';
-      const santriAktif = state.siswa.filter(s => s.status === 'Aktif');
-      const filtered = (kelasFilter === 'semua')
-        ? santriAktif
-        : santriAktif.filter(s => s.kelas === kelasFilter);
-
-      filtered.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.nis;
-        opt.textContent = `${s.nama} (${s.kelas}) - ${s.poin} pt`;
-        selectSantri.appendChild(opt);
-      });
-
+      // Inisialisasi awal saat tab input dibuka
       if (state.selectedNisInput) {
-        selectSantri.value = state.selectedNisInput;
+        tambahSantriKePilihan(state.selectedNisInput);
         state.selectedNisInput = null;
       }
-      updateKartuInfoSantri();
-    }
-
-    function updateKartuInfoSantri() {
-      const nis = document.getElementById('inputSantriPilihan').value;
-      const kartu = document.getElementById('kartuInfoSantri');
-      if (!nis) {
-        kartu.classList.add('hidden');
-        return;
-      }
-
-      const s = state.siswa.find(x => String(x.nis).trim() === String(nis).trim());
-      if (!s) {
-        kartu.classList.add('hidden');
-        return;
-      }
-
-      kartu.classList.remove('hidden');
-      document.getElementById('namaSantriTerpilih').textContent = s.nama;
-      document.getElementById('nisSantriTerpilih').textContent = s.nis;
-      document.getElementById('kelasSantriTerpilih').textContent = s.kelas;
-      document.getElementById('poinSantriTerpilih').textContent = `${s.poin} pt`;
-      document.getElementById('avatarSantriTerpilih').textContent = s.nama.substring(0, 2).toUpperCase();
     }
 
     async function handleFormSubmit(e) {
       e.preventDefault();
-      const nis = document.getElementById('inputSantriPilihan').value;
       const judul = document.getElementById('inputJudulCatatan').value.trim();
       const detail = document.getElementById('inputDetailCatatan').value.trim();
       const poin = Number(document.getElementById('inputPoin').value);
@@ -2376,63 +2583,70 @@
       const guru = document.getElementById('inputGuruPencatat').value.trim();
       const tgl = document.getElementById('inputTanggalPeristiwa').value;
 
-      if (!nis || !judul || isNaN(poin)) {
-        showToast('Lengkapi data murid, jenis catatan, dan poin!', 'error');
+      if (state.selectedSantriListInput.length === 0) {
+        showToast('Pilih setidaknya 1 orang murid terlebih dahulu!', 'error');
+        document.getElementById('inputPencarianSantriCepat').focus();
         return;
       }
 
-      const murid = state.siswa.find(s => String(s.nis).trim() === String(nis).trim());
-      if (!murid) {
-        showToast('Murid tidak ditemukan di database!', 'error');
+      if (!judul || isNaN(poin)) {
+        showToast('Lengkapi deskripsi peristiwa dan nilai poin!', 'error');
         return;
       }
 
       const btnSubmit = document.getElementById('btnSubmitCatatan');
+      const originalText = btnSubmit.innerHTML;
       btnSubmit.disabled = true;
-      btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+      btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan ${state.selectedSantriListInput.length} Murid...`;
 
       const judulLengkap = detail ? `${judul} (${detail})` : judul;
-      const payload = {
-        nis: murid.nis,
-        nama: murid.nama,
-        kelas: murid.kelas,
-        tipe: state.jenisInputAktif === 'pelanggaran' ? 'Pelanggaran' : 'Kebaikan',
-        judul: judulLengkap,
-        poin: poin,
-        tindakan: tindakan || '-',
-        guru: guru || 'Tim Kesiswaan',
-        tanggal: tgl
-      };
+      const targetNisList = [...state.selectedSantriListInput];
+      const tipeCatatan = state.jenisInputAktif === 'pelanggaran' ? 'Pelanggaran' : 'Kebaikan';
+      const nowFormatted = `${tgl} ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`;
 
-      const saldoAkhir = Math.max(0, Number(murid.poin) + poin);
-      murid.poin = saldoAkhir;
+      // Proses penyimpanan instan lokal untuk setiap murid
+      targetNisList.forEach((nis, idx) => {
+        const murid = state.siswa.find(s => String(s.nis).trim() === String(nis).trim());
+        if (murid) {
+          const saldoAkhir = Math.max(0, Number(murid.poin) + poin);
+          murid.poin = saldoAkhir;
 
-      const newRecord = {
-        id: 'REC-' + Date.now(),
-        tanggal: `${tgl} ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`,
-        nis: murid.nis,
-        nama: murid.nama,
-        kelas: murid.kelas,
-        tipe: payload.tipe,
-        judul: payload.judul,
-        poin: poin,
-        saldoAkhir: saldoAkhir,
-        tindakan: payload.tindakan,
-        guru: payload.guru
-      };
-      state.riwayat.unshift(newRecord);
+          const newRecord = {
+            id: 'REC-' + (Date.now() + idx),
+            tanggal: nowFormatted,
+            nis: murid.nis,
+            nama: murid.nama,
+            kelas: murid.kelas,
+            tipe: tipeCatatan,
+            judul: judulLengkap,
+            poin: poin,
+            saldoAkhir: saldoAkhir,
+            tindakan: tindakan || '-',
+            guru: guru || 'Tim Kesiswaan'
+          };
+          state.riwayat.unshift(newRecord);
+
+          // Kirim ke server di latar belakang
+          panggilApiServer('simpanCatatan', {
+            nis: murid.nis,
+            nama: murid.nama,
+            kelas: murid.kelas,
+            tipe: tipeCatatan,
+            judul: judulLengkap,
+            poin: poin,
+            tindakan: tindakan || '-',
+            guru: guru || 'Tim Kesiswaan',
+            tanggal: tgl
+          }).catch(err => console.warn('Gagal sinkron:', err));
+        }
+      });
+
       saveLocalData();
       refreshAllViews();
 
-      try {
-        await panggilApiServer('simpanCatatan', payload);
-      } catch (err) {
-        console.warn('Gagal simpan ke server, tetap disimpan di HP:', err);
-      }
-
       btnSubmit.disabled = false;
-      btnSubmit.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Simpan Catatan`;
-      showToast(`Alhamdulillah, catatan ${murid.nama} berhasil disimpan!`, 'success');
+      btnSubmit.innerHTML = originalText;
+      showToast(`Alhamdulillah, catatan berhasil disimpan untuk ${targetNisList.length} murid sekaligus!`, 'success');
       resetFormCatatan();
       switchTab('riwayat');
     }
@@ -2441,7 +2655,12 @@
       document.getElementById('formInputCatatan').reset();
       document.getElementById('inputTanggalPeristiwa').value = new Date().toISOString().split('T')[0];
       setJenisInput('pelanggaran');
-      document.getElementById('kartuInfoSantri').classList.add('hidden');
+      kosongkanSemuaSantriTerpilih();
+    }
+
+    function setPresetPoin(val) {
+      const input = document.getElementById('inputPoin');
+      if (input) input.value = val;
     }
 
     function renderTabelSiswa() {
