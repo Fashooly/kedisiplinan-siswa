@@ -83,12 +83,35 @@
     input[type=number] {
       -moz-appearance: textfield;
     }
+
+    /* Print Format & Stylesheet */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printAreaSection, #printAreaSection * {
+        visibility: visible;
+      }
+      #printAreaSection {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        background: white !important;
+        color: black !important;
+      }
+      header, aside, .no-print {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white pb-24 sm:pb-8">
 
   <!-- Top App Header dengan Safe Area Top untuk iPhone 11 Notch -->
-  <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg sticky top-0 z-40 pt-safe-top transition-all">
+  <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg sticky top-0 z-40 pt-safe-top transition-all no-print">
     <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between py-2 sm:py-3.5">
         
@@ -111,7 +134,7 @@
           </div>
         </div>
 
-        <!-- Indikator Koneksi 3-Status (Kuning -> Hijau -> Merah) & Tombol Segarkan -->
+        <!-- Indikator Koneksi 3-Status & Tombol Segarkan -->
         <div class="flex items-center gap-2">
           <div id="connStatusBadge" title="Sedang menghubungkan ke Google Sheets..." class="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20 shadow-sm backdrop-blur">
             <span id="connPulseDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)] transition-all duration-300"></span>
@@ -126,21 +149,24 @@
       </div>
 
       <!-- Navigation Tabs (Desktop View) -->
-      <nav class="hidden sm:flex space-x-1.5 sm:space-x-2 border-t border-emerald-800/70 pt-2 pb-2.5 overflow-x-auto text-xs sm:text-sm font-semibold custom-scrollbar">
-        <button onclick="switchTab('dasbor')" id="tabBtn-dasbor" class="nav-tab active px-3.5 py-2 rounded-xl text-white bg-white/20 transition flex items-center gap-2 whitespace-nowrap shadow-sm cursor-pointer">
-          <i class="fa-solid fa-chart-pie text-emerald-300"></i> Dasbor & Statistik
+      <nav class="hidden sm:flex space-x-1 sm:space-x-1.5 border-t border-emerald-800/70 pt-2 pb-2.5 overflow-x-auto text-xs sm:text-sm font-semibold custom-scrollbar">
+        <button onclick="switchTab('dasbor')" id="tabBtn-dasbor" class="nav-tab active px-3 py-2 rounded-xl text-white bg-white/20 transition flex items-center gap-2 whitespace-nowrap shadow-sm cursor-pointer">
+          <i class="fa-solid fa-chart-pie text-emerald-300"></i> Dasbor
         </button>
-        <button onclick="switchTab('input')" id="tabBtn-input" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+        <button onclick="switchTab('input')" id="tabBtn-input" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-pen-to-square text-emerald-300"></i> Input Catatan
         </button>
-        <button onclick="switchTab('siswa')" id="tabBtn-siswa" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-user-graduate text-emerald-300"></i> Poin & Data Murid
+        <button onclick="switchTab('siswa')" id="tabBtn-siswa" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-solid fa-user-graduate text-emerald-300"></i> Data Murid
         </button>
-        <button onclick="switchTab('riwayat')" id="tabBtn-riwayat" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-clock-rotate-left text-emerald-300"></i> Riwayat Mutaba'ah
+        <button onclick="switchTab('riwayat')" id="tabBtn-riwayat" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-300"></i> Riwayat & Koreksi
         </button>
-        <button onclick="switchTab('laporan')" id="tabBtn-laporan" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-brands fa-whatsapp text-emerald-300 text-sm"></i> Pelaporan Wali Kelas
+        <button onclick="switchTab('laporan')" id="tabBtn-laporan" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-brands fa-whatsapp text-emerald-300 text-sm"></i> Lapor Walas
+        </button>
+        <button onclick="switchTab('cetak')" id="tabBtn-cetak" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
+          <i class="fa-solid fa-print text-emerald-300"></i> Cetak Laporan
         </button>
       </nav>
     </div>
@@ -160,7 +186,7 @@
           </span>
           <h2 class="text-base sm:text-3xl font-extrabold tracking-tight">Portal Kesiswaan SDIT Az Zahra</h2>
           <p class="text-xs sm:text-sm text-emerald-100/90 font-normal leading-relaxed">
-            Pantau pembiasaan adab harian, poin kedisiplinan, dan pelaporan walas secara cepat dari smartphone Anda.
+            Pantau pembiasaan adab harian, poin kedisiplinan, koreksi catatan salah input, dan pelaporan wali kelas resmi.
           </p>
         </div>
         <div class="absolute -right-6 -bottom-6 opacity-10 text-[110px] sm:text-[180px] pointer-events-none font-quran text-white">
@@ -212,15 +238,14 @@
             </div>
           </div>
           <div id="statCatatanPekanIni" class="text-lg sm:text-3xl font-extrabold text-amber-700">0</div>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">Seluruh Rombel</p>
+          <p class="text-xs text-slate-400 font-medium mt-0.5">Semua Rombel</p>
         </div>
 
       </div>
 
-      <!-- 2 Columns: Exemplary Students & Attention Required -->
+      <!-- 2 Columns: Teladan & Perlu Bimbingan -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-3.5 sm:gap-6">
         
-        <!-- Murid Teladan -->
         <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm space-y-3">
           <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
             <div class="flex items-center gap-2">
@@ -237,12 +262,9 @@
             </span>
           </div>
 
-          <div id="listSantriTeladan" class="space-y-2 text-xs">
-            <!-- Render dinamis via JS -->
-          </div>
+          <div id="listSantriTeladan" class="space-y-2 text-xs"></div>
         </div>
 
-        <!-- Perlu Perhatian Khusus -->
         <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm space-y-3">
           <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
             <div class="flex items-center gap-2">
@@ -259,9 +281,7 @@
             </span>
           </div>
 
-          <div id="listSantriBimbingan" class="space-y-2 text-xs">
-            <!-- Render dinamis via JS -->
-          </div>
+          <div id="listSantriBimbingan" class="space-y-2 text-xs"></div>
         </div>
 
       </div>
@@ -273,7 +293,6 @@
       
       <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm p-4 sm:p-8 max-w-4xl mx-auto space-y-4">
         
-        <!-- Toggle Jenis Catatan -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div>
             <h2 class="text-sm sm:text-xl font-bold text-slate-800">Formulir Catatan Harian</h2>
@@ -292,13 +311,12 @@
 
         <form id="formInputCatatan" onsubmit="handleFormSubmit(event)" class="space-y-4">
           
-          <!-- Pilih Murid Aktif -->
           <div class="p-3 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
             <div class="flex items-center justify-between text-xs">
               <label class="font-bold text-slate-700 flex items-center gap-1.5 text-xs">
                 <i class="fa-solid fa-user-check text-emerald-700"></i> Pilih Murid Aktif *
               </label>
-              <span class="text-xs text-slate-400 hidden sm:inline">Filter kelas untuk pencarian cepat</span>
+              <span class="text-xs text-slate-400 hidden sm:inline">Saring kelas untuk kemudahan pencarian</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -339,7 +357,7 @@
               </div>
             </div>
 
-            <!-- Kartu Pratinjau Identitas Murid -->
+            <!-- Kartu Pratinjau Murid -->
             <div id="kartuInfoSantri" class="hidden p-3 bg-white rounded-xl border border-slate-200 text-xs flex items-center justify-between gap-2 shadow-sm">
               <div class="flex items-center gap-2.5 min-w-0">
                 <div id="avatarSantriTerpilih" class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 font-extrabold flex items-center justify-center text-xs shrink-0 shadow-inner">
@@ -360,7 +378,6 @@
             </div>
           </div>
 
-          <!-- Rincian Catatan -->
           <div class="space-y-3">
             <div>
               <label id="labelJenisCatatan" class="block text-xs font-bold text-slate-700 mb-1">
@@ -373,7 +390,7 @@
               <label class="block text-xs font-bold text-slate-700 mb-1">
                 Keterangan / Kronologi Tambahan (Opsional)
               </label>
-              <textarea id="inputDetailCatatan" rows="2" placeholder="Tuliskan keterangan tempat atau rincian jika ada..." class="w-full text-base sm:text-xs rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none"></textarea>
+              <textarea id="inputDetailCatatan" rows="2" placeholder="Tuliskan keterangan tempat atau kronologi jika ada..." class="w-full text-base sm:text-xs rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none"></textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
@@ -397,7 +414,7 @@
                 <label class="block text-xs font-bold text-slate-700 mb-1">
                   Tindakan Edukatif / Pembinaan (Opsional)
                 </label>
-                <input type="text" id="inputTindakan" placeholder="Contoh: Istighfar 33x & membaca Al-Qur'an (boleh kosong)" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                <input type="text" id="inputTindakan" placeholder="Contoh: Membaca Al-Qur'an 1/2 juz (boleh kosong)" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
               </div>
             </div>
 
@@ -406,7 +423,7 @@
                 <label class="block text-xs font-bold text-slate-700 mb-1">
                   Pencatat (Bapak / Ibu Walas) (Opsional)
                 </label>
-                <input type="text" id="inputGuruPencatat" placeholder="Nama Bapak/Ibu Walas (Default: Tim Kesiswaan)" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                <input type="text" id="inputGuruPencatat" placeholder="Nama Pencatat (Default: Tim Kesiswaan)" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
               </div>
 
               <div>
@@ -419,7 +436,6 @@
 
           </div>
 
-          <!-- Tombol Aksi Simpan -->
           <div class="pt-2.5 border-t border-slate-100 flex items-center justify-end gap-2">
             <button type="button" onclick="resetFormCatatan()" class="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 transition active:scale-95 cursor-pointer">
               Reset
@@ -435,13 +451,11 @@
 
     </section>
 
-    <!-- ==================== TAB 3: POIN & DATA MURID ==================== -->
+    <!-- ==================== TAB 3: DATA MURID & EDIT BIODATA ==================== -->
     <section id="tab-siswa" class="tab-content hidden space-y-3">
       
-      <!-- Action Bar -->
       <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col gap-2.5">
         
-        <!-- Filter & Search -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
           <select id="filterTabelKelas" onchange="renderTabelSiswa()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 font-bold text-slate-700 focus:outline-none">
             <option value="semua">Semua 12 Kelas</option>
@@ -484,7 +498,6 @@
           </div>
         </div>
 
-        <!-- Tombol Aksi -->
         <div class="grid grid-cols-3 gap-2 w-full pt-1 border-t border-slate-100">
           <button onclick="openModal('modalImportExcel')" class="py-2 px-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
             <i class="fa-solid fa-file-excel"></i> <span class="truncate">Impor Excel</span>
@@ -499,7 +512,7 @@
 
       </div>
 
-      <!-- Tampilan Kartu Murid untuk Smartphone -->
+      <!-- Tampilan Kartu Murid untuk Mobile Phone -->
       <div id="mobileCardsMurid" class="space-y-2 sm:hidden"></div>
 
       <!-- Tampilan Tabel Murid untuk Desktop -->
@@ -515,7 +528,7 @@
                 <th class="py-3 px-4 text-center">Saldo Poin</th>
                 <th class="py-3 px-4">Orang Tua / Wali</th>
                 <th class="py-3 px-4 text-center">Status</th>
-                <th class="py-3 px-4 text-center">Aksi</th>
+                <th class="py-3 px-4 text-center">Aksi / Edit</th>
               </tr>
             </thead>
             <tbody id="tabelBodySiswa" class="divide-y divide-slate-100 font-medium"></tbody>
@@ -530,7 +543,7 @@
 
     </section>
 
-    <!-- ==================== TAB 4: RIWAYAT MUTABA'AH ==================== -->
+    <!-- ==================== TAB 4: RIWAYAT MUTABA'AH & KOREKSI INPUT ==================== -->
     <section id="tab-riwayat" class="tab-content hidden space-y-3">
       
       <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5">
@@ -556,10 +569,10 @@
 
       </div>
 
-      <!-- Tampilan Kartu Riwayat di Layar Smartphone -->
+      <!-- Tampilan Kartu Riwayat di Smartphone dengan Tombol Koreksi -->
       <div id="mobileCardsRiwayat" class="space-y-2 sm:hidden"></div>
 
-      <!-- Tampilan Tabel Riwayat di Desktop -->
+      <!-- Tampilan Tabel Riwayat di Desktop dengan Kolom Koreksi -->
       <div class="hidden sm:block bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
         <div class="overflow-x-auto custom-scrollbar">
           <table class="w-full text-left text-xs">
@@ -573,6 +586,7 @@
                 <th class="py-3 px-4 text-center">Saldo Akhir</th>
                 <th class="py-3 px-4">Tindakan / Pembinaan</th>
                 <th class="py-3 px-4">Pencatat</th>
+                <th class="py-3 px-4 text-center">Koreksi</th>
               </tr>
             </thead>
             <tbody id="tabelBodyRiwayat" class="divide-y divide-slate-100 font-medium"></tbody>
@@ -590,7 +604,6 @@
     <!-- ==================== TAB 5: PELAPORAN WALI KELAS VIA WHATSAPP ==================== -->
     <section id="tab-laporan" class="tab-content hidden space-y-3.5 sm:space-y-6">
       
-      <!-- Banner Pengantar -->
       <div class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-3.5 border border-emerald-700/50">
         <div class="space-y-1 max-w-2xl">
           <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-700/60 border border-emerald-500/40 text-emerald-200 text-xs font-bold">
@@ -610,7 +623,6 @@
         </div>
       </div>
 
-      <!-- Filter Kelas Laporan -->
       <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full sm:w-auto">
           <select id="filterJenjangLaporan" onchange="renderPelaporanWalas()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 font-bold text-slate-700 focus:outline-none">
@@ -635,35 +647,147 @@
         </div>
       </div>
 
-      <!-- Grid Kartu 12 Kelas -->
       <div id="gridKartuLaporanWalas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5"></div>
+
+    </section>
+
+    <!-- ==================== TAB 6: SISTEM CETAK LAPORAN RESMI (PDF / PRINT) ==================== -->
+    <section id="tab-cetak" class="tab-content hidden space-y-4">
+      
+      <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm space-y-4 no-print">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div>
+            <h2 class="text-sm sm:text-xl font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-print text-emerald-700"></i> Sistem Generator Laporan Resmi
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Cetak rekapitulasi poin kelas atau lembar mutaba'ah perorangan murid lengkap dengan Kop Surat resmi.</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="window.print()" class="py-2.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer">
+              <i class="fa-solid fa-print"></i> Cetak Dokumen / PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Generator Laporan -->
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Model Dokumen</label>
+            <select id="cetakTipeLaporan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
+              <option value="rekap_kelas">Rekapitulasi Mutaba'ah Rombel</option>
+              <option value="kartu_santri">Lembar Evaluasi Per Murid</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Pilih Kelas</label>
+            <select id="cetakFilterKelas" onchange="updateDropdownMuridCetak(); generateLaporanCetak();" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
+              <optgroup label="Kelas 1">
+                <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
+                <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
+              </optgroup>
+              <optgroup label="Kelas 2">
+                <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
+                <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
+              </optgroup>
+              <optgroup label="Kelas 3">
+                <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
+                <option value="3 Sultan Arslan">3 Sultan Arslan</option>
+              </optgroup>
+              <optgroup label="Kelas 4">
+                <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
+                <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
+              </optgroup>
+              <optgroup label="Kelas 5">
+                <option value="5 Osman Ghazy">5 Osman Ghazy</option>
+                <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
+              </optgroup>
+              <optgroup label="Kelas 6">
+                <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
+                <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div id="cetakPilihMuridContainer" class="hidden">
+            <label class="block font-bold text-slate-700 mb-1">Pilih Murid</label>
+            <select id="cetakPilihanMurid" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs"></select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Bulan & Tahun Rekap</label>
+            <input type="month" id="cetakPeriodeBulan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
+          </div>
+        </div>
+      </div>
+
+      <!-- Area Dokumen Cetak Fisik / PDF Preview -->
+      <div id="printAreaSection" class="bg-white p-6 sm:p-10 rounded-2xl sm:rounded-3xl border border-slate-300 shadow-sm max-w-5xl mx-auto space-y-6">
+        
+        <!-- KOP SURAT RESMI -->
+        <div class="flex items-center gap-4 pb-4 border-b-4 border-emerald-900 border-double">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center p-1">
+            <img src="/logo.png" alt="Logo SDIT Az Zahra" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/120x120/064e3b/ffffff?text=AZ+ZAHRA';">
+          </div>
+          <div class="flex-1 text-center pr-4">
+            <h2 class="text-xs sm:text-sm font-bold uppercase tracking-widest text-slate-600">Yayasan Pendidikan Islam Az Zahra</h2>
+            <h1 class="text-base sm:text-2xl font-extrabold text-emerald-950 tracking-wide uppercase">SEKOLAH DASAR ISLAM TERPADU AZ ZAHRA</h1>
+            <p class="text-[11px] sm:text-xs text-slate-600 italic mt-0.5">NPSN: 699xxxxx | Terakreditasi A | Alamat: Kompleks Pendidikan Terpadu Az Zahra</p>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Website: sdit-azzahra.sch.id | Email: kesiswaan@sdit-azzahra.sch.id</p>
+          </div>
+        </div>
+
+        <!-- KONTEN DINAMIS DOKUMEN CETAK -->
+        <div id="kontenLaporanDinamis"></div>
+
+        <!-- TANDA TANGAN RESMI -->
+        <div class="pt-8 grid grid-cols-2 gap-4 text-xs font-semibold text-slate-800 break-inside-avoid">
+          <div class="text-center space-y-16">
+            <p>Mengetahui,<br><span class="font-bold">Wali Kelas</span></p>
+            <div>
+              <p id="cetakNamaWalasTtd" class="font-bold underline uppercase">( ........................................ )</p>
+              <p class="text-slate-500 text-[11px]">NIP/NIY: .........................</p>
+            </div>
+          </div>
+
+          <div class="text-center space-y-16">
+            <p id="cetakTanggalSuratTtd">Kota Sekolah, 01 Oktober 2026<br><span class="font-bold">Koordinator Kesiswaan</span></p>
+            <div>
+              <p class="font-bold underline uppercase">( Tim Kesiswaan SDIT Az Zahra )</p>
+              <p class="text-slate-500 text-[11px]">NIY: AZ-2024.KES.01</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
     </section>
 
   </main>
 
   <!-- Bottom Mobile Dock Navigation (Khusus iPhone iOS & Android) -->
-  <aside aria-label="Navigasi Bawah" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-safe">
+  <aside aria-label="Navigasi Bawah" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-safe no-print">
     <div class="grid grid-cols-5 h-14 items-center px-1">
       <button onclick="switchTab('dasbor')" id="mobNav-dasbor" class="flex flex-col items-center justify-center py-1 text-emerald-800 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
-        <span class="text-xs font-bold">Dasbor</span>
+        <span class="text-[11px] font-bold">Dasbor</span>
       </button>
       <button onclick="switchTab('input')" id="mobNav-input" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-pen-to-square text-base mb-0.5"></i>
-        <span class="text-xs font-bold">Catat</span>
+        <span class="text-[11px] font-bold">Catat</span>
       </button>
       <button onclick="switchTab('siswa')" id="mobNav-siswa" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-user-graduate text-base mb-0.5"></i>
-        <span class="text-xs font-bold">Murid</span>
+        <span class="text-[11px] font-bold">Murid</span>
       </button>
       <button onclick="switchTab('riwayat')" id="mobNav-riwayat" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i>
-        <span class="text-xs font-bold">Riwayat</span>
+        <span class="text-[11px] font-bold">Riwayat</span>
       </button>
-      <button onclick="switchTab('laporan')" id="mobNav-laporan" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
-        <i class="fa-brands fa-whatsapp text-lg mb-0.5"></i>
-        <span class="text-xs font-bold">Lapor WA</span>
+      <button onclick="switchTab('cetak')" id="mobNav-cetak" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
+        <i class="fa-solid fa-print text-base mb-0.5"></i>
+        <span class="text-[11px] font-bold">Cetak</span>
       </button>
     </div>
   </aside>
@@ -746,7 +870,183 @@
     </div>
   </div>
 
-  <!-- MODAL: Ubah Status Keberadaan Murid -->
+  <!-- MODAL: EDIT DATA MURID LENGKAP -->
+  <div id="modalEditSiswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
+    <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-4 sm:p-7 shadow-2xl border border-slate-200 space-y-3.5 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+        <h3 class="font-bold text-slate-800 text-xs sm:text-base flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-teal-700"></i> Edit Data Murid
+        </h3>
+        <button onclick="closeModal('modalEditSiswa')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="formEditSantriModal" onsubmit="handleSimpanEditSantri(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nomor Induk Murid (NIS)</label>
+          <input type="text" id="editSantriNis" readonly class="w-full border border-slate-200 bg-slate-100 rounded-xl p-2.5 font-mono font-bold text-slate-600 text-base sm:text-xs cursor-not-allowed">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nama Lengkap Murid *</label>
+          <input type="text" id="editSantriNama" required class="w-full border border-slate-300 rounded-xl p-2.5 font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Kelas *</label>
+            <select id="editSantriKelas" required class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+              <optgroup label="Kelas 1">
+                <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
+                <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
+              </optgroup>
+              <optgroup label="Kelas 2">
+                <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
+                <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
+              </optgroup>
+              <optgroup label="Kelas 3">
+                <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
+                <option value="3 Sultan Arslan">3 Sultan Arslan</option>
+              </optgroup>
+              <optgroup label="Kelas 4">
+                <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
+                <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
+              </optgroup>
+              <optgroup label="Kelas 5">
+                <option value="5 Osman Ghazy">5 Osman Ghazy</option>
+                <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
+              </optgroup>
+              <optgroup label="Kelas 6">
+                <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
+                <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Koreksi Poin Saldo</label>
+            <input type="number" id="editSantriPoin" required class="w-full border border-slate-300 rounded-xl p-2.5 font-mono font-bold focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Nama Orang Tua/Wali</label>
+            <input type="text" id="editSantriWali" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">No HP / WA Wali</label>
+            <input type="text" id="editSantriHpWali" class="w-full border border-slate-300 rounded-xl p-2.5 font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+          </div>
+        </div>
+
+        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+          <button type="button" onclick="bukaModalHapusSantri()" class="py-2 px-3 rounded-xl text-rose-600 hover:bg-rose-50 font-bold transition cursor-pointer">
+            <i class="fa-solid fa-trash-can mr-1"></i> Hapus Murid
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeModal('modalEditSiswa')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer">
+              Batal
+            </button>
+            <button type="submit" id="btnSubmitEditSantri" class="py-2 px-4 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-bold transition shadow cursor-pointer">
+              Simpan Perubahan
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT RIWAYAT CATATAN SALAH INPUT -->
+  <div id="modalEditCatatan" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
+    <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-4 sm:p-7 shadow-2xl border border-slate-200 space-y-3.5 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+        <h3 class="font-bold text-slate-800 text-xs sm:text-base flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square text-amber-600"></i> Koreksi Catatan Mutaba'ah
+        </h3>
+        <button onclick="closeModal('modalEditCatatan')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="formEditCatatanModal" onsubmit="handleSimpanEditCatatan(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="editCatatanId">
+        
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+          <div id="editCatatanNama" class="font-bold text-slate-800 text-xs sm:text-sm">-</div>
+          <div class="text-xs text-slate-400">Tanggal: <span id="editCatatanTanggal" class="font-mono text-slate-600">-</span></div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Tipe Catatan *</label>
+          <select id="editCatatanTipe" required class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-base sm:text-xs">
+            <option value="Pelanggaran">Pelanggaran</option>
+            <option value="Kebaikan">Kebaikan</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Peristiwa / Catatan *</label>
+          <input type="text" id="editCatatanJudul" required class="w-full border border-slate-300 rounded-xl p-2.5 font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Nilai Poin (+ / -) *</label>
+            <input type="number" id="editCatatanPoin" required class="w-full border border-slate-300 rounded-xl p-2.5 font-mono font-bold focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Pencatat</label>
+            <input type="text" id="editCatatanGuru" class="w-full border border-slate-300 rounded-xl p-2.5 font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Tindakan / Pembinaan</label>
+          <input type="text" id="editCatatanTindakan" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-emerald-600 focus:outline-none text-base sm:text-xs">
+        </div>
+
+        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+          <button type="button" onclick="bukaModalHapusCatatan()" class="py-2 px-3 rounded-xl text-rose-600 hover:bg-rose-50 font-bold transition cursor-pointer">
+            <i class="fa-solid fa-trash-can mr-1"></i> Batalkan / Hapus
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeModal('modalEditCatatan')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer">
+              Batal
+            </button>
+            <button type="submit" id="btnSubmitEditCatatan" class="py-2 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold transition shadow cursor-pointer">
+              Simpan Koreksi
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI HAPUS (Kustom Aman Tanpa window.confirm) -->
+  <div id="modalKonfirmasiHapus" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl sm:rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-3.5 text-center">
+      <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <h3 id="konfirmasiHapusJudul" class="font-extrabold text-slate-800 text-sm sm:text-base">Hapus Catatan Ini?</h3>
+        <p id="konfirmasiHapusPesan" class="text-xs text-slate-500 mt-1">Saldo poin murid akan otomatis dikembalikan seperti semula.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-xs">
+        <button type="button" onclick="closeModal('modalKonfirmasiHapus')" class="py-2.5 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer">
+          Batal
+        </button>
+        <button type="button" id="btnEksekusiHapusKonfirmasi" class="py-2.5 px-3.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold transition cursor-pointer">
+          Ya, Hapus
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Ubah Status Murid -->
   <div id="modalUbahStatus" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-sm w-full p-4 sm:p-6 shadow-2xl border border-slate-200">
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
@@ -806,7 +1106,6 @@
 
       <div class="py-3 space-y-3 flex-1 overflow-y-auto custom-scrollbar">
         
-        <!-- Langkah 1: Target Rombel -->
         <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-2">
           <div class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
             <span class="w-4 h-4 rounded-full bg-emerald-700 text-white text-xs flex items-center justify-center">1</span>
@@ -856,7 +1155,6 @@
           </div>
         </div>
 
-        <!-- Langkah 2: Berkas Excel -->
         <div class="space-y-2">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-slate-800 flex items-center gap-1.5">
@@ -878,7 +1176,6 @@
           </div>
         </div>
 
-        <!-- Pratinjau Hasil Impor -->
         <div id="previewContainerExcel" class="hidden space-y-2">
           <div class="flex items-center justify-between text-xs">
             <span id="previewCountLabelExcel" class="font-bold text-slate-700">0 Murid Terdeteksi</span>
@@ -932,7 +1229,6 @@
         </button>
       </div>
 
-      <!-- Sub Tabs Kenaikan -->
       <div class="flex items-center gap-1.5 pt-2 pb-2 border-b border-slate-100 overflow-x-auto text-xs font-bold custom-scrollbar">
         <button type="button" onclick="switchSubTabKenaikan('per-kelas')" id="subTabBtn-per-kelas" class="px-3 py-1.5 rounded-xl bg-emerald-800 text-white shadow-sm whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-people-roof mr-1"></i> Per Kelas (1 Rombel)
@@ -948,10 +1244,9 @@
         </button>
       </div>
 
-      <!-- Konten Sub Tab Kenaikan -->
       <div class="py-2.5 space-y-3 flex-1 overflow-y-auto custom-scrollbar">
         
-        <!-- SUB TAB 1: Kenaikan Per Kelas -->
+        <!-- Sub Tab Per Kelas -->
         <div id="subTabPerKelasContent" class="space-y-3">
           <div class="p-3 bg-emerald-50/70 rounded-2xl border border-emerald-200/80 text-xs space-y-1">
             <div class="font-bold text-emerald-900 flex items-center gap-1.5">
@@ -1066,7 +1361,7 @@
           </div>
         </div>
 
-        <!-- SUB TAB 2: Per Murid Bebas -->
+        <!-- Sub Tab Per Murid -->
         <div id="subTabPerMuridContent" class="hidden space-y-3">
           <div class="p-3 bg-teal-50/70 rounded-2xl border border-teal-200/80 text-xs space-y-1">
             <div class="font-bold text-teal-900 flex items-center gap-1.5">
@@ -1164,7 +1459,7 @@
           </div>
         </div>
 
-        <!-- SUB TAB 3: Pengacakan Seimbang -->
+        <!-- Sub Tab Pengacakan -->
         <div id="subTabAcakContent" class="hidden space-y-3">
           <div class="p-3 bg-amber-50/70 rounded-2xl border border-amber-200/80 text-xs space-y-1">
             <div class="font-bold text-amber-900 flex items-center gap-1.5">
@@ -1219,7 +1514,7 @@
           </div>
         </div>
 
-        <!-- SUB TAB 4: Kelulusan Kelas 6 -->
+        <!-- Sub Tab Kelulusan -->
         <div id="subTabLulusContent" class="hidden space-y-3">
           <div class="p-3 bg-blue-50/70 rounded-2xl border border-blue-200/80 text-xs space-y-1">
             <div class="font-bold text-blue-900 flex items-center gap-1.5">
@@ -1343,7 +1638,7 @@
   </div>
 
   <!-- Toast Notification Container (Notch-safe) -->
-  <div id="toastContainer" class="fixed sm:top-auto sm:bottom-5 left-3.5 right-3.5 sm:left-auto sm:right-5 z-50 flex flex-col space-y-2 pointer-events-none" style="top: calc(env(safe-area-inset-top, 0px) + 12px);"></div>
+  <div id="toastContainer" class="fixed sm:top-auto sm:bottom-5 left-3.5 right-3.5 sm:left-auto sm:right-5 z-50 flex flex-col space-y-2 pointer-events-none no-print" style="top: calc(env(safe-area-inset-top, 0px) + 12px);"></div>
 
   <!-- ==================== LOGIKA UTAMA JAVASCRIPT ==================== -->
   <script>
@@ -1362,6 +1657,8 @@
       selectedKelasWa: null,
       simulasiAcakList: [],
       tempImportListExcel: [],
+      deleteTargetType: null, // 'catatan' atau 'siswa'
+      deleteTargetId: null,
       apiEndpoint: (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith('http')) 
         ? GOOGLE_SCRIPT_URL 
         : (localStorage.getItem('sdit_azzahra_api_url') || '')
@@ -1410,6 +1707,14 @@
             google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).updateStatusSantri(dataPayload.nis, dataPayload.status);
           } else if (action === 'batchUpdateSiswa') {
             google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).batchUpdateSiswa(dataPayload);
+          } else if (action === 'editDataSiswa') {
+            google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).editDataSiswa(dataPayload);
+          } else if (action === 'hapusSiswa') {
+            google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).hapusSiswa(dataPayload.nis);
+          } else if (action === 'editCatatan') {
+            google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).editCatatan(dataPayload);
+          } else if (action === 'hapusCatatan') {
+            google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).hapusCatatan(dataPayload.id);
           } else {
             resolve({ status: 'error', message: 'Aksi tidak didukung' });
           }
@@ -1559,7 +1864,6 @@
     function sinkronkanUlangData() {
       setConnectionStatus('connecting');
       showToast('Menyegarkan & mengambil data murni dari Google Sheets...', 'info');
-      // Kosongkan cache lokal agar benar-benar mengikuti Google Sheets
       localStorage.removeItem('sdit_azzahra_siswa');
       localStorage.removeItem('sdit_azzahra_riwayat');
       initApp(true);
@@ -1596,7 +1900,7 @@
         activeBtn.classList.remove('text-emerald-100');
       }
 
-      ['dasbor', 'input', 'siswa', 'riwayat', 'laporan'].forEach(t => {
+      ['dasbor', 'input', 'siswa', 'riwayat', 'laporan', 'cetak'].forEach(t => {
         const mobBtn = document.getElementById(`mobNav-${t}`);
         if (!mobBtn) return;
         if (t === tabId) {
@@ -1612,6 +1916,10 @@
       if (tabId === 'riwayat') renderTabelRiwayat();
       if (tabId === 'laporan') renderPelaporanWalas();
       if (tabId === 'input') filterPilihanSantri();
+      if (tabId === 'cetak') {
+        updateDropdownMuridCetak();
+        generateLaporanCetak();
+      }
     }
 
     function openModal(modalId) {
@@ -1643,7 +1951,6 @@
         return;
       }
 
-      // Validasi pencegahan NIS ganda
       const duplikat = state.siswa.some(s => String(s.nis).trim() === String(nis).trim());
       if (duplikat) {
         showToast(`Murid dengan NIS ${nis} sudah terdaftar!`, 'error');
@@ -1671,7 +1978,6 @@
         btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
       }
 
-      // Simpan langsung ke memori lokal & perbarui tampilan
       state.siswa.push(santriBaru);
       saveLocalData();
       refreshAllViews();
@@ -1693,6 +1999,190 @@
         }
         document.getElementById('formTambahSantriManual').reset();
         closeModal('modalTambahSiswa');
+      }
+    }
+
+    function bukaModalEditSiswa(nis) {
+      const s = state.siswa.find(x => String(x.nis).trim() === String(nis).trim());
+      if (!s) return;
+      document.getElementById('editSantriNis').value = s.nis;
+      document.getElementById('editSantriNama').value = s.nama;
+      document.getElementById('editSantriKelas').value = s.kelas;
+      document.getElementById('editSantriPoin').value = s.poin;
+      document.getElementById('editSantriWali').value = s.wali || '';
+      document.getElementById('editSantriHpWali').value = s.hpWali || '';
+      openModal('modalEditSiswa');
+    }
+
+    async function handleSimpanEditSantri(e) {
+      e.preventDefault();
+      const nis = document.getElementById('editSantriNis').value;
+      const nama = document.getElementById('editSantriNama').value.trim();
+      const kelas = document.getElementById('editSantriKelas').value;
+      const poin = Number(document.getElementById('editSantriPoin').value);
+      const wali = document.getElementById('editSantriWali').value.trim() || '-';
+      const hpWali = document.getElementById('editSantriHpWali').value.trim() || '';
+
+      const s = state.siswa.find(x => String(x.nis).trim() === String(nis).trim());
+      if (!s) return;
+
+      const btn = document.getElementById('btnSubmitEditSantri');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+
+      s.nama = nama;
+      s.kelas = kelas;
+      s.poin = poin;
+      s.wali = wali;
+      s.hpWali = hpWali;
+
+      saveLocalData();
+      refreshAllViews();
+
+      const payload = { nis, nama, kelas, poin, wali, hpWali };
+      try {
+        await panggilApiServer('editDataSiswa', payload);
+        showToast(`Alhamdulillah, biodata ${nama} berhasil diperbarui!`, 'success');
+      } catch (err) {
+        showToast('Tersimpan di HP (Server sedang memproses)', 'info');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        closeModal('modalEditSiswa');
+      }
+    }
+
+    function bukaModalHapusSantri() {
+      const nis = document.getElementById('editSantriNis').value;
+      const nama = document.getElementById('editSantriNama').value;
+      state.deleteTargetType = 'siswa';
+      state.deleteTargetId = nis;
+
+      document.getElementById('konfirmasiHapusJudul').textContent = `Hapus Murid: ${nama}?`;
+      document.getElementById('konfirmasiHapusPesan').textContent = `Data murid dengan NIS ${nis} beserta riwayat mutaba'ah akan dihapus dari aplikasi.`;
+      
+      const btn = document.getElementById('btnEksekusiHapusKonfirmasi');
+      btn.onclick = eksekusiHapusSantri;
+      openModal('modalKonfirmasiHapus');
+    }
+
+    async function eksekusiHapusSantri() {
+      const nis = state.deleteTargetId;
+      state.siswa = state.siswa.filter(s => String(s.nis).trim() !== String(nis).trim());
+      saveLocalData();
+      refreshAllViews();
+      closeModal('modalKonfirmasiHapus');
+      closeModal('modalEditSiswa');
+      showToast('Murid berhasil dihapus dari data!', 'success');
+
+      try {
+        await panggilApiServer('hapusSiswa', { nis });
+      } catch (err) {
+        console.warn('Gagal hapus dari server:', err);
+      }
+    }
+
+    function bukaModalEditCatatan(recId) {
+      const r = state.riwayat.find(x => String(x.id).trim() === String(recId).trim());
+      if (!r) return;
+      document.getElementById('editCatatanId').value = r.id;
+      document.getElementById('editCatatanNama').textContent = `${r.nama} (${r.kelas})`;
+      document.getElementById('editCatatanTanggal').textContent = r.tanggal;
+      document.getElementById('editCatatanTipe').value = r.tipe;
+      document.getElementById('editCatatanJudul').value = r.judul;
+      document.getElementById('editCatatanPoin').value = r.poin;
+      document.getElementById('editCatatanGuru').value = r.guru || '';
+      document.getElementById('editCatatanTindakan').value = r.tindakan || '';
+      openModal('modalEditCatatan');
+    }
+
+    async function handleSimpanEditCatatan(e) {
+      e.preventDefault();
+      const id = document.getElementById('editCatatanId').value;
+      const tipe = document.getElementById('editCatatanTipe').value;
+      const judul = document.getElementById('editCatatanJudul').value.trim();
+      const newPoin = Number(document.getElementById('editCatatanPoin').value);
+      const guru = document.getElementById('editCatatanGuru').value.trim();
+      const tindakan = document.getElementById('editCatatanTindakan').value.trim();
+
+      const r = state.riwayat.find(x => String(x.id).trim() === String(id).trim());
+      if (!r) return;
+
+      const selisih = newPoin - Number(r.poin);
+      r.tipe = tipe;
+      r.judul = judul;
+      r.poin = newPoin;
+      r.guru = guru || 'Tim Kesiswaan';
+      r.tindakan = tindakan || '-';
+
+      // Rekonsiliasi poin murid otomatis
+      if (selisih !== 0) {
+        const murid = state.siswa.find(s => String(s.nis).trim() === String(r.nis).trim());
+        if (murid) {
+          murid.poin = Math.max(0, Number(murid.poin) + selisih);
+          r.saldoAkhir = murid.poin;
+        }
+      }
+
+      saveLocalData();
+      refreshAllViews();
+
+      const btn = document.getElementById('btnSubmitEditCatatan');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+
+      const payload = { id, tipe, judul, poin: newPoin, guru: r.guru, tindakan: r.tindakan };
+      try {
+        await panggilApiServer('editCatatan', payload);
+        showToast('Alhamdulillah, koreksi catatan berhasil disimpan!', 'success');
+      } catch (err) {
+        showToast('Koreksi tersimpan di HP!', 'info');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        closeModal('modalEditCatatan');
+      }
+    }
+
+    function bukaModalHapusCatatan() {
+      const id = document.getElementById('editCatatanId').value;
+      const r = state.riwayat.find(x => String(x.id).trim() === String(id).trim());
+      if (!r) return;
+
+      state.deleteTargetType = 'catatan';
+      state.deleteTargetId = id;
+
+      document.getElementById('konfirmasiHapusJudul').textContent = 'Batalkan & Hapus Catatan Ini?';
+      document.getElementById('konfirmasiHapusPesan').textContent = `Catatan "${r.judul}" akan dihapus dan poin murid sebesar (${r.poin > 0 ? '+' : ''}${r.poin}) akan dikembalikan otomatis.`;
+      
+      const btn = document.getElementById('btnEksekusiHapusKonfirmasi');
+      btn.onclick = eksekusiHapusCatatan;
+      openModal('modalKonfirmasiHapus');
+    }
+
+    async function eksekusiHapusCatatan() {
+      const id = state.deleteTargetId;
+      const r = state.riwayat.find(x => String(x.id).trim() === String(id).trim());
+      if (r) {
+        // Kembalikan saldo poin murid
+        const murid = state.siswa.find(s => String(s.nis).trim() === String(r.nis).trim());
+        if (murid) {
+          murid.poin = Math.max(0, Number(murid.poin) - Number(r.poin));
+        }
+        state.riwayat = state.riwayat.filter(x => String(x.id).trim() !== String(id).trim());
+        saveLocalData();
+        refreshAllViews();
+        closeModal('modalKonfirmasiHapus');
+        closeModal('modalEditCatatan');
+        showToast('Catatan berhasil dibatalkan dan saldo poin dikembalikan!', 'success');
+
+        try {
+          await panggilApiServer('hapusCatatan', { id });
+        } catch (err) {
+          console.warn('Gagal hapus catatan dari server:', err);
+        }
       }
     }
 
@@ -1909,7 +2399,10 @@
           <td class="py-3 px-4 text-center">
             <div class="flex items-center justify-center gap-1.5">
               <button onclick="isiCatatanLangsung('${s.nis}')" title="Beri Catatan" class="p-1.5 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 cursor-pointer">
-                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button onclick="bukaModalEditSiswa('${s.nis}')" title="Edit Biodata" class="p-1.5 rounded-lg bg-teal-100 text-teal-800 hover:bg-teal-200 cursor-pointer">
+                <i class="fa-solid fa-user-pen"></i>
               </button>
               <button onclick="bukaModalUbahStatus('${s.nis}')" title="Ubah Status" class="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
                 <i class="fa-solid fa-user-gear"></i>
@@ -1937,6 +2430,9 @@
             <div class="flex items-center gap-1.5 shrink-0">
               <button onclick="isiCatatanLangsung('${s.nis}')" class="py-1 px-2.5 rounded-xl bg-emerald-800 text-white font-bold cursor-pointer">
                 <i class="fa-solid fa-pen mr-1"></i> Catat
+              </button>
+              <button onclick="bukaModalEditSiswa('${s.nis}')" class="py-1 px-2.5 rounded-xl bg-teal-100 text-teal-800 font-bold cursor-pointer">
+                <i class="fa-solid fa-user-pen mr-1"></i> Edit
               </button>
               <button onclick="bukaModalUbahStatus('${s.nis}')" class="p-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold cursor-pointer">
                 <i class="fa-solid fa-gear"></i>
@@ -2017,6 +2513,11 @@
           <td class="py-3 px-4 text-center font-bold font-mono text-slate-700">${r.saldoAkhir} pt</td>
           <td class="py-3 px-4 text-slate-600">${r.tindakan || '-'}</td>
           <td class="py-3 px-4 text-slate-500">${r.guru || 'Tim Kesiswaan'}</td>
+          <td class="py-3 px-4 text-center">
+            <button onclick="bukaModalEditCatatan('${r.id}')" title="Koreksi Salah Input" class="p-1.5 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 cursor-pointer">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
         `;
         tbody.appendChild(tr);
 
@@ -2025,7 +2526,12 @@
         card.innerHTML = `
           <div class="flex items-center justify-between text-xs">
             <span class="font-mono text-slate-400">${r.tanggal}</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${r.tipe}</span>
+            <div class="flex items-center gap-1.5">
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${r.tipe}</span>
+              <button onclick="bukaModalEditCatatan('${r.id}')" class="p-1 rounded-md bg-amber-100 text-amber-800 hover:bg-amber-200 cursor-pointer" title="Koreksi">
+                <i class="fa-solid fa-pen-to-square text-[11px]"></i>
+              </button>
+            </div>
           </div>
           <div class="flex items-center justify-between">
             <div class="font-bold text-slate-800 text-sm">${r.nama}</div>
@@ -2066,6 +2572,160 @@
       a.click();
       document.body.removeChild(a);
       showToast('Berkas CSV berhasil diunduh!', 'success');
+    }
+
+    function updateDropdownMuridCetak() {
+      const kelas = document.getElementById('cetakFilterKelas').value;
+      const selMurid = document.getElementById('cetakPilihanMurid');
+      selMurid.innerHTML = '';
+      const list = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
+      list.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.nis;
+        opt.textContent = `${s.nama} (${s.nis})`;
+        selMurid.appendChild(opt);
+      });
+    }
+
+    function generateLaporanCetak() {
+      const tipe = document.getElementById('cetakTipeLaporan').value;
+      const kelas = document.getElementById('cetakFilterKelas').value;
+      const periode = document.getElementById('cetakPeriodeBulan').value || new Date().toISOString().substring(0, 7);
+      const [tahun, bulan] = periode.split('-');
+      const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"][Number(bulan) - 1] || 'Bulan Berjalan';
+
+      const walas = dapatkanInfoWalas(kelas);
+      document.getElementById('cetakNamaWalasTtd').textContent = `( ${walas.nama || 'Wali Kelas'} )`;
+      document.getElementById('cetakTanggalSuratTtd').innerHTML = `Kota Sekolah, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}<br><span class="font-bold">Koordinator Kesiswaan</span>`;
+
+      const containerMurid = document.getElementById('cetakPilihMuridContainer');
+      const containerKonten = document.getElementById('kontenLaporanDinamis');
+      containerKonten.innerHTML = '';
+
+      if (tipe === 'rekap_kelas') {
+        containerMurid.classList.add('hidden');
+        const muridKelas = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
+        const catatanBulan = state.riwayat.filter(r => r.kelas === kelas && r.tanggal.startsWith(periode));
+
+        let html = `
+          <div class="text-center space-y-1 mb-6">
+            <h2 class="text-base sm:text-lg font-extrabold uppercase text-slate-800">REKAPITULASI KEDISIPLINAN & MUTABA'AH ADAB SISWA</h2>
+            <p class="text-xs font-semibold text-slate-600">Kelas: <strong class="text-emerald-950">${kelas}</strong> | Periode: <strong>${namaBulan} ${tahun}</strong> | Wali Kelas: <strong>${walas.nama || '-'}</strong></p>
+          </div>
+
+          <table class="w-full text-left text-xs border border-slate-300">
+            <thead class="bg-slate-100 font-bold border-b border-slate-300">
+              <tr>
+                <th class="p-2 border-r border-slate-300 text-center w-10">No</th>
+                <th class="p-2 border-r border-slate-300">NIS</th>
+                <th class="p-2 border-r border-slate-300">Nama Murid</th>
+                <th class="p-2 border-r border-slate-300 text-center">Saldo Poin</th>
+                <th class="p-2 border-r border-slate-300 text-center">Predikat Adab</th>
+                <th class="p-2">Catatan Peristiwa Terakhir</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+        `;
+
+        if (muridKelas.length === 0) {
+          html += `<tr><td colspan="6" class="p-4 text-center text-slate-400">Belum ada murid aktif di kelas ini</td></tr>`;
+        } else {
+          muridKelas.sort((a, b) => a.nama.localeCompare(b.nama)).forEach((m, idx) => {
+            const predikat = m.poin >= 100 ? 'Mumtaz (Teladan)' : (m.poin >= 85 ? 'Jayyid Jiddan' : (m.poin >= 75 ? 'Jayyid' : 'Perlu Bimbingan'));
+            const lastNote = state.riwayat.find(r => String(r.nis).trim() === String(m.nis).trim());
+            html += `
+              <tr>
+                <td class="p-2 text-center border-r border-slate-300">${idx + 1}</td>
+                <td class="p-2 font-mono border-r border-slate-300">${m.nis}</td>
+                <td class="p-2 font-bold text-slate-800 border-r border-slate-300">${m.nama}</td>
+                <td class="p-2 text-center font-bold font-mono border-r border-slate-300 ${m.poin < 75 ? 'text-rose-600' : 'text-emerald-700'}">${m.poin} pt</td>
+                <td class="p-2 text-center font-semibold border-r border-slate-300">${predikat}</td>
+                <td class="p-2 text-slate-600">${lastNote ? `${lastNote.judul} (${lastNote.poin > 0 ? '+' : ''}${lastNote.poin})` : 'Nihil pelanggaran'}</td>
+              </tr>
+            `;
+          });
+        }
+
+        html += `
+            </tbody>
+          </table>
+          <p class="text-[11px] text-slate-500 mt-2 italic">* Total ${catatanBulan.length} peristiwa tercatat sepanjang bulan ${namaBulan} ${tahun}.</p>
+        `;
+        containerKonten.innerHTML = html;
+
+      } else {
+        // Mode Lembar Rapor Individu Murid
+        containerMurid.classList.remove('hidden');
+        const nisMurid = document.getElementById('cetakPilihanMurid').value;
+        const murid = state.siswa.find(s => String(s.nis).trim() === String(nisMurid).trim());
+
+        if (!murid) {
+          containerKonten.innerHTML = '<div class="text-center p-6 text-slate-400">Pilih murid terlebih dahulu</div>';
+          return;
+        }
+
+        const riwayatMurid = state.riwayat.filter(r => String(r.nis).trim() === String(murid.nis).trim());
+        const predikat = murid.poin >= 100 ? 'Mumtaz (Sangat Baik / Teladan)' : (murid.poin >= 85 ? 'Jayyid Jiddan (Baik Sekali)' : (murid.poin >= 75 ? 'Jayyid (Cukup)' : 'Perlu Pendampingan Khusus'));
+
+        let html = `
+          <div class="text-center space-y-1 mb-6">
+            <h2 class="text-base sm:text-lg font-extrabold uppercase text-slate-800">LEMBAR EVALUASI MUTABA'AH ADAB & KEDISIPLINAN SISWA</h2>
+            <p class="text-xs font-semibold text-slate-600">Tahun Ajaran 2026/2027</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+            <div>
+              <p><span class="text-slate-500 inline-block w-28">Nama Murid</span>: <strong class="text-slate-800 text-sm">${murid.nama}</strong></p>
+              <p><span class="text-slate-500 inline-block w-28">Nomor Induk (NIS)</span>: <strong class="font-mono">${murid.nis}</strong></p>
+              <p><span class="text-slate-500 inline-block w-28">Kelas / Rombel</span>: <strong>${murid.kelas}</strong></p>
+            </div>
+            <div>
+              <p><span class="text-slate-500 inline-block w-28">Wali Kelas</span>: <strong>${walas.nama || '-'}</strong></p>
+              <p><span class="text-slate-500 inline-block w-28">Saldo Poin Mutaba'ah</span>: <strong class="text-sm font-bold ${murid.poin < 75 ? 'text-rose-600' : 'text-emerald-700'}">${murid.poin} pt</strong></p>
+              <p><span class="text-slate-500 inline-block w-28">Predikat Perilaku</span>: <strong class="text-emerald-900">${predikat}</strong></p>
+            </div>
+          </div>
+
+          <h3 class="font-bold text-xs text-slate-800 mb-2 uppercase">Histori Catatan Kejadian & Prestasi Adab</h3>
+          <table class="w-full text-left text-xs border border-slate-300">
+            <thead class="bg-slate-100 font-bold border-b border-slate-300">
+              <tr>
+                <th class="p-2 border-r border-slate-300 text-center w-10">No</th>
+                <th class="p-2 border-r border-slate-300">Waktu</th>
+                <th class="p-2 border-r border-slate-300 text-center">Tipe</th>
+                <th class="p-2 border-r border-slate-300">Deskripsi Catatan</th>
+                <th class="p-2 border-r border-slate-300 text-center">Poin</th>
+                <th class="p-2 border-r border-slate-300 text-center">Saldo</th>
+                <th class="p-2">Tindakan Pembinaan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+        `;
+
+        if (riwayatMurid.length === 0) {
+          html += `<tr><td colspan="7" class="p-4 text-center text-slate-400">Alhamdulillah, belum ada catatan pelanggaran/pembinaan.</td></tr>`;
+        } else {
+          riwayatMurid.forEach((r, idx) => {
+            html += `
+              <tr>
+                <td class="p-2 text-center border-r border-slate-300">${idx + 1}</td>
+                <td class="p-2 font-mono text-slate-500 border-r border-slate-300">${r.tanggal}</td>
+                <td class="p-2 text-center border-r border-slate-300 font-bold ${r.tipe === 'Pelanggaran' ? 'text-rose-600' : 'text-emerald-700'}">${r.tipe}</td>
+                <td class="p-2 border-r border-slate-300">${r.judul}</td>
+                <td class="p-2 text-center font-bold font-mono border-r border-slate-300 ${r.poin < 0 ? 'text-rose-600' : 'text-emerald-700'}">${r.poin > 0 ? '+' : ''}${r.poin}</td>
+                <td class="p-2 text-center font-bold font-mono border-r border-slate-300">${r.saldoAkhir} pt</td>
+                <td class="p-2 text-slate-600">${r.tindakan || '-'}</td>
+              </tr>
+            `;
+          });
+        }
+
+        html += `
+            </tbody>
+          </table>
+        `;
+        containerKonten.innerHTML = html;
+      }
     }
 
     function renderPelaporanWalas() {
@@ -2265,7 +2925,6 @@
             return;
           }
 
-          // Deteksi Baris Header & Pemetaan Kolom Cerdas
           let headerRowIndex = 0;
           let idxNis = -1;
           let idxNama = -1;
@@ -2290,7 +2949,6 @@
             }
           }
 
-          // Fallback jika tidak ada header: Asumsikan Col 0: NIS/No, Col 1: Nama
           if (idxNama === -1) {
             idxNis = 0;
             idxNama = 1;
@@ -2309,11 +2967,9 @@
             if (!row || row.length === 0) continue;
 
             const nama = String(row[idxNama] || '').trim();
-            // Lewati baris kosong atau baris header yang berulang
             if (!nama || nama.toLowerCase().includes('nama lengkap') || nama.toLowerCase().includes('nama murid')) continue;
 
             let nis = (idxNis !== -1 && row[idxNis]) ? String(row[idxNis]).trim() : '';
-            // Jika NIS kosong, strip, atau angka urut absen biasa (1 digit/2 digit), buatkan NIS resmi unik
             if (!nis || nis === '-' || isNaN(Number(nis))) {
               nis = `${currentYear}${String(autoCounter).padStart(4, '0')}`;
               autoCounter++;
@@ -2396,7 +3052,6 @@
         btn.disabled = false;
         btn.innerHTML = originalBtnText;
         closeModal('modalImportExcel');
-        // Kosongkan cache lokal dan tarik data murni dari Google Sheets
         localStorage.removeItem('sdit_azzahra_siswa');
         initApp(true);
       }
@@ -2789,6 +3444,7 @@
       if (state.activeTab === 'riwayat') renderTabelRiwayat();
       if (state.activeTab === 'laporan') renderPelaporanWalas();
       if (state.activeTab === 'input') filterPilihanSantri();
+      if (state.activeTab === 'cetak') generateLaporanCetak();
     }
 
     function initApp(bypassCache = false) {
@@ -2799,6 +3455,9 @@
       const inputTgl = document.getElementById('inputTanggalPeristiwa');
       if (inputTgl) inputTgl.value = new Date().toISOString().split('T')[0];
 
+      const cetakBulan = document.getElementById('cetakPeriodeBulan');
+      if (cetakBulan) cetakBulan.value = new Date().toISOString().substring(0, 7);
+
       loadWalasKontak();
       loadLocalData();
 
@@ -2808,7 +3467,6 @@
           .then(response => {
             if (response && response.status === 'success' && response.data) {
               setConnectionStatus('connected');
-              // Selalu ikuti kondisi database spreadsheet secara penuh
               state.siswa = response.data.siswa || [];
               state.riwayat = response.data.riwayat || [];
 
