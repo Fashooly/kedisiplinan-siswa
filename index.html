@@ -660,7 +660,7 @@
             <h2 class="text-sm sm:text-xl font-bold text-slate-800 flex items-center gap-2">
               <i class="fa-solid fa-print text-emerald-700"></i> Sistem Generator Laporan Resmi
             </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Cetak rekapitulasi poin kelas atau lembar mutaba'ah perorangan murid lengkap dengan Kop Surat resmi.</p>
+            <p class="text-xs text-slate-400 mt-0.5">Atur kop surat, parameter cetak, dan tanda tangan pejabat pengesah sebelum mencetak.</p>
           </div>
 
           <div class="flex items-center gap-2">
@@ -670,19 +670,71 @@
           </div>
         </div>
 
+        <!-- Panel Konfigurasi Kop Surat & Pejabat Penandatangan -->
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between text-xs pb-2 border-b border-slate-200">
+            <span class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-image text-emerald-700"></i> Kustomisasi Kop Surat & Pejabat Penandatangan
+            </span>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="document.getElementById('inputUploadKopSurat').click()" class="py-1 px-2.5 rounded-lg bg-teal-100 hover:bg-teal-200 text-teal-800 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+                <i class="fa-solid fa-upload"></i> Unggah Gambar Kop (PNG/JPG)
+              </button>
+              <button type="button" id="btnHapusKopKustom" onclick="hapusKopKustom()" class="hidden py-1 px-2 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-bold transition cursor-pointer">
+                <i class="fa-solid fa-trash-can"></i> Hapus Gambar Kop
+              </button>
+              <input type="file" id="inputUploadKopSurat" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handleUploadKopSurat(event)">
+            </div>
+          </div>
+
+          <!-- Input Kolom Tanda Tangan: Walas & Kesiswaan -->
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Nama Wali Kelas</label>
+              <input type="text" id="cetakInputNamaWalas" oninput="updateInfoPenandatangan()" placeholder="Nama Wali Kelas" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold text-base sm:text-xs">
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">NIY Wali Kelas</label>
+              <input type="text" id="cetakInputNiyWalas" oninput="updateInfoPenandatangan()" placeholder="Contoh: NIY. 2018.04.112" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-mono font-semibold text-base sm:text-xs">
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Nama Koord. Kesiswaan</label>
+              <input type="text" id="cetakInputNamaKesiswaan" oninput="updateInfoPenandatangan()" placeholder="Nama Koord. Kesiswaan" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold text-base sm:text-xs">
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">NIY Koord. Kesiswaan</label>
+              <input type="text" id="cetakInputNiyKesiswaan" oninput="updateInfoPenandatangan()" placeholder="Contoh: NIY. AZ-2024.KES.01" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-mono font-semibold text-base sm:text-xs">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Kota & Titimangsa Surat</label>
+              <input type="text" id="cetakInputKotaTitimangsa" oninput="updateInfoPenandatangan()" placeholder="Contoh: Bandar Lampung, 01 Oktober 2026" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold text-base sm:text-xs">
+            </div>
+            <div class="flex items-end">
+              <p class="text-[11px] text-slate-400 italic">Data kop gambar dan nama penandatangan akan disimpan otomatis di perangkat Anda.</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Filter Generator Laporan -->
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
           <div>
             <label class="block font-bold text-slate-700 mb-1">Model Dokumen</label>
             <select id="cetakTipeLaporan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
-              <option value="rekap_kelas">Rekapitulasi Mutaba'ah Rombel</option>
+              <option value="rekap_kelas">Rekapitulasi Mutaba'ah Rombel (Bulanan)</option>
+              <option value="rekap_semester">Rekapitulasi Mutaba'ah Rombel (Semester / 6 Bulan)</option>
               <option value="kartu_santri">Lembar Evaluasi Per Murid</option>
             </select>
           </div>
 
           <div>
             <label class="block font-bold text-slate-700 mb-1">Pilih Kelas</label>
-            <select id="cetakFilterKelas" onchange="updateDropdownMuridCetak(); generateLaporanCetak();" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
+            <select id="cetakFilterKelas" onchange="syncWalasKeInputCetak(); updateDropdownMuridCetak(); generateLaporanCetak();" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
               <optgroup label="Kelas 1">
                 <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
                 <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
@@ -715,9 +767,27 @@
             <select id="cetakPilihanMurid" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs"></select>
           </div>
 
-          <div>
+          <!-- Periode Bulanan -->
+          <div id="cetakPeriodeBulanContainer">
             <label class="block font-bold text-slate-700 mb-1">Bulan & Tahun Rekap</label>
             <input type="month" id="cetakPeriodeBulan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
+          </div>
+
+          <!-- Periode Semester (6 Bulan) -->
+          <div id="cetakPeriodeSemesterContainer" class="hidden space-y-1">
+            <label class="block font-bold text-slate-700 mb-1">Semester / 6 Bulan</label>
+            <div class="grid grid-cols-2 gap-1.5">
+              <select id="cetakPilihanSemester" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 text-base sm:text-xs">
+                <option value="ganjil">Semester Ganjil (Juli - Des)</option>
+                <option value="genap">Semester Genap (Jan - Jun)</option>
+              </select>
+              <select id="cetakTahunAjaranSemester" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 text-base sm:text-xs">
+                <option value="2026/2027">2026/2027</option>
+                <option value="2025/2026">2025/2026</option>
+                <option value="2024/2025">2024/2025</option>
+                <option value="2027/2028">2027/2028</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -725,8 +795,13 @@
       <!-- Area Dokumen Cetak Fisik / PDF Preview -->
       <div id="printAreaSection" class="bg-white p-6 sm:p-10 rounded-2xl sm:rounded-3xl border border-slate-300 shadow-sm max-w-5xl mx-auto space-y-6">
         
-        <!-- KOP SURAT RESMI -->
-        <div class="flex items-center gap-4 pb-4 border-b-4 border-emerald-900 border-double">
+        <!-- AREA KOP SURAT GAMBAR KUSTOM (JIKA DIUNGGAH) -->
+        <div id="areaKopGambarKustom" class="hidden w-full pb-3 border-b-2 border-slate-800">
+          <img id="imgKopKustomPreview" src="" alt="Kop Surat Resmi" class="w-full h-auto max-h-36 object-contain">
+        </div>
+
+        <!-- KOP SURAT STANDAR (TEKS + LOGO DEFAULT) -->
+        <div id="areaKopSuratStandar" class="flex items-center gap-4 pb-4 border-b-4 border-emerald-900 border-double">
           <div class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center p-1">
             <img src="/logo.png" alt="Logo SDIT Az Zahra" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/120x120/064e3b/ffffff?text=AZ+ZAHRA';">
           </div>
@@ -747,15 +822,15 @@
             <p>Mengetahui,<br><span class="font-bold">Wali Kelas</span></p>
             <div>
               <p id="cetakNamaWalasTtd" class="font-bold underline uppercase">( ........................................ )</p>
-              <p class="text-slate-500 text-[11px]">NIP/NIY: .........................</p>
+              <p id="cetakNiyWalasTtd" class="text-slate-500 text-[11px]">NIY: .........................</p>
             </div>
           </div>
 
           <div class="text-center space-y-16">
             <p id="cetakTanggalSuratTtd">Kota Sekolah, 01 Oktober 2026<br><span class="font-bold">Koordinator Kesiswaan</span></p>
             <div>
-              <p class="font-bold underline uppercase">( Tim Kesiswaan SDIT Az Zahra )</p>
-              <p class="text-slate-500 text-[11px]">NIY: AZ-2024.KES.01</p>
+              <p id="cetakNamaKesiswaanTtd" class="font-bold underline uppercase">( Tim Kesiswaan SDIT Az Zahra )</p>
+              <p id="cetakNiyKesiswaanTtd" class="text-slate-500 text-[11px]">NIY: AZ-2024.KES.01</p>
             </div>
           </div>
         </div>
@@ -1642,9 +1717,9 @@
 
   <!-- ==================== LOGIKA UTAMA JAVASCRIPT ==================== -->
   <script>
-    // URL Web App Google Apps Script SDIT Az Zahra
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3GSQUoqHGBIQgpDiyyGkFzq83x1f-3nkhVLtmLURsBwi5qkBJXytgazNVlp9TjyAi/exec";
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3GSQUoqHGBIQgpDiyyGkFzq83x1f-3nkhVLtmLURsBwi5qkBJXytgazNVlp9TjyAi/exec';
 
+    // State aplikasi
     const state = {
       siswa: [],
       riwayat: [],
@@ -1657,9 +1732,11 @@
       selectedKelasWa: null,
       simulasiAcakList: [],
       tempImportListExcel: [],
-      deleteTargetType: null, // 'catatan' atau 'siswa'
+      deleteTargetType: null,
       deleteTargetId: null,
-      apiEndpoint: (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith('http')) 
+      customKopBase64: localStorage.getItem('sdit_azzahra_kop_img') || '',
+      penandatanganCetak: JSON.parse(localStorage.getItem('sdit_azzahra_ttd_data') || '{}'),
+      apiEndpoint: (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith('http')) 
         ? GOOGLE_SCRIPT_URL 
         : (localStorage.getItem('sdit_azzahra_api_url') || '')
     };
@@ -1917,6 +1994,7 @@
       if (tabId === 'laporan') renderPelaporanWalas();
       if (tabId === 'input') filterPilihanSantri();
       if (tabId === 'cetak') {
+        loadKonfigurasiCetakAwal();
         updateDropdownMuridCetak();
         generateLaporanCetak();
       }
@@ -2116,7 +2194,6 @@
       r.guru = guru || 'Tim Kesiswaan';
       r.tindakan = tindakan || '-';
 
-      // Rekonsiliasi poin murid otomatis
       if (selisih !== 0) {
         const murid = state.siswa.find(s => String(s.nis).trim() === String(r.nis).trim());
         if (murid) {
@@ -2166,7 +2243,6 @@
       const id = state.deleteTargetId;
       const r = state.riwayat.find(x => String(x.id).trim() === String(id).trim());
       if (r) {
-        // Kembalikan saldo poin murid
         const murid = state.siswa.find(s => String(s.nis).trim() === String(r.nis).trim());
         if (murid) {
           murid.poin = Math.max(0, Number(murid.poin) - Number(r.poin));
@@ -2468,12 +2544,11 @@
         saveLocalData();
         refreshAllViews();
         closeModal('modalUbahStatus');
-        showToast(`Status ${s.nama} diubah menjadi ${status}`, 'success');
-
+        showToast(`Alhamdulillah, status ${s.nama} diubah menjadi ${status}`, 'success');
         try {
           await panggilApiServer('updateStatusSantri', { nis: s.nis, status: status });
         } catch (e) {
-          console.warn('Gagal sinkron status ke server:', e);
+          console.warn('Gagal sinkron status:', e);
         }
       }
     }
@@ -2481,40 +2556,52 @@
     function renderTabelRiwayat() {
       const tipeFilter = document.getElementById('filterRiwayatTipe').value;
       const tglFilter = document.getElementById('filterRiwayatTanggal').value;
-
       let list = state.riwayat;
-      if (tipeFilter !== 'semua') list = list.filter(r => r.tipe === tipeFilter);
-      if (tglFilter) list = list.filter(r => r.tanggal.startsWith(tglFilter));
+
+      if (tipeFilter !== 'semua') {
+        list = list.filter(r => r.tipe === tipeFilter);
+      }
+      if (tglFilter) {
+        list = list.filter(r => r.tanggal.startsWith(tglFilter));
+      }
 
       const tbody = document.getElementById('tabelBodyRiwayat');
       const mobileContainer = document.getElementById('mobileCardsRiwayat');
       const emptyState = document.getElementById('emptyStateRiwayat');
 
+      if (!tbody || !mobileContainer) return;
       tbody.innerHTML = '';
       mobileContainer.innerHTML = '';
 
       if (list.length === 0) {
-        emptyState.classList.remove('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
         return;
       }
-      emptyState.classList.add('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
 
       list.forEach(r => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
         tr.innerHTML = `
           <td class="py-3 px-4 font-mono text-slate-500 text-xs">${r.tanggal}</td>
-          <td class="py-3 px-4 font-bold text-slate-800">${r.nama} <span class="text-xs text-emerald-800 font-semibold block">(${r.kelas})</span></td>
-          <td class="py-3 px-4 text-center">
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${r.tipe}</span>
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-800">${r.nama}</div>
+            <div class="text-[11px] text-emerald-800 font-semibold">${r.kelas}</div>
           </td>
-          <td class="py-3 px-4 text-slate-700">${r.judul}</td>
-          <td class="py-3 px-4 text-center font-bold font-mono ${r.poin < 0 ? 'text-rose-600' : 'text-emerald-700'}">${r.poin > 0 ? '+' : ''}${r.poin}</td>
-          <td class="py-3 px-4 text-center font-bold font-mono text-slate-700">${r.saldoAkhir} pt</td>
-          <td class="py-3 px-4 text-slate-600">${r.tindakan || '-'}</td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">
+              ${r.tipe}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-slate-700 font-medium">${r.judul}</td>
+          <td class="py-3 px-4 text-center font-mono font-bold ${r.poin < 0 ? 'text-rose-600' : 'text-emerald-700'}">
+            ${r.poin > 0 ? '+' : ''}${r.poin}
+          </td>
+          <td class="py-3 px-4 text-center font-mono font-bold text-slate-700">${r.saldoAkhir ?? '-'} pt</td>
+          <td class="py-3 px-4 text-slate-500">${r.tindakan || '-'}</td>
           <td class="py-3 px-4 text-slate-500">${r.guru || 'Tim Kesiswaan'}</td>
           <td class="py-3 px-4 text-center">
-            <button onclick="bukaModalEditCatatan('${r.id}')" title="Koreksi Salah Input" class="p-1.5 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 cursor-pointer">
+            <button onclick="bukaModalEditCatatan('${r.id}')" title="Koreksi Catatan" class="p-1.5 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 cursor-pointer">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
           </td>
@@ -2522,25 +2609,23 @@
         tbody.appendChild(tr);
 
         const card = document.createElement('div');
-        card.className = 'bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-1.5';
+        card.className = 'bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-2';
         card.innerHTML = `
-          <div class="flex items-center justify-between text-xs">
-            <span class="font-mono text-slate-400">${r.tanggal}</span>
-            <div class="flex items-center gap-1.5">
-              <span class="px-2 py-0.5 rounded-full text-xs font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${r.tipe}</span>
-              <button onclick="bukaModalEditCatatan('${r.id}')" class="p-1 rounded-md bg-amber-100 text-amber-800 hover:bg-amber-200 cursor-pointer" title="Koreksi">
-                <i class="fa-solid fa-pen-to-square text-[11px]"></i>
-              </button>
-            </div>
-          </div>
           <div class="flex items-center justify-between">
-            <div class="font-bold text-slate-800 text-sm">${r.nama}</div>
-            <div class="font-extrabold font-mono text-sm ${r.poin < 0 ? 'text-rose-600' : 'text-emerald-700'}">${r.poin > 0 ? '+' : ''}${r.poin} pt</div>
+            <span class="text-[11px] font-mono text-slate-400">${r.tanggal}</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">${r.tipe}</span>
           </div>
-          <p class="text-xs text-slate-600">${r.judul}</p>
-          <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-            <span>Saldo: <strong class="text-slate-700">${r.saldoAkhir} pt</strong></span>
-            <span>Oleh: <strong class="text-slate-600">${r.guru || 'Tim Kesiswaan'}</strong></span>
+          <div>
+            <div class="font-bold text-slate-800 text-sm">${r.nama} <span class="text-xs font-semibold text-emerald-700">(${r.kelas})</span></div>
+            <div class="text-xs text-slate-600 mt-0.5">${r.judul}</div>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+            <div class="font-bold font-mono ${r.poin < 0 ? 'text-rose-600' : 'text-emerald-700'}">
+              Poin: ${r.poin > 0 ? '+' : ''}${r.poin} (Saldo: ${r.saldoAkhir ?? '-'} pt)
+            </div>
+            <button onclick="bukaModalEditCatatan('${r.id}')" class="py-1 px-2.5 rounded-xl bg-amber-100 text-amber-800 font-bold hover:bg-amber-200 flex items-center gap-1 cursor-pointer">
+              <i class="fa-solid fa-pen-to-square"></i> Koreksi
+            </button>
           </div>
         `;
         mobileContainer.appendChild(card);
@@ -2555,12 +2640,14 @@
 
     function exportDataToCSV() {
       if (state.riwayat.length === 0) {
-        showToast('Tidak ada data riwayat untuk diekspor!', 'info');
+        showToast('Belum ada riwayat mutaba\'ah untuk diekspor!', 'info');
         return;
       }
-      let csv = 'ID Catatan,Tanggal,NIS,Nama Murid,Kelas,Tipe,Judul Catatan,Poin,Saldo Akhir,Tindakan,Pencatat\n';
+      let csv = 'ID,Tanggal,NIS,Nama Murid,Kelas,Tipe,Catatan,Poin,Saldo Akhir,Tindakan,Pencatat\n';
       state.riwayat.forEach(r => {
-        csv += `"${r.id}","${r.tanggal}","${r.nis}","${r.nama}","${r.kelas}","${r.tipe}","${r.judul.replace(/"/g, '""')}","${r.poin}","${r.saldoAkhir}","${(r.tindakan || '-').replace(/"/g, '""')}","${r.guru || 'Tim Kesiswaan'}"\n`;
+        const cleanJudul = (r.judul || '').replace(/"/g, '""');
+        const cleanTindakan = (r.tindakan || '').replace(/"/g, '""');
+        csv += `"${r.id}","${r.tanggal}","${r.nis}","${r.nama}","${r.kelas}","${r.tipe}","${cleanJudul}",${r.poin},${r.saldoAkhir ?? ''},"${cleanTindakan}","${r.guru || ''}"\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -2571,7 +2658,115 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      showToast('Berkas CSV berhasil diunduh!', 'success');
+      URL.revokeObjectURL(url);
+      showToast('Berhasil mengekspor data ke file CSV!', 'success');
+    }
+
+    function handleUploadKopSurat(e) {
+      const file = (e && e.target && e.target.files) ? e.target.files[0] : null;
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showToast('Format file harus berupa gambar PNG atau JPG!', 'error');
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('Ukuran gambar kop maksimal 2 MB agar performa tetap cepat.', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        state.customKopBase64 = evt.target.result;
+        try {
+          localStorage.setItem('sdit_azzahra_kop_img', state.customKopBase64);
+        } catch (err) {
+          console.warn('Gagal menyimpan gambar kop ke localStorage:', err);
+        }
+        terapkanTampilanKopSurat();
+        showToast('Alhamdulillah, gambar Kop Surat berhasil dipasang!', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function hapusKopKustom() {
+      state.customKopBase64 = '';
+      localStorage.removeItem('sdit_azzahra_kop_img');
+      const input = document.getElementById('inputUploadKopSurat');
+      if (input) input.value = '';
+      terapkanTampilanKopSurat();
+      showToast('Kop surat dikembalikan ke format standar sekolah.', 'info');
+    }
+
+    function terapkanTampilanKopSurat() {
+      const areaKopGambar = document.getElementById('areaKopGambarKustom');
+      const areaKopStandar = document.getElementById('areaKopSuratStandar');
+      const imgPreview = document.getElementById('imgKopKustomPreview');
+      const btnHapus = document.getElementById('btnHapusKopKustom');
+
+      if (state.customKopBase64) {
+        imgPreview.src = state.customKopBase64;
+        areaKopGambar.classList.remove('hidden');
+        areaKopStandar.classList.add('hidden');
+        if (btnHapus) btnHapus.classList.remove('hidden');
+      } else {
+        imgPreview.src = '';
+        areaKopGambar.classList.add('hidden');
+        areaKopStandar.classList.remove('hidden');
+        if (btnHapus) btnHapus.classList.add('hidden');
+      }
+    }
+
+    function syncWalasKeInputCetak() {
+      const kelas = document.getElementById('cetakFilterKelas').value;
+      const walas = dapatkanInfoWalas(kelas);
+      const inputNamaWalas = document.getElementById('cetakInputNamaWalas');
+      
+      if (!inputNamaWalas.value || inputNamaWalas.dataset.autofilled === 'true') {
+        inputNamaWalas.value = walas.nama && walas.nama !== 'Bapak/Ibu Walas' ? walas.nama : '';
+        inputNamaWalas.dataset.autofilled = 'true';
+      }
+      updateInfoPenandatangan();
+    }
+
+    function updateInfoPenandatangan() {
+      const namaWalas = document.getElementById('cetakInputNamaWalas').value.trim();
+      const niyWalas = document.getElementById('cetakInputNiyWalas').value.trim();
+      const namaKesiswaan = document.getElementById('cetakInputNamaKesiswaan').value.trim();
+      const niyKesiswaan = document.getElementById('cetakInputNiyKesiswaan').value.trim();
+      const titimangsa = document.getElementById('cetakInputKotaTitimangsa').value.trim();
+
+      document.getElementById('cetakNamaWalasTtd').textContent = `( ${namaWalas || '........................................'} )`;
+      document.getElementById('cetakNiyWalasTtd').textContent = `NIY: ${niyWalas || '.........................'}`;
+
+      document.getElementById('cetakNamaKesiswaanTtd').textContent = `( ${namaKesiswaan || 'Tim Kesiswaan SDIT Az Zahra'} )`;
+      document.getElementById('cetakNiyKesiswaanTtd').textContent = `NIY: ${niyKesiswaan || 'AZ-2024.KES.01'}`;
+
+      const tglFormatted = titimangsa || `Bandar Lampung, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+      document.getElementById('cetakTanggalSuratTtd').innerHTML = `${tglFormatted}<br><span class="font-bold">Koordinator Kesiswaan</span>`;
+
+      const dataToSave = {
+        niyWalas: niyWalas,
+        namaKesiswaan: namaKesiswaan,
+        niyKesiswaan: niyKesiswaan,
+        titimangsa: titimangsa
+      };
+      localStorage.setItem('sdit_azzahra_ttd_data', JSON.stringify(dataToSave));
+    }
+
+    function loadKonfigurasiCetakAwal() {
+      terapkanTampilanKopSurat();
+
+      const savedTtd = state.penandatanganCetak;
+      if (savedTtd.namaKesiswaan) document.getElementById('cetakInputNamaKesiswaan').value = savedTtd.namaKesiswaan;
+      if (savedTtd.niyKesiswaan) document.getElementById('cetakInputNiyKesiswaan').value = savedTtd.niyKesiswaan;
+      if (savedTtd.niyWalas) document.getElementById('cetakInputNiyWalas').value = savedTtd.niyWalas;
+      
+      const defaultTitimangsa = `Bandar Lampung, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+      document.getElementById('cetakInputKotaTitimangsa').value = savedTtd.titimangsa || defaultTitimangsa;
+
+      syncWalasKeInputCetak();
     }
 
     function updateDropdownMuridCetak() {
@@ -2594,23 +2789,146 @@
       const [tahun, bulan] = periode.split('-');
       const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"][Number(bulan) - 1] || 'Bulan Berjalan';
 
-      const walas = dapatkanInfoWalas(kelas);
-      document.getElementById('cetakNamaWalasTtd').textContent = `( ${walas.nama || 'Wali Kelas'} )`;
-      document.getElementById('cetakTanggalSuratTtd').innerHTML = `Kota Sekolah, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}<br><span class="font-bold">Koordinator Kesiswaan</span>`;
+      updateInfoPenandatangan();
 
       const containerMurid = document.getElementById('cetakPilihMuridContainer');
+      const containerBulan = document.getElementById('cetakPeriodeBulanContainer');
+      const containerSemester = document.getElementById('cetakPeriodeSemesterContainer');
       const containerKonten = document.getElementById('kontenLaporanDinamis');
       containerKonten.innerHTML = '';
 
-      if (tipe === 'rekap_kelas') {
+      const namaWalasDisplay = document.getElementById('cetakInputNamaWalas').value.trim() || 'Wali Kelas';
+
+      // Kontrol visibilitas input filter
+      if (tipe === 'rekap_semester') {
         containerMurid.classList.add('hidden');
+        containerBulan.classList.add('hidden');
+        containerSemester.classList.remove('hidden');
+
+        const semesterDipilih = document.getElementById('cetakPilihanSemester').value;
+        const thnAjaran = document.getElementById('cetakTahunAjaranSemester').value;
+        const tahunAwal = thnAjaran.split('/')[0];
+        const tahunAkhir = thnAjaran.split('/')[1] || String(Number(tahunAwal) + 1);
+
+        let labelSemester = '';
+        let rentangBulan = '';
+        let targetPrefixes = [];
+
+        if (semesterDipilih === 'ganjil') {
+          labelSemester = 'Semester I (Ganjil)';
+          rentangBulan = `Juli – Desember ${tahunAwal}`;
+          targetPrefixes = [`${tahunAwal}-07`, `${tahunAwal}-08`, `${tahunAwal}-09`, `${tahunAwal}-10`, `${tahunAwal}-11`, `${tahunAwal}-12`];
+        } else {
+          labelSemester = 'Semester II (Genap)';
+          rentangBulan = `Januari – Juni ${tahunAkhir}`;
+          targetPrefixes = [`${tahunAkhir}-01`, `${tahunAkhir}-02`, `${tahunAkhir}-03`, `${tahunAkhir}-04`, `${tahunAkhir}-05`, `${tahunAkhir}-06`];
+        }
+
+        const muridKelas = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
+        const catatanSemester = state.riwayat.filter(r => r.kelas === kelas && targetPrefixes.some(p => r.tanggal.startsWith(p)));
+
+        let totalPelanggaran = 0;
+        let totalKebaikan = 0;
+
+        catatanSemester.forEach(r => {
+          if (r.tipe === 'Pelanggaran') totalPelanggaran++;
+          else totalKebaikan++;
+        });
+
+        let html = `
+          <div class="text-center space-y-1 mb-6">
+            <h2 class="text-base sm:text-lg font-extrabold uppercase text-slate-800 tracking-wide">REKAPITULASI KEDISIPLINAN & MUTABA'AH ADAB SISWA (6 BULAN / SEMESTER)</h2>
+            <p class="text-xs font-semibold text-slate-600">Kelas: <strong class="text-emerald-950">${kelas}</strong> | Periode: <strong>${labelSemester} T.A. ${thnAjaran} (${rentangBulan})</strong> | Wali Kelas: <strong>${namaWalasDisplay}</strong></p>
+          </div>
+
+          <!-- Statistik Ringkas Semester -->
+          <div class="grid grid-cols-4 gap-2 mb-4 text-xs">
+            <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center">
+              <div class="text-[11px] text-slate-500 font-bold uppercase">Total Murid</div>
+              <div class="text-base font-extrabold text-slate-800">${muridKelas.length} Siswa</div>
+            </div>
+            <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-center">
+              <div class="text-[11px] text-rose-700 font-bold uppercase">Pelanggaran 6 Bln</div>
+              <div class="text-base font-extrabold text-rose-800">${totalPelanggaran} Kasus</div>
+            </div>
+            <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
+              <div class="text-[11px] text-emerald-700 font-bold uppercase">Kebaikan 6 Bln</div>
+              <div class="text-base font-extrabold text-emerald-800">${totalKebaikan} Amal</div>
+            </div>
+            <div class="p-2.5 bg-teal-50 border border-teal-200 rounded-xl text-center">
+              <div class="text-[11px] text-teal-700 font-bold uppercase">Total Peristiwa</div>
+              <div class="text-base font-extrabold text-teal-800">${catatanSemester.length} Catatan</div>
+            </div>
+          </div>
+
+          <table class="w-full text-left text-xs border border-slate-300">
+            <thead class="bg-slate-100 font-bold border-b border-slate-300">
+              <tr>
+                <th class="p-2 border-r border-slate-300 text-center w-10">No</th>
+                <th class="p-2 border-r border-slate-300">NIS</th>
+                <th class="p-2 border-r border-slate-300">Nama Murid</th>
+                <th class="p-2 border-r border-slate-300 text-center">Pelanggaran (6 Bln)</th>
+                <th class="p-2 border-r border-slate-300 text-center">Kebaikan (6 Bln)</th>
+                <th class="p-2 border-r border-slate-300 text-center">Saldo Akhir</th>
+                <th class="p-2 border-r border-slate-300 text-center">Predikat Adab</th>
+                <th class="p-2">Evaluasi & Rekomendasi Karakter</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+        `;
+
+        if (muridKelas.length === 0) {
+          html += `<tr><td colspan="8" class="p-4 text-center text-slate-400">Belum ada murid aktif di kelas ini</td></tr>`;
+        } else {
+          muridKelas.sort((a, b) => a.nama.localeCompare(b.nama)).forEach((m, idx) => {
+            const predikat = m.poin >= 100 ? 'Mumtaz (Teladan)' : (m.poin >= 85 ? 'Jayyid Jiddan' : (m.poin >= 75 ? 'Jayyid' : 'Perlu Bimbingan'));
+            const logsMurid = catatanSemester.filter(r => String(r.nis).trim() === String(m.nis).trim());
+            const countP = logsMurid.filter(r => r.tipe === 'Pelanggaran').length;
+            const countK = logsMurid.filter(r => r.tipe === 'Kebaikan').length;
+
+            let catatanEvaluasi = 'Adab & kedisiplinan terjaga dengan sangat baik.';
+            if (m.poin < 75) {
+              catatanEvaluasi = 'Perlu bimbingan khusus dari Wali Kelas dan Guru BK.';
+            } else if (countP > 3) {
+              catatanEvaluasi = `Terdapat ${countP} catatan pembiasaan, perlu perhatian konsisten.`;
+            } else if (countK > 2) {
+              catatanEvaluasi = 'Aktif beramal shalih dan menunjukkan keteladanan yang positif.';
+            }
+
+            html += `
+              <tr>
+                <td class="p-2 text-center border-r border-slate-300">${idx + 1}</td>
+                <td class="p-2 font-mono border-r border-slate-300">${m.nis}</td>
+                <td class="p-2 font-bold text-slate-800 border-r border-slate-300">${m.nama}</td>
+                <td class="p-2 text-center font-bold font-mono border-r border-slate-300 ${countP > 0 ? 'text-rose-600' : 'text-slate-400'}">${countP} kali</td>
+                <td class="p-2 text-center font-bold font-mono border-r border-slate-300 ${countK > 0 ? 'text-emerald-700' : 'text-slate-400'}">${countK} kali</td>
+                <td class="p-2 text-center font-bold font-mono border-r border-slate-300 ${m.poin < 75 ? 'text-rose-600' : 'text-emerald-700'}">${m.poin} pt</td>
+                <td class="p-2 text-center font-semibold border-r border-slate-300">${predikat}</td>
+                <td class="p-2 text-slate-600">${catatanEvaluasi}</td>
+              </tr>
+            `;
+          });
+        }
+
+        html += `
+            </tbody>
+          </table>
+          <p class="text-[11px] text-slate-500 mt-2 italic">* Laporan rekapitulasi 6 bulan ini merangkum pembiasaan dan kedisiplinan adab murid selama ${labelSemester}.</p>
+        `;
+        containerKonten.innerHTML = html;
+
+      } else if (tipe === 'rekap_kelas') {
+        containerMurid.classList.add('hidden');
+        containerBulan.classList.remove('hidden');
+        containerSemester.classList.add('hidden');
+
         const muridKelas = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
         const catatanBulan = state.riwayat.filter(r => r.kelas === kelas && r.tanggal.startsWith(periode));
 
         let html = `
           <div class="text-center space-y-1 mb-6">
-            <h2 class="text-base sm:text-lg font-extrabold uppercase text-slate-800">REKAPITULASI KEDISIPLINAN & MUTABA'AH ADAB SISWA</h2>
-            <p class="text-xs font-semibold text-slate-600">Kelas: <strong class="text-emerald-950">${kelas}</strong> | Periode: <strong>${namaBulan} ${tahun}</strong> | Wali Kelas: <strong>${walas.nama || '-'}</strong></p>
+            <h2 class="text-base sm:text-lg font-extrabold uppercase text-slate-800 tracking-wide">REKAPITULASI KEDISIPLINAN & MUTABA'AH ADAB SISWA</h2>
+            <p class="text-xs font-semibold text-slate-600">Kelas: <strong class="text-emerald-950">${kelas}</strong> | Periode: <strong>${namaBulan} ${tahun}</strong> | Wali Kelas: <strong>${namaWalasDisplay}</strong></p>
           </div>
 
           <table class="w-full text-left text-xs border border-slate-300">
@@ -2654,8 +2972,10 @@
         containerKonten.innerHTML = html;
 
       } else {
-        // Mode Lembar Rapor Individu Murid
         containerMurid.classList.remove('hidden');
+        containerBulan.classList.remove('hidden');
+        containerSemester.classList.add('hidden');
+
         const nisMurid = document.getElementById('cetakPilihanMurid').value;
         const murid = state.siswa.find(s => String(s.nis).trim() === String(nisMurid).trim());
 
@@ -2669,7 +2989,7 @@
 
         let html = `
           <div class="text-center space-y-1 mb-6">
-            <h2 class="text-base sm:text-lg font-extrabold uppercase text-slate-800">LEMBAR EVALUASI MUTABA'AH ADAB & KEDISIPLINAN SISWA</h2>
+            <h2 class="text-base sm:text-lg font-extrabold uppercase text-slate-800 tracking-wide">LEMBAR EVALUASI MUTABA'AH ADAB & KEDISIPLINAN SISWA</h2>
             <p class="text-xs font-semibold text-slate-600">Tahun Ajaran 2026/2027</p>
           </div>
 
@@ -2680,7 +3000,7 @@
               <p><span class="text-slate-500 inline-block w-28">Kelas / Rombel</span>: <strong>${murid.kelas}</strong></p>
             </div>
             <div>
-              <p><span class="text-slate-500 inline-block w-28">Wali Kelas</span>: <strong>${walas.nama || '-'}</strong></p>
+              <p><span class="text-slate-500 inline-block w-28">Wali Kelas</span>: <strong>${namaWalasDisplay}</strong></p>
               <p><span class="text-slate-500 inline-block w-28">Saldo Poin Mutaba'ah</span>: <strong class="text-sm font-bold ${murid.poin < 75 ? 'text-rose-600' : 'text-emerald-700'}">${murid.poin} pt</strong></p>
               <p><span class="text-slate-500 inline-block w-28">Predikat Perilaku</span>: <strong class="text-emerald-900">${predikat}</strong></p>
             </div>
@@ -3018,42 +3338,62 @@
       const hpWalas = document.getElementById('importWaliKelasHp').value.trim();
 
       const btn = document.getElementById('btnEksekusiImportExcel');
-      const originalBtnText = btn.innerHTML;
+      const originalText = btn.innerHTML;
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan ke Google Sheets...`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
 
       if (namaWalas || hpWalas) {
         state.walasKontak[targetKelas] = {
-          nama: namaWalas || state.walasKontak[targetKelas]?.nama || '',
-          wa: hpWalas || state.walasKontak[targetKelas]?.wa || ''
+          nama: namaWalas || (state.walasKontak[targetKelas]?.nama || ''),
+          wa: hpWalas || (state.walasKontak[targetKelas]?.wa || '')
         };
         saveWalasKontak();
       }
 
-      const walasFinal = dapatkanInfoWalas(targetKelas);
-      const importedBatch = state.tempImportListExcel.map(s => ({
-        ...s,
-        kelas: targetKelas,
-        waliKelas: walasFinal.nama || '',
-        hpWaliKelas: walasFinal.wa || ''
-      }));
+      const walas = dapatkanInfoWalas(targetKelas);
+      const muridBaru = [];
+
+      state.tempImportListExcel.forEach(item => {
+        const duplikat = state.siswa.some(s => String(s.nis).trim() === String(item.nis).trim());
+        if (!duplikat) {
+          const santri = {
+            nis: item.nis,
+            nama: item.nama,
+            kelas: targetKelas,
+            poin: 100,
+            wali: item.wali || '-',
+            hpWali: item.hpWali || '',
+            status: 'Aktif',
+            catatan: item.catatan || '-',
+            waliKelas: walas.nama || '',
+            hpWaliKelas: walas.wa || ''
+          };
+          state.siswa.push(santri);
+          muridBaru.push(santri);
+        }
+      });
+
+      saveLocalData();
+      refreshAllViews();
 
       try {
-        const res = await panggilApiServer('tambahSantriBatch', importedBatch);
-        if (res && res.status === 'success') {
-          showToast(`Alhamdulillah, ${res.insertedCount || importedBatch.length} murid berhasil masuk ke Spreadsheet!`, 'success');
+        if (muridBaru.length > 0) {
+          const res = await panggilApiServer('tambahSantriBatch', muridBaru);
+          if (res && res.status === 'success') {
+            showToast(`Alhamdulillah, ${muridBaru.length} murid berhasil diimpor!`, 'success');
+          } else {
+            showToast(`Data tersimpan di HP. Sinkronisasi server sedang berjalan...`, 'info');
+          }
         } else {
-          showToast('Data dikirim ke server. Menyinkronkan...', 'info');
+          showToast('Tidak ada murid baru yang ditambahkan (semua NIS sudah terdaftar).', 'info');
         }
-      } catch (e) {
-        console.warn('Gagal sinkron batch:', e);
-        showToast('Proses pengiriman selesai. Mengambil data terbaru...', 'info');
+      } catch (err) {
+        showToast('Data tersimpan di HP (server offline/sedang proses).', 'info');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = originalBtnText;
+        btn.innerHTML = originalText;
+        state.tempImportListExcel = [];
         closeModal('modalImportExcel');
-        localStorage.removeItem('sdit_azzahra_siswa');
-        initApp(true);
       }
     }
 
@@ -3460,6 +3800,7 @@
 
       loadWalasKontak();
       loadLocalData();
+      loadKonfigurasiCetakAwal();
 
       if (isAppsScriptEnvironment() || state.apiEndpoint) {
         const queryAction = bypassCache ? 'getInitialData&nocache=true' : 'getInitialData';
