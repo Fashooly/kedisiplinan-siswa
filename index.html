@@ -876,6 +876,13 @@
             <div class="font-bold text-slate-800 text-xs">Pilih berkas Excel (.xlsx)</div>
             <p class="text-xs text-slate-400 mt-0.5">5 kolom: NIS, Nama, Wali, No HP Wali, Catatan</p>
           </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <input type="checkbox" id="checkAbaikanDuplikatLokal" onchange="handleFileExcelDipilih({target: {files: [document.getElementById('fileInputExcel').files[0]]}})" class="rounded text-teal-700 w-4 h-4 cursor-pointer">
+            <label for="checkAbaikanDuplikatLokal" class="text-xs font-semibold text-slate-600 cursor-pointer">
+              Paksa impor semua (abaikan deteksi duplikat lokal)
+            </label>
+          </div>
         </div>
 
         <!-- Pratinjau Hasil Impor -->
@@ -1552,7 +1559,10 @@
     }
 
     function sinkronkanUlangData() {
-      showToast('Menyegarkan data dari server...', 'info');
+      showToast('Menyegarkan & mengambil data murni dari Google Sheets...', 'info');
+      // Kosongkan cache lokal agar benar-benar mengikuti Google Sheets
+      localStorage.removeItem('sdit_azzahra_siswa');
+      localStorage.removeItem('sdit_azzahra_riwayat');
       initApp();
     }
 
@@ -2240,7 +2250,7 @@
     }
 
     function handleFileExcelDipilih(e) {
-      const file = e.target.files[0];
+      const file = (e && e.target && e.target.files) ? e.target.files[0] : null;
       if (!file) return;
 
       const reader = new FileReader();
@@ -2256,7 +2266,8 @@
             return;
           }
 
-          const existingNis = new Set(state.siswa.map(s => String(s.nis).trim()));
+          const paksaImpor = document.getElementById('checkAbaikanDuplikatLokal')?.checked;
+          const existingNis = new Set(paksaImpor ? [] : state.siswa.map(s => String(s.nis).trim()));
           state.tempImportListExcel = [];
           let duplikatCount = 0;
 
@@ -2281,7 +2292,7 @@
 
           document.getElementById('previewContainerExcel').classList.remove('hidden');
           document.getElementById('previewCountLabelExcel').textContent = `${state.tempImportListExcel.length} Murid Siap Diimpor`;
-          document.getElementById('previewDuplicateLabelExcel').textContent = duplikatCount > 0 ? `(${duplikatCount} NIS dilewati karena sudah ada)` : '';
+          document.getElementById('previewDuplicateLabelExcel').textContent = duplikatCount > 0 ? `(${duplikatCount} NIS dilewati)` : '';
 
           const tbody = document.getElementById('previewTabelBodyExcel');
           tbody.innerHTML = '';
@@ -2738,15 +2749,9 @@
           .then(response => {
             if (response && response.status === 'success' && response.data) {
               setConnectionStatus(true);
-              const serverSiswa = response.data.siswa || [];
-              const serverRiwayat = response.data.riwayat || [];
-
-              if (serverSiswa.length > 0 || state.siswa.length === 0) {
-                state.siswa = serverSiswa;
-              }
-              if (serverRiwayat.length > 0 || state.riwayat.length === 0) {
-                state.riwayat = serverRiwayat;
-              }
+              // Selalu ikuti kondisi database spreadsheet secara penuh
+              state.siswa = response.data.siswa || [];
+              state.riwayat = response.data.riwayat || [];
 
               sinkronisasiKontakDariDataSiswa();
               saveLocalData();
