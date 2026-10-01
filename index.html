@@ -12,17 +12,17 @@
   <meta name="apple-mobile-web-app-title" content="Az Zahra">
   <meta name="theme-color" content="#064e3b">
 
-  <!-- Apple Touch Icon untuk Home Screen iPhone & iPad (Resolusi Retina HD) -->
+  <!-- Apple Touch Icon untuk Home Screen iPhone & iPad -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="apple-touch-icon" href="/logo.png">
 
-  <!-- Favicon Browser Tab (Desktop & Mobile) -->
+  <!-- Favicon Browser Tab -->
   <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
   <link rel="shortcut icon" href="/logo.png">
 
   <!-- Google Fonts: Plus Jakarta Sans & Amiri -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- FontAwesome 6 Icons -->
@@ -67,13 +67,13 @@
         font-size: 16px !important;
       }
     }
-    /* iPhone Safe Area Top (Notch, Dynamic Island & Status Bar) */
+    /* iPhone Safe Area Top (Notch iPhone 11) */
     .pt-safe-top {
-      padding-top: max(env(safe-area-inset-top, 0px), 10px);
+      padding-top: max(env(safe-area-inset-top, 0px), 12px);
     }
     /* iPhone Safe Area Bottom (Home Bar) */
     .pb-safe {
-      padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 4px);
+      padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 6px);
     }
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
@@ -87,17 +87,15 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white pb-24 sm:pb-8">
 
-  <!-- Top App Header dengan Safe Area Top untuk Notch iPhone 11 -->
+  <!-- Top App Header dengan Safe Area Top untuk iPhone 11 Notch -->
   <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg sticky top-0 z-40 pt-safe-top transition-all">
     <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between py-2 sm:py-3.5">
         
-        <!-- Logo & Identitas Sekolah Cerdas (Mendukung File Gambar Asli & Fallback Lambang Islami) -->
+        <!-- Logo & Identitas Sekolah -->
         <div class="flex items-center space-x-2.5 sm:space-x-3.5">
           <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-1 flex items-center justify-center shadow-inner shrink-0 overflow-hidden">
-            <!-- Jika file logo.png ada di GitHub, gambar ini otomatis tampil -->
             <img src="/logo.png" alt="Logo SDIT Az Zahra" class="w-full h-full object-contain" onerror="this.classList.add('hidden'); document.getElementById('defaultLogoBadge').classList.remove('hidden');">
-            <!-- Fallback otomatis jika belum mengunggah gambar logo.png -->
             <div id="defaultLogoBadge" class="hidden w-full h-full flex items-center justify-center text-emerald-300">
               <i class="fa-solid fa-mosque text-base sm:text-xl"></i>
             </div>
@@ -113,13 +111,13 @@
           </div>
         </div>
 
-        <!-- Indikator Koneksi Lampu Bulat Minimalis & Segarkan Data -->
+        <!-- Indikator Koneksi Bulat & Tombol Segarkan -->
         <div class="flex items-center gap-2">
           <div id="connStatusBadge" title="Status Sinkronisasi Google Sheets" class="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20 shadow-sm backdrop-blur">
             <span id="connPulseDot" class="w-2.5 h-2.5 rounded-full bg-rose-500 transition-all duration-300"></span>
           </div>
 
-          <button onclick="sinkronkanUlangData()" title="Segarkan Data" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-90 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/10">
+          <button onclick="sinkronkanUlangData()" title="Segarkan Data" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-90 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/10 cursor-pointer">
             <i class="fa-solid fa-arrows-rotate text-emerald-300 text-xs"></i>
             <span class="hidden sm:inline">Segarkan</span>
           </button>
@@ -129,19 +127,19 @@
 
       <!-- Navigation Tabs (Desktop View) -->
       <nav class="hidden sm:flex space-x-1.5 sm:space-x-2 border-t border-emerald-800/70 pt-2 pb-2.5 overflow-x-auto text-xs sm:text-sm font-semibold custom-scrollbar">
-        <button onclick="switchTab('dasbor')" id="tabBtn-dasbor" class="nav-tab active px-3.5 py-2 rounded-xl text-white bg-white/20 transition flex items-center gap-2 whitespace-nowrap shadow-sm">
+        <button onclick="switchTab('dasbor')" id="tabBtn-dasbor" class="nav-tab active px-3.5 py-2 rounded-xl text-white bg-white/20 transition flex items-center gap-2 whitespace-nowrap shadow-sm cursor-pointer">
           <i class="fa-solid fa-chart-pie text-emerald-300"></i> Dasbor & Statistik
         </button>
-        <button onclick="switchTab('input')" id="tabBtn-input" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+        <button onclick="switchTab('input')" id="tabBtn-input" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-pen-to-square text-emerald-300"></i> Input Catatan
         </button>
-        <button onclick="switchTab('siswa')" id="tabBtn-siswa" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+        <button onclick="switchTab('siswa')" id="tabBtn-siswa" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-user-graduate text-emerald-300"></i> Poin & Data Murid
         </button>
-        <button onclick="switchTab('riwayat')" id="tabBtn-riwayat" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+        <button onclick="switchTab('riwayat')" id="tabBtn-riwayat" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-clock-rotate-left text-emerald-300"></i> Riwayat Mutaba'ah
         </button>
-        <button onclick="switchTab('laporan')" id="tabBtn-laporan" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+        <button onclick="switchTab('laporan')" id="tabBtn-laporan" class="nav-tab px-3.5 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
           <i class="fa-brands fa-whatsapp text-emerald-300 text-sm"></i> Pelaporan Wali Kelas
         </button>
       </nav>
@@ -219,10 +217,10 @@
 
       </div>
 
-      <!-- 2 Columns: Top Exemplary Students & Attention Required -->
+      <!-- 2 Columns: Exemplary Students & Attention Required -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-3.5 sm:gap-6">
         
-        <!-- Murid Teladan Pekan Ini -->
+        <!-- Murid Teladan -->
         <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm space-y-3">
           <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
             <div class="flex items-center gap-2">
@@ -244,7 +242,7 @@
           </div>
         </div>
 
-        <!-- Murid Membutuhkan Perhatian Khusus -->
+        <!-- Perlu Perhatian Khusus -->
         <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm space-y-3">
           <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
             <div class="flex items-center gap-2">
@@ -282,12 +280,11 @@
             <p class="text-xs text-slate-400 mt-0.5">Catat pelanggaran tata tertib atau apresiasi amal shalih murid</p>
           </div>
 
-          <!-- Segmented Toggle -->
           <div class="grid grid-cols-2 p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold w-full sm:w-auto">
-            <button type="button" onclick="setJenisInput('pelanggaran')" id="toggleBtnPelanggaran" class="py-2 sm:py-1.5 px-4 rounded-xl bg-white text-rose-700 shadow-sm transition flex items-center justify-center gap-1.5">
+            <button type="button" onclick="setJenisInput('pelanggaran')" id="toggleBtnPelanggaran" class="py-2 sm:py-1.5 px-4 rounded-xl bg-white text-rose-700 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
               <i class="fa-solid fa-triangle-exclamation"></i> Pelanggaran
             </button>
-            <button type="button" onclick="setJenisInput('kebaikan')" id="toggleBtnKebaikan" class="py-2 sm:py-1.5 px-4 rounded-xl text-slate-600 hover:text-slate-800 transition flex items-center justify-center gap-1.5">
+            <button type="button" onclick="setJenisInput('kebaikan')" id="toggleBtnKebaikan" class="py-2 sm:py-1.5 px-4 rounded-xl text-slate-600 hover:text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer">
               <i class="fa-solid fa-star"></i> Kebaikan
             </button>
           </div>
@@ -295,7 +292,7 @@
 
         <form id="formInputCatatan" onsubmit="handleFormSubmit(event)" class="space-y-4">
           
-          <!-- Langkah 1: Pilih Murid Aktif -->
+          <!-- Pilih Murid Aktif -->
           <div class="p-3 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5">
             <div class="flex items-center justify-between text-xs">
               <label class="font-bold text-slate-700 flex items-center gap-1.5 text-xs">
@@ -363,7 +360,7 @@
             </div>
           </div>
 
-          <!-- Langkah 2: Jenis Pelanggaran / Kebaikan (Input Bebas) -->
+          <!-- Rincian Catatan -->
           <div class="space-y-3">
             <div>
               <label id="labelJenisCatatan" class="block text-xs font-bold text-slate-700 mb-1">
@@ -372,7 +369,6 @@
               <input type="text" id="inputJudulCatatan" required placeholder="Contoh: Terlambat masuk halaqah tahfiz" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
             </div>
 
-            <!-- Detail / Kronologi Tambahan -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">
                 Keterangan / Kronologi Tambahan (Opsional)
@@ -380,7 +376,6 @@
               <textarea id="inputDetailCatatan" rows="2" placeholder="Tuliskan keterangan tempat atau rincian jika ada..." class="w-full text-base sm:text-xs rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none"></textarea>
             </div>
 
-            <!-- Perubahan Poin -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
               <div>
                 <label id="labelPoinCatatan" class="block text-xs font-bold text-slate-700 mb-1">
@@ -391,10 +386,10 @@
                   <span class="absolute right-3.5 top-3 text-xs text-slate-400 font-bold">Poin</span>
                 </div>
                 <div class="grid grid-cols-4 gap-1.5 mt-2" id="presetPoinContainer">
-                  <button type="button" onclick="setPresetPoin(-5)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs">-5</button>
-                  <button type="button" onclick="setPresetPoin(-10)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs">-10</button>
-                  <button type="button" onclick="setPresetPoin(-15)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs">-15</button>
-                  <button type="button" onclick="setPresetPoin(-30)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs">-30</button>
+                  <button type="button" onclick="setPresetPoin(-5)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-5</button>
+                  <button type="button" onclick="setPresetPoin(-10)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-10</button>
+                  <button type="button" onclick="setPresetPoin(-15)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-15</button>
+                  <button type="button" onclick="setPresetPoin(-30)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-30</button>
                 </div>
               </div>
 
@@ -406,7 +401,6 @@
               </div>
             </div>
 
-            <!-- Guru Pencatat & Tanggal Peristiwa -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">
@@ -427,10 +421,10 @@
 
           <!-- Tombol Aksi Simpan -->
           <div class="pt-2.5 border-t border-slate-100 flex items-center justify-end gap-2">
-            <button type="button" onclick="resetFormCatatan()" class="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 transition active:scale-95">
+            <button type="button" onclick="resetFormCatatan()" class="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 transition active:scale-95 cursor-pointer">
               Reset
             </button>
-            <button type="submit" id="btnSubmitCatatan" class="flex-1 sm:flex-initial py-2.5 px-5 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-md">
+            <button type="submit" id="btnSubmitCatatan" class="flex-1 sm:flex-initial py-2.5 px-5 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
               <i class="fa-solid fa-floppy-disk"></i> Simpan Catatan
             </button>
           </div>
@@ -447,7 +441,7 @@
       <!-- Action Bar -->
       <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col gap-2.5">
         
-        <!-- Filter Kelas & Search -->
+        <!-- Filter & Search -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
           <select id="filterTabelKelas" onchange="renderTabelSiswa()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 font-bold text-slate-700 focus:outline-none">
             <option value="semua">Semua 12 Kelas</option>
@@ -490,27 +484,25 @@
           </div>
         </div>
 
-        <!-- Tombol Tambah, Impor Excel & Kenaikan Kelas -->
+        <!-- Tombol Aksi -->
         <div class="grid grid-cols-3 gap-2 w-full pt-1 border-t border-slate-100">
-          <button onclick="openModal('modalImportExcel')" class="py-2 px-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+          <button onclick="openModal('modalImportExcel')" class="py-2 px-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
             <i class="fa-solid fa-file-excel"></i> <span class="truncate">Impor Excel</span>
           </button>
-          <button onclick="openModalPengacakanKelas()" class="py-2 px-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+          <button onclick="openModalPengacakanKelas()" class="py-2 px-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
             <i class="fa-solid fa-shuffle"></i> <span class="truncate">Kenaikan Kelas</span>
           </button>
-          <button onclick="openModal('modalTambahSiswa')" class="py-2 px-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+          <button onclick="openModal('modalTambahSiswa')" class="py-2 px-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
             <i class="fa-solid fa-user-plus"></i> <span class="truncate">Tambah</span>
           </button>
         </div>
 
       </div>
 
-      <!-- Tampilan Kartu Murid untuk Layar Smartphone (sm:hidden) -->
-      <div id="mobileCardsMurid" class="space-y-2 sm:hidden">
-        <!-- Render dinamis kartu via JS -->
-      </div>
+      <!-- Tampilan Kartu Murid untuk Smartphone -->
+      <div id="mobileCardsMurid" class="space-y-2 sm:hidden"></div>
 
-      <!-- Tampilan Tabel Murid untuk Layar Tablet & Desktop (hidden sm:block) -->
+      <!-- Tampilan Tabel Murid untuk Desktop -->
       <div class="hidden sm:block bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
         <div class="overflow-x-auto custom-scrollbar">
           <table class="w-full text-left text-xs">
@@ -526,9 +518,7 @@
                 <th class="py-3 px-4 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody id="tabelBodySiswa" class="divide-y divide-slate-100 font-medium">
-              <!-- Render via JS -->
-            </tbody>
+            <tbody id="tabelBodySiswa" class="divide-y divide-slate-100 font-medium"></tbody>
           </table>
         </div>
       </div>
@@ -556,22 +546,20 @@
         </div>
 
         <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
-          <button onclick="resetFilterRiwayat()" class="text-xs text-emerald-700 hover:underline font-bold px-1">
+          <button onclick="resetFilterRiwayat()" class="text-xs text-emerald-700 hover:underline font-bold px-1 cursor-pointer">
             Reset
           </button>
-          <button onclick="exportDataToCSV()" class="py-2 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95">
+          <button onclick="exportDataToCSV()" class="py-2 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
             <i class="fa-solid fa-download"></i> Ekspor CSV
           </button>
         </div>
 
       </div>
 
-      <!-- Tampilan Kartu Riwayat di Layar Smartphone (sm:hidden) -->
-      <div id="mobileCardsRiwayat" class="space-y-2 sm:hidden">
-        <!-- Render dinamis riwayat kartu via JS -->
-      </div>
+      <!-- Tampilan Kartu Riwayat di Layar Smartphone -->
+      <div id="mobileCardsRiwayat" class="space-y-2 sm:hidden"></div>
 
-      <!-- Tampilan Tabel Riwayat di Desktop (hidden sm:block) -->
+      <!-- Tampilan Tabel Riwayat di Desktop -->
       <div class="hidden sm:block bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
         <div class="overflow-x-auto custom-scrollbar">
           <table class="w-full text-left text-xs">
@@ -587,9 +575,7 @@
                 <th class="py-3 px-4">Pencatat</th>
               </tr>
             </thead>
-            <tbody id="tabelBodyRiwayat" class="divide-y divide-slate-100 font-medium">
-              <!-- Render via JS -->
-            </tbody>
+            <tbody id="tabelBodyRiwayat" class="divide-y divide-slate-100 font-medium"></tbody>
           </table>
         </div>
       </div>
@@ -624,7 +610,7 @@
         </div>
       </div>
 
-      <!-- Bilah Filter & Pencarian Kelas -->
+      <!-- Filter Kelas Laporan -->
       <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full sm:w-auto">
           <select id="filterJenjangLaporan" onchange="renderPelaporanWalas()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 font-bold text-slate-700 focus:outline-none">
@@ -649,10 +635,8 @@
         </div>
       </div>
 
-      <!-- Grid Kartu 12 Kelas SDIT Az Zahra -->
-      <div id="gridKartuLaporanWalas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
-        <!-- Render dinamis via JS -->
-      </div>
+      <!-- Grid Kartu 12 Kelas -->
+      <div id="gridKartuLaporanWalas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5"></div>
 
     </section>
 
@@ -661,28 +645,30 @@
   <!-- Bottom Mobile Dock Navigation (Khusus iPhone iOS & Android) -->
   <aside aria-label="Navigasi Bawah" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-safe">
     <div class="grid grid-cols-5 h-14 items-center px-1">
-      <button onclick="switchTab('dasbor')" id="mobNav-dasbor" class="flex flex-col items-center justify-center py-1 text-emerald-800 transition active:scale-90">
+      <button onclick="switchTab('dasbor')" id="mobNav-dasbor" class="flex flex-col items-center justify-center py-1 text-emerald-800 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
         <span class="text-xs font-bold">Dasbor</span>
       </button>
-      <button onclick="switchTab('input')" id="mobNav-input" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90">
+      <button onclick="switchTab('input')" id="mobNav-input" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-pen-to-square text-base mb-0.5"></i>
         <span class="text-xs font-bold">Catat</span>
       </button>
-      <button onclick="switchTab('siswa')" id="mobNav-siswa" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90">
+      <button onclick="switchTab('siswa')" id="mobNav-siswa" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-user-graduate text-base mb-0.5"></i>
         <span class="text-xs font-bold">Murid</span>
       </button>
-      <button onclick="switchTab('riwayat')" id="mobNav-riwayat" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90">
+      <button onclick="switchTab('riwayat')" id="mobNav-riwayat" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i>
         <span class="text-xs font-bold">Riwayat</span>
       </button>
-      <button onclick="switchTab('laporan')" id="mobNav-laporan" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90">
+      <button onclick="switchTab('laporan')" id="mobNav-laporan" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
         <i class="fa-brands fa-whatsapp text-lg mb-0.5"></i>
         <span class="text-xs font-bold">Lapor WA</span>
       </button>
     </div>
   </aside>
+
+  <!-- ==================== MODAL DIALOGS ==================== -->
 
   <!-- MODAL: Tambah Murid Baru Manual -->
   <div id="modalTambahSiswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
@@ -691,7 +677,7 @@
         <h3 class="font-bold text-slate-800 text-xs sm:text-base flex items-center gap-2">
           <i class="fa-solid fa-user-plus text-emerald-700"></i> Daftarkan Murid Baru
         </h3>
-        <button onclick="closeModal('modalTambahSiswa')" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeModal('modalTambahSiswa')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -749,10 +735,10 @@
         </div>
 
         <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeModal('modalTambahSiswa')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50">
+          <button type="button" onclick="closeModal('modalTambahSiswa')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer">
             Batal
           </button>
-          <button type="submit" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold transition shadow">
+          <button type="submit" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold transition shadow cursor-pointer">
             Simpan Murid
           </button>
         </div>
@@ -767,7 +753,7 @@
         <h3 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-2">
           <i class="fa-solid fa-user-gear text-emerald-700"></i> Perbarui Status Murid
         </h3>
-        <button onclick="closeModal('modalUbahStatus')" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeModal('modalUbahStatus')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -788,10 +774,10 @@
         </div>
 
         <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeModal('modalUbahStatus')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50">
+          <button type="button" onclick="closeModal('modalUbahStatus')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer">
             Batal
           </button>
-          <button type="button" onclick="simpanPerubahanStatus()" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold transition shadow">
+          <button type="button" onclick="simpanPerubahanStatus()" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold transition shadow cursor-pointer">
             Terapkan Status
           </button>
         </div>
@@ -799,7 +785,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Impor / Unggah File Excel (.xlsx) -->
+  <!-- MODAL: Impor File Excel (.xlsx) -->
   <div id="modalImportExcel" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl border border-slate-200 flex flex-col max-h-[92vh]">
       
@@ -810,17 +796,17 @@
           </div>
           <div>
             <h3 class="font-bold text-slate-800 text-xs sm:text-base">Impor Murid dari Excel</h3>
-            <p class="text-xs text-slate-400">Unduh template 5 kolom, isi, dan unggah</p>
+            <p class="text-xs text-slate-400">Unduh format resmi 5 kolom, isi, dan unggah</p>
           </div>
         </div>
-        <button onclick="closeModal('modalImportExcel')" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeModal('modalImportExcel')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
       <div class="py-3 space-y-3 flex-1 overflow-y-auto custom-scrollbar">
         
-        <!-- Langkah 1: Tentukan Kelas & Wali Kelas -->
+        <!-- Langkah 1: Target Rombel -->
         <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/90 space-y-2">
           <div class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
             <span class="w-4 h-4 rounded-full bg-emerald-700 text-white text-xs flex items-center justify-center">1</span>
@@ -870,19 +856,18 @@
           </div>
         </div>
 
-        <!-- Langkah 2: Unduh Template & Dropzone Unggah -->
+        <!-- Langkah 2: Berkas Excel -->
         <div class="space-y-2">
           <div class="flex items-center justify-between text-xs">
             <span class="font-bold text-slate-800 flex items-center gap-1.5">
               <span class="w-4 h-4 rounded-full bg-emerald-700 text-white text-xs flex items-center justify-center">2</span>
               Unduh & Unggah Berkas
             </span>
-            <button type="button" onclick="unduhTemplateExcelResmi()" class="text-teal-700 hover:text-teal-900 font-bold flex items-center gap-1.5 text-xs">
+            <button type="button" onclick="unduhTemplateExcelResmi()" class="text-teal-700 hover:text-teal-900 font-bold flex items-center gap-1.5 text-xs cursor-pointer">
               <i class="fa-solid fa-file-arrow-down"></i> Unduh Format (.xlsx)
             </button>
           </div>
 
-          <!-- Drag and drop zone -->
           <div id="dropzoneExcel" onclick="document.getElementById('fileInputExcel').click()" class="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-4 sm:p-5 text-center cursor-pointer transition bg-slate-50/50 hover:bg-emerald-50/20 active:scale-98">
             <input type="file" id="fileInputExcel" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleFileExcelDipilih(event)">
             <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center mx-auto text-base sm:text-lg mb-1">
@@ -893,7 +878,7 @@
           </div>
         </div>
 
-        <!-- Pratinjau Data yang Terdeteksi -->
+        <!-- Pratinjau Hasil Impor -->
         <div id="previewContainerExcel" class="hidden space-y-2">
           <div class="flex items-center justify-between text-xs">
             <span id="previewCountLabelExcel" class="font-bold text-slate-700">0 Murid Terdeteksi</span>
@@ -917,10 +902,10 @@
       </div>
 
       <div class="pt-2.5 border-t border-slate-100 flex items-center justify-end gap-2 mt-auto">
-        <button type="button" onclick="closeModal('modalImportExcel')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50">
+        <button type="button" onclick="closeModal('modalImportExcel')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 cursor-pointer">
           Batal
         </button>
-        <button type="button" id="btnEksekusiImportExcel" onclick="simpanSantriHasilImportExcel()" disabled class="py-2 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold transition flex items-center gap-2 shadow">
+        <button type="button" id="btnEksekusiImportExcel" onclick="simpanSantriHasilImportExcel()" disabled class="py-2 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer">
           <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Database
         </button>
       </div>
@@ -928,11 +913,10 @@
     </div>
   </div>
 
-  <!-- MODAL: Kenaikan & Pengacakan Kelas Cerdas -->
+  <!-- MODAL: Kenaikan & Pengacakan Kelas -->
   <div id="modalKenaikanKelas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-3xl w-full p-4 sm:p-7 shadow-2xl border border-slate-200 flex flex-col max-h-[92vh]">
       
-      <!-- Header Modal -->
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xs">
@@ -943,39 +927,37 @@
             <p class="text-xs text-slate-400">Pilih mode rombel utuh, per murid, acak, atau kelulusan</p>
           </div>
         </div>
-        <button onclick="closeModal('modalKenaikanKelas')" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeModal('modalKenaikanKelas')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
-      <!-- Sub Tabs Navigasi Kenaikan -->
+      <!-- Sub Tabs Kenaikan -->
       <div class="flex items-center gap-1.5 pt-2 pb-2 border-b border-slate-100 overflow-x-auto text-xs font-bold custom-scrollbar">
-        <button type="button" onclick="switchSubTabKenaikan('per-kelas')" id="subTabBtn-per-kelas" class="px-3 py-1.5 rounded-xl bg-emerald-800 text-white shadow-sm whitespace-nowrap">
+        <button type="button" onclick="switchSubTabKenaikan('per-kelas')" id="subTabBtn-per-kelas" class="px-3 py-1.5 rounded-xl bg-emerald-800 text-white shadow-sm whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-people-roof mr-1"></i> Per Kelas (1 Rombel)
         </button>
-        <button type="button" onclick="switchSubTabKenaikan('per-murid')" id="subTabBtn-per-murid" class="px-3 py-1.5 rounded-xl text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+        <button type="button" onclick="switchSubTabKenaikan('per-murid')" id="subTabBtn-per-murid" class="px-3 py-1.5 rounded-xl text-slate-600 hover:bg-slate-100 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-user-pen mr-1"></i> Per Murid (Bebas)
         </button>
-        <button type="button" onclick="switchSubTabKenaikan('acak')" id="subTabBtn-acak" class="px-3 py-1.5 rounded-xl text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+        <button type="button" onclick="switchSubTabKenaikan('acak')" id="subTabBtn-acak" class="px-3 py-1.5 rounded-xl text-slate-600 hover:bg-slate-100 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-shuffle mr-1"></i> Pengacakan Seimbang
         </button>
-        <button type="button" onclick="switchSubTabKenaikan('lulus')" id="subTabBtn-lulus" class="px-3 py-1.5 rounded-xl text-slate-600 hover:bg-slate-100 whitespace-nowrap">
+        <button type="button" onclick="switchSubTabKenaikan('lulus')" id="subTabBtn-lulus" class="px-3 py-1.5 rounded-xl text-slate-600 hover:bg-slate-100 whitespace-nowrap cursor-pointer">
           <i class="fa-solid fa-graduation-cap mr-1"></i> Lulus Kelas 6
         </button>
       </div>
 
-      <!-- Sub Tab Content Area -->
+      <!-- Konten Sub Tab Kenaikan -->
       <div class="py-2.5 space-y-3 flex-1 overflow-y-auto custom-scrollbar">
         
-        <!-- SUB TAB 1: Kenaikan Per Kelas (1 Rombel Penuh) -->
+        <!-- SUB TAB 1: Kenaikan Per Kelas -->
         <div id="subTabPerKelasContent" class="space-y-3">
           <div class="p-3 bg-emerald-50/70 rounded-2xl border border-emerald-200/80 text-xs space-y-1">
             <div class="font-bold text-emerald-900 flex items-center gap-1.5">
               <i class="fa-solid fa-circle-info text-emerald-700"></i> Mode Kenaikan 1 Rombel Penuh
             </div>
-            <p class="text-emerald-800 text-xs">
-              Pindahkan seluruh murid dari satu kelas ke kelas baru sekaligus.
-            </p>
+            <p class="text-emerald-800 text-xs">Pindahkan seluruh murid dari satu kelas ke kelas baru sekaligus.</p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
@@ -1034,7 +1016,6 @@
             </div>
           </div>
 
-          <!-- Form Tambahan: Wali Kelas & No WA Baru -->
           <div class="p-2.5 bg-slate-50 rounded-2xl border border-slate-200/90 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div>
               <label class="block font-bold text-slate-700 mb-1">Nama Walas Baru</label>
@@ -1049,13 +1030,13 @@
 
           <div class="flex items-center justify-between text-xs pt-1">
             <div class="flex items-center gap-2">
-              <input type="checkbox" id="checkResetPoinPerKelas" checked class="rounded text-emerald-700 focus:ring-emerald-600 w-4 h-4">
+              <input type="checkbox" id="checkResetPoinPerKelas" checked class="rounded text-emerald-700 focus:ring-emerald-600 w-4 h-4 cursor-pointer">
               <label for="checkResetPoinPerKelas" class="font-bold text-slate-700 cursor-pointer text-xs">
                 Reset Poin ke 100 pt
               </label>
             </div>
 
-            <button type="button" onclick="toggleSelectAllPerKelas()" class="text-emerald-700 font-bold hover:underline text-xs">
+            <button type="button" onclick="toggleSelectAllPerKelas()" class="text-emerald-700 font-bold hover:underline text-xs cursor-pointer">
               Pilih / Batal Semua
             </button>
           </div>
@@ -1079,21 +1060,19 @@
           </div>
 
           <div class="flex justify-end pt-1">
-            <button type="button" onclick="prosesKenaikanPerKelas()" class="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow">
+            <button type="button" onclick="prosesKenaikanPerKelas()" class="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow cursor-pointer">
               <i class="fa-solid fa-arrow-up-right-dots"></i> Naikkan 1 Rombel Terpilih
             </button>
           </div>
         </div>
 
-        <!-- SUB TAB 2: Pilih Per Murid (Bebas & Fleksibel) -->
+        <!-- SUB TAB 2: Per Murid Bebas -->
         <div id="subTabPerMuridContent" class="hidden space-y-3">
           <div class="p-3 bg-teal-50/70 rounded-2xl border border-teal-200/80 text-xs space-y-1">
             <div class="font-bold text-teal-900 flex items-center gap-1.5">
               <i class="fa-solid fa-user-pen text-teal-700"></i> Mode Distribusi Per Murid
             </div>
-            <p class="text-teal-800 text-xs">
-              Tentukan target kelas baru untuk masing-masing murid secara fleksibel.
-            </p>
+            <p class="text-teal-800 text-xs">Tentukan target kelas baru untuk masing-masing murid secara fleksibel.</p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
@@ -1124,7 +1103,6 @@
               </select>
             </div>
 
-            <!-- Bilah Atur Cepat Tercentang -->
             <div class="flex items-end gap-2">
               <div class="flex-1">
                 <label class="block font-bold text-slate-700 mb-1">Target Cepat Tercentang:</label>
@@ -1152,7 +1130,7 @@
                   </optgroup>
                 </select>
               </div>
-              <button type="button" onclick="terapkanBulkKelasMurid()" class="px-3 py-2 rounded-xl bg-teal-700 text-white font-bold hover:bg-teal-800 text-xs">
+              <button type="button" onclick="terapkanBulkKelasMurid()" class="px-3 py-2 rounded-xl bg-teal-700 text-white font-bold hover:bg-teal-800 text-xs cursor-pointer">
                 Terapkan
               </button>
             </div>
@@ -1168,35 +1146,31 @@
                   <th class="p-2">Target Kelas Baru</th>
                 </tr>
               </thead>
-              <tbody id="tabelBodyKenaikanPerMurid" class="divide-y divide-slate-100 font-medium">
-                <!-- Render dinamis via JS -->
-              </tbody>
+              <tbody id="tabelBodyKenaikanPerMurid" class="divide-y divide-slate-100 font-medium"></tbody>
             </table>
           </div>
 
           <div class="flex items-center justify-between pt-1">
             <div class="flex items-center gap-2 text-xs">
-              <input type="checkbox" id="checkResetPoinPerMurid" checked class="rounded text-emerald-700 w-4 h-4">
+              <input type="checkbox" id="checkResetPoinPerMurid" checked class="rounded text-emerald-700 w-4 h-4 cursor-pointer">
               <label for="checkResetPoinPerMurid" class="font-bold text-slate-700 cursor-pointer text-xs">
                 Reset Poin ke 100 pt
               </label>
             </div>
 
-            <button type="button" onclick="simpanKenaikanPerMurid()" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center gap-2 shadow">
+            <button type="button" onclick="simpanKenaikanPerMurid()" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer">
               <i class="fa-solid fa-floppy-disk"></i> Simpan Distribusi
             </button>
           </div>
         </div>
 
-        <!-- SUB TAB 3: Pengacakan Seimbang (Reshuffle Angkatan) -->
+        <!-- SUB TAB 3: Pengacakan Seimbang -->
         <div id="subTabAcakContent" class="hidden space-y-3">
           <div class="p-3 bg-amber-50/70 rounded-2xl border border-amber-200/80 text-xs space-y-1">
             <div class="font-bold text-amber-900 flex items-center gap-1.5">
               <i class="fa-solid fa-shuffle text-amber-700"></i> Pengacakan Seimbang Rata Karakter
             </div>
-            <p class="text-amber-800 text-xs">
-              Kocok murid satu angkatan ke kelas tingkat atasnya secara seimbang berdasarkan nilai karakter.
-            </p>
+            <p class="text-amber-800 text-xs">Kocok murid satu angkatan ke kelas tingkat atasnya secara seimbang berdasarkan nilai karakter.</p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
@@ -1219,7 +1193,7 @@
 
           <div class="flex items-center justify-between text-xs pt-1">
             <span id="acakJumlahSantriLabel" class="font-bold text-slate-700 text-xs">0 Murid Terdeteksi</span>
-            <button type="button" onclick="jalankanSimulasiPengacakan()" class="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold flex items-center gap-1.5 shadow-sm active:scale-95 text-xs">
+            <button type="button" onclick="jalankanSimulasiPengacakan()" class="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold flex items-center gap-1.5 shadow-sm active:scale-95 text-xs cursor-pointer">
               <i class="fa-solid fa-dice"></i> Mulai Kocok
             </button>
           </div>
@@ -1239,21 +1213,19 @@
           </div>
 
           <div id="btnSimpanAcakContainer" class="hidden justify-end pt-1">
-            <button type="button" onclick="simpanHasilPengacakanKelas()" class="w-full sm:w-auto py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow">
+            <button type="button" onclick="simpanHasilPengacakanKelas()" class="w-full sm:w-auto py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow cursor-pointer">
               <i class="fa-solid fa-circle-check"></i> Terapkan Hasil Pengacakan
             </button>
           </div>
         </div>
 
-        <!-- SUB TAB 4: Kelulusan Kelas 6 (Alumni) -->
+        <!-- SUB TAB 4: Kelulusan Kelas 6 -->
         <div id="subTabLulusContent" class="hidden space-y-3">
           <div class="p-3 bg-blue-50/70 rounded-2xl border border-blue-200/80 text-xs space-y-1">
             <div class="font-bold text-blue-900 flex items-center gap-1.5">
               <i class="fa-solid fa-graduation-cap text-blue-700"></i> Arsip Kelulusan Murid Kelas 6
             </div>
-            <p class="text-blue-800 text-xs">
-              Ubah status seluruh murid kelas 6 menjadi <strong>Lulus (Alumni)</strong>. Data riwayat tetap tersimpan rapi.
-            </p>
+            <p class="text-blue-800 text-xs">Ubah status seluruh murid kelas 6 menjadi <strong>Lulus (Alumni)</strong>.</p>
           </div>
 
           <div class="border border-slate-200 rounded-2xl overflow-hidden max-h-48 overflow-y-auto">
@@ -1266,14 +1238,12 @@
                   <th class="p-2 text-center">Status Akhir</th>
                 </tr>
               </thead>
-              <tbody id="tabelBodyKelas6Lulus" class="divide-y divide-slate-100 font-medium">
-                <!-- Render dinamis via JS -->
-              </tbody>
+              <tbody id="tabelBodyKelas6Lulus" class="divide-y divide-slate-100 font-medium"></tbody>
             </table>
           </div>
 
           <div class="flex justify-end pt-1">
-            <button type="button" onclick="prosesKelulusanKelas6()" class="w-full sm:w-auto py-2 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow">
+            <button type="button" onclick="prosesKelulusanKelas6()" class="w-full sm:w-auto py-2 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow cursor-pointer">
               <i class="fa-solid fa-graduation-cap"></i> Luluskan Seluruh Kelas 6
             </button>
           </div>
@@ -1282,7 +1252,7 @@
       </div>
 
       <div class="pt-2 border-t border-slate-100 flex items-center justify-end">
-        <button type="button" onclick="closeModal('modalKenaikanKelas')" class="py-1.5 px-3.5 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50">
+        <button type="button" onclick="closeModal('modalKenaikanKelas')" class="py-1.5 px-3.5 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 cursor-pointer">
           Tutup
         </button>
       </div>
@@ -1290,7 +1260,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Pratinjau & Salin Pesan WhatsApp Wali Kelas -->
+  <!-- MODAL: Pratinjau WhatsApp -->
   <div id="modalPratinjauWa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-xl w-full p-4 sm:p-7 shadow-2xl border border-slate-200 flex flex-col max-h-[92vh]">
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
@@ -1303,7 +1273,7 @@
             <p id="labelTujuanWaModal" class="text-xs text-slate-400">Wali Kelas: -</p>
           </div>
         </div>
-        <button onclick="closeModal('modalPratinjauWa')" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeModal('modalPratinjauWa')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -1317,14 +1287,14 @@
       </div>
 
       <div class="pt-2.5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 mt-auto">
-        <button type="button" onclick="closeModal('modalPratinjauWa')" class="w-full sm:w-auto py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50">
+        <button type="button" onclick="closeModal('modalPratinjauWa')" class="w-full sm:w-auto py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 cursor-pointer">
           Tutup
         </button>
         <div class="flex items-center gap-2 w-full sm:w-auto">
-          <button type="button" onclick="eksekusiSalinDraftWa()" class="flex-1 sm:flex-initial py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-300">
+          <button type="button" onclick="eksekusiSalinDraftWa()" class="flex-1 sm:flex-initial py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-300 cursor-pointer">
             <i class="fa-solid fa-copy"></i> Salin
           </button>
-          <button type="button" id="btnKirimWaLangsungModal" onclick="eksekusiKirimWaModal()" class="flex-1 sm:flex-initial py-2 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md">
+          <button type="button" id="btnKirimWaLangsungModal" onclick="eksekusiKirimWaModal()" class="flex-1 sm:flex-initial py-2 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md cursor-pointer">
             <i class="fa-brands fa-whatsapp text-sm"></i> Buka WhatsApp
           </button>
         </div>
@@ -1339,7 +1309,7 @@
         <h3 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-2">
           <i class="fa-solid fa-user-tie text-emerald-700"></i> Edit Kontak Wali Kelas
         </h3>
-        <button onclick="closeModal('modalEditWalas')" class="text-slate-400 hover:text-slate-600 p-1">
+        <button onclick="closeModal('modalEditWalas')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -1361,10 +1331,10 @@
         </div>
 
         <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeModal('modalEditWalas')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50">
+          <button type="button" onclick="closeModal('modalEditWalas')" class="py-2 px-3.5 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer">
             Batal
           </button>
-          <button type="button" onclick="simpanKontakWalas()" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold transition shadow">
+          <button type="button" onclick="simpanKontakWalas()" class="py-2 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold transition shadow cursor-pointer">
             Simpan Kontak
           </button>
         </div>
@@ -1372,17 +1342,13 @@
     </div>
   </div>
 
-  <!-- Toast Notification Container dengan Safe Area Offset -->
+  <!-- Toast Notification Container -->
   <div id="toastContainer" class="fixed sm:top-auto sm:bottom-5 left-3.5 right-3.5 sm:left-auto sm:right-5 z-50 flex flex-col space-y-2 pointer-events-none" style="top: calc(env(safe-area-inset-top, 0px) + 12px);"></div>
 
+  <!-- ==================== LOGIKA UTAMA JAVASCRIPT ==================== -->
   <script>
-    /* ==========================================================================
-       KONFIGURASI OTOMATIS GOOGLE SHEETS
-       URL Web App Google Apps Script SDIT Az Zahra
-       ========================================================================== */
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3GSQUoqHGBIQgpDiyyGkFzq83x1f-3nkhVLtmLURsBwi5qkBJXytgazNVlp9TjyAi/exec";
 
-    // State Aplikasi Terpadu
     const state = {
       siswa: [],
       riwayat: [],
@@ -1400,7 +1366,6 @@
         : (localStorage.getItem('sdit_azzahra_api_url') || '')
     };
 
-    // 12 Nama Kelas Tokoh & Khalifah Islam Resmi SDIT Az Zahra
     const DAFTAR_KELAS_RESMI = {
       1: ['1 Umar bin Abdul Aziz', '1 Abdurrahman Ad Dakhil'],
       2: ["2 Abu Ja'far Al Manshur", '2 Harun Ar Rasyid'],
@@ -1410,7 +1375,6 @@
       6: ['6 Sulaiman Al Qonuni', '6 Muhammad Al Fatih']
     };
 
-    // Kontak Awal 12 Wali Kelas
     const DEFAULT_WALI_KELAS = {
       '1 Umar bin Abdul Aziz': { nama: '', wa: '' },
       '1 Abdurrahman Ad Dakhil': { nama: '', wa: '' },
@@ -1430,7 +1394,6 @@
       return typeof google !== 'undefined' && google.script && typeof google.script.run !== 'undefined';
     }
 
-    /* Client API Universal dengan bypass CORS Google Apps Script */
     async function panggilApiServer(action, dataPayload) {
       if (isAppsScriptEnvironment()) {
         return new Promise((resolve, reject) => {
@@ -1457,7 +1420,6 @@
             if (!resp.ok) throw new Error('HTTP ' + resp.status);
             return await resp.json();
           } else {
-            // Gunakan Content-Type: text/plain agar browser tidak mengirim preflight OPTIONS yang ditolak GAS
             const resp = await fetch(state.apiEndpoint, {
               method: 'POST',
               headers: {
@@ -1469,7 +1431,7 @@
             return await resp.json();
           }
         } catch (e) {
-          console.warn('Gagal memanggil API Vercel:', e);
+          console.warn('Gagal memanggil API:', e);
           return { status: 'error', message: e.message || 'Koneksi gagal' };
         }
       }
@@ -1490,50 +1452,34 @@
       }
     }
 
-    function initApp() {
-      const tglLaporan = document.getElementById('tglLaporanWalas');
-      if (tglLaporan) {
-        tglLaporan.value = new Date().toISOString().split('T')[0];
-      }
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
 
-      const inputTgl = document.getElementById('inputTanggalPeristiwa');
-      if (inputTgl) {
-        inputTgl.value = new Date().toISOString().split('T')[0];
-      }
+      const toast = document.createElement('div');
+      const bgColors = {
+        success: 'bg-emerald-800 text-white border border-emerald-600',
+        error: 'bg-rose-800 text-white border border-rose-600',
+        info: 'bg-slate-800 text-white border border-slate-600'
+      };
+      const icons = {
+        success: 'fa-circle-check text-emerald-300',
+        error: 'fa-circle-exclamation text-rose-300',
+        info: 'fa-circle-info text-teal-300'
+      };
 
-      loadWalasKontak();
-      loadLocalData();
+      toast.className = `p-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-semibold transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto ${bgColors[type] || bgColors.info}`;
+      toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-sm shrink-0"></i><span class="flex-1">${message}</span>`;
+      container.appendChild(toast);
 
-      // Sinkronisasi data dari Google Sheets
-      if (isAppsScriptEnvironment() || state.apiEndpoint) {
-        panggilApiServer('getInitialData')
-          .then(response => {
-            if (response && response.status === 'success' && response.data) {
-              setConnectionStatus(true);
-              const serverSiswa = response.data.siswa || [];
-              const serverRiwayat = response.data.riwayat || [];
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
 
-              // Lindungi data lokal: jika server kosong tetapi lokal ada murid, pertahankan lokal
-              if (serverSiswa.length > 0 || state.siswa.length === 0) {
-                state.siswa = serverSiswa;
-              }
-              if (serverRiwayat.length > 0 || state.riwayat.length === 0) {
-                state.riwayat = serverRiwayat;
-              }
-
-              sinkronisasiKontakDariDataSiswa();
-              saveLocalData();
-              refreshAllViews();
-            } else {
-              setConnectionStatus(false);
-            }
-          })
-          .catch(() => {
-            setConnectionStatus(false);
-          });
-      } else {
-        setConnectionStatus(false);
-      }
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
     }
 
     function loadWalasKontak() {
@@ -1610,72 +1556,1148 @@
       initApp();
     }
 
-    async function handleTambahSantriManual(e) {
-      e.preventDefault();
-      const nis = document.getElementById('manualNis').value.trim();
-      const nama = document.getElementById('manualNama').value.trim();
-      const kelas = document.getElementById('manualKelas').value;
-      const wali = document.getElementById('manualWali').value.trim();
-      const hpWali = document.getElementById('manualHpWali').value.trim();
+    function dapatkanInfoWalas(kelas) {
+      if (state.walasKontak[kelas] && (state.walasKontak[kelas].nama || state.walasKontak[kelas].wa)) {
+        return state.walasKontak[kelas];
+      }
+      const siswaSatuKelas = state.siswa.find(s => s.kelas === kelas && (s.waliKelas || s.hpWaliKelas));
+      if (siswaSatuKelas) {
+        return {
+          nama: siswaSatuKelas.waliKelas || 'Bapak/Ibu Walas',
+          wa: siswaSatuKelas.hpWaliKelas || ''
+        };
+      }
+      return { nama: 'Bapak/Ibu Walas', wa: '' };
+    }
 
-      if (!nis || !nama || !kelas) {
-        showToast('NIS, Nama, dan Kelas wajib diisi!', 'error');
-        return;
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      const activeSec = document.getElementById(`tab-${tabId}`);
+      if (activeSec) activeSec.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('active', 'text-white', 'bg-white/20');
+        btn.classList.add('text-emerald-100');
+      });
+      const activeBtn = document.getElementById(`tabBtn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'text-white', 'bg-white/20');
+        activeBtn.classList.remove('text-emerald-100');
       }
 
-      if (state.siswa.some(s => String(s.nis).trim() === String(nis).trim())) {
-        showToast(`NIS ${nis} sudah terdaftar di sistem!`, 'error');
-        return;
-      }
-
-      const submitBtn = e.target.querySelector('button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
-
-      const walasInfo = dapatkanInfoWalas(kelas);
-      const newMurid = {
-        nis: nis,
-        nama: nama,
-        kelas: kelas,
-        poin: 100,
-        wali: wali || '-',
-        hpWali: hpWali || '',
-        status: 'Aktif',
-        catatan: '-',
-        waliKelas: walasInfo.nama || '',
-        hpWaliKelas: walasInfo.wa || ''
-      };
-
-      try {
-        const res = await panggilApiServer('tambahSantriBaru', newMurid);
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
-
-        if (res && res.status === 'success') {
-          state.siswa.push(newMurid);
-          saveLocalData();
-          document.getElementById('formTambahSantriManual').reset();
-          closeModal('modalTambahSiswa');
-          refreshAllViews();
-          showToast(`Alhamdulillah, ${nama} berhasil disimpan ke Google Sheets!`, 'success');
+      ['dasbor', 'input', 'siswa', 'riwayat', 'laporan'].forEach(t => {
+        const mobBtn = document.getElementById(`mobNav-${t}`);
+        if (!mobBtn) return;
+        if (t === tabId) {
+          mobBtn.classList.remove('text-slate-400');
+          mobBtn.classList.add('text-emerald-800');
         } else {
-          // Tetap simpan lokal agar data tidak hilang, tapi infokan kendala server
-          state.siswa.push(newMurid);
-          saveLocalData();
-          document.getElementById('formTambahSantriManual').reset();
-          closeModal('modalTambahSiswa');
-          refreshAllViews();
-          showToast(`Tersimpan di perangkat. Server merespons: ${res?.message || 'cek izin Web App'}`, 'info');
+          mobBtn.classList.remove('text-emerald-800');
+          mobBtn.classList.add('text-slate-400');
         }
-      } catch (err) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
-        state.siswa.push(newMurid);
-        saveLocalData();
-        closeModal('modalTambahSiswa');
-        refreshAllViews();
-        showToast(`Tersimpan di perangkat lokal.`, 'info');
+      });
+
+      if (tabId === 'siswa') renderTabelSiswa();
+      if (tabId === 'riwayat') renderTabelRiwayat();
+      if (tabId === 'laporan') renderPelaporanWalas();
+      if (tabId === 'input') filterPilihanSantri();
+    }
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
       }
     }
-<!-- ... rest of existing code ... -->
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function setJenisInput(jenis) {
+      state.jenisInputAktif = jenis;
+      const btnP = document.getElementById('toggleBtnPelanggaran');
+      const btnK = document.getElementById('toggleBtnKebaikan');
+      const lblJudul = document.getElementById('labelJenisCatatan');
+      const lblPoin = document.getElementById('labelPoinCatatan');
+      const inputPoin = document.getElementById('inputPoin');
+      const presetContainer = document.getElementById('presetPoinContainer');
+
+      if (jenis === 'pelanggaran') {
+        btnP.className = 'py-2 sm:py-1.5 px-4 rounded-xl bg-white text-rose-700 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer';
+        btnK.className = 'py-2 sm:py-1.5 px-4 rounded-xl text-slate-600 hover:text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer';
+        lblJudul.innerText = 'Jenis Pelanggaran *';
+        lblPoin.innerText = 'Pengurangan Poin *';
+        inputPoin.value = -5;
+        presetContainer.innerHTML = `
+          <button type="button" onclick="setPresetPoin(-5)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-5</button>
+          <button type="button" onclick="setPresetPoin(-10)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-10</button>
+          <button type="button" onclick="setPresetPoin(-15)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-15</button>
+          <button type="button" onclick="setPresetPoin(-30)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-30</button>
+        `;
+      } else {
+        btnK.className = 'py-2 sm:py-1.5 px-4 rounded-xl bg-white text-emerald-800 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer';
+        btnP.className = 'py-2 sm:py-1.5 px-4 rounded-xl text-slate-600 hover:text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer';
+        lblJudul.innerText = 'Jenis Amal Shalih / Prestasi *';
+        lblPoin.innerText = 'Penambahan Poin *';
+        inputPoin.value = 5;
+        presetContainer.innerHTML = `
+          <button type="button" onclick="setPresetPoin(5)" class="py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold border border-emerald-200 text-xs cursor-pointer">+5</button>
+          <button type="button" onclick="setPresetPoin(10)" class="py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold border border-emerald-200 text-xs cursor-pointer">+10</button>
+          <button type="button" onclick="setPresetPoin(15)" class="py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold border border-emerald-200 text-xs cursor-pointer">+15</button>
+          <button type="button" onclick="setPresetPoin(20)" class="py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold border border-emerald-200 text-xs cursor-pointer">+20</button>
+        `;
+      }
+    }
+
+    function setPresetPoin(val) {
+      const input = document.getElementById('inputPoin');
+      if (input) input.value = val;
+    }
+
+    function filterPilihanSantri() {
+      const kelasFilter = document.getElementById('inputFilterKelas').value;
+      const selectSantri = document.getElementById('inputSantriPilihan');
+      if (!selectSantri) return;
+
+      selectSantri.innerHTML = '<option value="">-- Pilih Murid --</option>';
+      const santriAktif = state.siswa.filter(s => s.status === 'Aktif');
+      const filtered = (kelasFilter === 'semua')
+        ? santriAktif
+        : santriAktif.filter(s => s.kelas === kelasFilter);
+
+      filtered.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.nis;
+        opt.textContent = `${s.nama} (${s.kelas}) - ${s.poin} pt`;
+        selectSantri.appendChild(opt);
+      });
+
+      if (state.selectedNisInput) {
+        selectSantri.value = state.selectedNisInput;
+        state.selectedNisInput = null;
+      }
+      updateKartuInfoSantri();
+    }
+
+    function updateKartuInfoSantri() {
+      const nis = document.getElementById('inputSantriPilihan').value;
+      const kartu = document.getElementById('kartuInfoSantri');
+      if (!nis) {
+        kartu.classList.add('hidden');
+        return;
+      }
+
+      const s = state.siswa.find(x => String(x.nis).trim() === String(nis).trim());
+      if (!s) {
+        kartu.classList.add('hidden');
+        return;
+      }
+
+      kartu.classList.remove('hidden');
+      document.getElementById('namaSantriTerpilih').textContent = s.nama;
+      document.getElementById('nisSantriTerpilih').textContent = s.nis;
+      document.getElementById('kelasSantriTerpilih').textContent = s.kelas;
+      document.getElementById('poinSantriTerpilih').textContent = `${s.poin} pt`;
+      document.getElementById('avatarSantriTerpilih').textContent = s.nama.substring(0, 2).toUpperCase();
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      const nis = document.getElementById('inputSantriPilihan').value;
+      const judul = document.getElementById('inputJudulCatatan').value.trim();
+      const detail = document.getElementById('inputDetailCatatan').value.trim();
+      const poin = Number(document.getElementById('inputPoin').value);
+      const tindakan = document.getElementById('inputTindakan').value.trim();
+      const guru = document.getElementById('inputGuruPencatat').value.trim();
+      const tgl = document.getElementById('inputTanggalPeristiwa').value;
+
+      if (!nis || !judul || isNaN(poin)) {
+        showToast('Lengkapi data murid, jenis catatan, dan poin!', 'error');
+        return;
+      }
+
+      const murid = state.siswa.find(s => String(s.nis).trim() === String(nis).trim());
+      if (!murid) {
+        showToast('Murid tidak ditemukan di database!', 'error');
+        return;
+      }
+
+      const btnSubmit = document.getElementById('btnSubmitCatatan');
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+
+      const judulLengkap = detail ? `${judul} (${detail})` : judul;
+      const payload = {
+        nis: murid.nis,
+        nama: murid.nama,
+        kelas: murid.kelas,
+        tipe: state.jenisInputAktif === 'pelanggaran' ? 'Pelanggaran' : 'Kebaikan',
+        judul: judulLengkap,
+        poin: poin,
+        tindakan: tindakan || '-',
+        guru: guru || 'Tim Kesiswaan',
+        tanggal: tgl
+      };
+
+      const saldoAkhir = Math.max(0, Number(murid.poin) + poin);
+      murid.poin = saldoAkhir;
+
+      const newRecord = {
+        id: 'REC-' + Date.now(),
+        tanggal: `${tgl} ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`,
+        nis: murid.nis,
+        nama: murid.nama,
+        kelas: murid.kelas,
+        tipe: payload.tipe,
+        judul: payload.judul,
+        poin: poin,
+        saldoAkhir: saldoAkhir,
+        tindakan: payload.tindakan,
+        guru: payload.guru
+      };
+      state.riwayat.unshift(newRecord);
+      saveLocalData();
+      refreshAllViews();
+
+      try {
+        await panggilApiServer('simpanCatatan', payload);
+      } catch (err) {
+        console.warn('Gagal simpan ke server, tetap disimpan di HP:', err);
+      }
+
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Simpan Catatan`;
+      showToast(`Alhamdulillah, catatan ${murid.nama} berhasil disimpan!`, 'success');
+      resetFormCatatan();
+      switchTab('riwayat');
+    }
+
+    function resetFormCatatan() {
+      document.getElementById('formInputCatatan').reset();
+      document.getElementById('inputTanggalPeristiwa').value = new Date().toISOString().split('T')[0];
+      setJenisInput('pelanggaran');
+      document.getElementById('kartuInfoSantri').classList.add('hidden');
+    }
+
+    function renderTabelSiswa() {
+      const kelasFilter = document.getElementById('filterTabelKelas').value;
+      const statusFilter = document.getElementById('filterTabelStatus').value;
+      const keyword = (document.getElementById('cariTabelSiswa').value || '').toLowerCase();
+
+      let list = state.siswa;
+      if (statusFilter !== 'semua') list = list.filter(s => s.status === statusFilter);
+      if (kelasFilter !== 'semua') list = list.filter(s => s.kelas === kelasFilter);
+      if (keyword) {
+        list = list.filter(s =>
+          s.nama.toLowerCase().includes(keyword) ||
+          String(s.nis).toLowerCase().includes(keyword)
+        );
+      }
+
+      const tbody = document.getElementById('tabelBodySiswa');
+      const mobileContainer = document.getElementById('mobileCardsMurid');
+      const emptyState = document.getElementById('emptyStateSiswa');
+
+      tbody.innerHTML = '';
+      mobileContainer.innerHTML = '';
+
+      if (list.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      list.forEach(s => {
+        const walas = dapatkanInfoWalas(s.kelas);
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono font-bold text-slate-600">${s.nis}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${s.nama}</td>
+          <td class="py-3 px-4 text-emerald-800 font-semibold">${s.kelas}</td>
+          <td class="py-3 px-4 text-slate-600">${walas.nama || '-'}</td>
+          <td class="py-3 px-4 text-center font-bold font-mono ${s.poin < 75 ? 'text-rose-600' : 'text-emerald-700'}">${s.poin} pt</td>
+          <td class="py-3 px-4 text-slate-600">${s.wali || '-'}</td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${s.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">
+              ${s.status}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="isiCatatanLangsung('${s.nis}')" title="Beri Catatan" class="p-1.5 rounded-lg bg-emerald-100 text-emerald-800 hover:bg-emerald-200 cursor-pointer">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button onclick="bukaModalUbahStatus('${s.nis}')" title="Ubah Status" class="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                <i class="fa-solid fa-user-gear"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+
+        const card = document.createElement('div');
+        card.className = 'bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-2';
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="min-w-0">
+              <div class="font-bold text-slate-800 text-sm truncate">${s.nama}</div>
+              <div class="text-xs text-slate-400 font-mono">NIS: ${s.nis} | <span class="font-semibold text-emerald-700">${s.kelas}</span></div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="text-base font-extrabold ${s.poin < 75 ? 'text-rose-600' : 'text-emerald-700'}">${s.poin} pt</div>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${s.status === 'Aktif' ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${s.status}</span>
+            </div>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+            <div class="text-slate-500 truncate">Walas: <span class="font-semibold">${walas.nama || '-'}</span></div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="isiCatatanLangsung('${s.nis}')" class="py-1 px-2.5 rounded-xl bg-emerald-800 text-white font-bold cursor-pointer">
+                <i class="fa-solid fa-pen mr-1"></i> Catat
+              </button>
+              <button onclick="bukaModalUbahStatus('${s.nis}')" class="p-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold cursor-pointer">
+                <i class="fa-solid fa-gear"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        mobileContainer.appendChild(card);
+      });
+    }
+
+    function isiCatatanLangsung(nis) {
+      state.selectedNisInput = nis;
+      switchTab('input');
+    }
+
+    function bukaModalUbahStatus(nis) {
+      state.selectedNisStatus = nis;
+      const s = state.siswa.find(x => String(x.nis).trim() === String(nis).trim());
+      if (!s) return;
+      document.getElementById('statusNamaSiswa').textContent = s.nama;
+      document.getElementById('statusNisSiswa').textContent = s.nis;
+      document.getElementById('pilihanStatusSantri').value = s.status || 'Aktif';
+      openModal('modalUbahStatus');
+    }
+
+    async function simpanPerubahanStatus() {
+      if (!state.selectedNisStatus) return;
+      const status = document.getElementById('pilihanStatusSantri').value;
+      const s = state.siswa.find(x => String(x.nis).trim() === String(state.selectedNisStatus).trim());
+      if (s) {
+        s.status = status;
+        saveLocalData();
+        refreshAllViews();
+        closeModal('modalUbahStatus');
+        showToast(`Status ${s.nama} diubah menjadi ${status}`, 'success');
+
+        try {
+          await panggilApiServer('updateStatusSantri', { nis: s.nis, status: status });
+        } catch (e) {
+          console.warn('Gagal sinkron status ke server:', e);
+        }
+      }
+    }
+
+    function renderTabelRiwayat() {
+      const tipeFilter = document.getElementById('filterRiwayatTipe').value;
+      const tglFilter = document.getElementById('filterRiwayatTanggal').value;
+
+      let list = state.riwayat;
+      if (tipeFilter !== 'semua') list = list.filter(r => r.tipe === tipeFilter);
+      if (tglFilter) list = list.filter(r => r.tanggal.startsWith(tglFilter));
+
+      const tbody = document.getElementById('tabelBodyRiwayat');
+      const mobileContainer = document.getElementById('mobileCardsRiwayat');
+      const emptyState = document.getElementById('emptyStateRiwayat');
+
+      tbody.innerHTML = '';
+      mobileContainer.innerHTML = '';
+
+      if (list.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      list.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono text-slate-500 text-xs">${r.tanggal}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${r.nama} <span class="text-xs text-emerald-800 font-semibold block">(${r.kelas})</span></td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${r.tipe}</span>
+          </td>
+          <td class="py-3 px-4 text-slate-700">${r.judul}</td>
+          <td class="py-3 px-4 text-center font-bold font-mono ${r.poin < 0 ? 'text-rose-600' : 'text-emerald-700'}">${r.poin > 0 ? '+' : ''}${r.poin}</td>
+          <td class="py-3 px-4 text-center font-bold font-mono text-slate-700">${r.saldoAkhir} pt</td>
+          <td class="py-3 px-4 text-slate-600">${r.tindakan || '-'}</td>
+          <td class="py-3 px-4 text-slate-500">${r.guru || 'Tim Kesiswaan'}</td>
+        `;
+        tbody.appendChild(tr);
+
+        const card = document.createElement('div');
+        card.className = 'bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm space-y-1.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-mono text-slate-400">${r.tanggal}</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${r.tipe === 'Pelanggaran' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${r.tipe}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="font-bold text-slate-800 text-sm">${r.nama}</div>
+            <div class="font-extrabold font-mono text-sm ${r.poin < 0 ? 'text-rose-600' : 'text-emerald-700'}">${r.poin > 0 ? '+' : ''}${r.poin} pt</div>
+          </div>
+          <p class="text-xs text-slate-600">${r.judul}</p>
+          <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+            <span>Saldo: <strong class="text-slate-700">${r.saldoAkhir} pt</strong></span>
+            <span>Oleh: <strong class="text-slate-600">${r.guru || 'Tim Kesiswaan'}</strong></span>
+          </div>
+        `;
+        mobileContainer.appendChild(card);
+      });
+    }
+
+    function resetFilterRiwayat() {
+      document.getElementById('filterRiwayatTipe').value = 'semua';
+      document.getElementById('filterRiwayatTanggal').value = '';
+      renderTabelRiwayat();
+    }
+
+    function exportDataToCSV() {
+      if (state.riwayat.length === 0) {
+        showToast('Tidak ada data riwayat untuk diekspor!', 'info');
+        return;
+      }
+      let csv = 'ID Catatan,Tanggal,NIS,Nama Murid,Kelas,Tipe,Judul Catatan,Poin,Saldo Akhir,Tindakan,Pencatat\n';
+      state.riwayat.forEach(r => {
+        csv += `"${r.id}","${r.tanggal}","${r.nis}","${r.nama}","${r.kelas}","${r.tipe}","${r.judul.replace(/"/g, '""')}","${r.poin}","${r.saldoAkhir}","${(r.tindakan || '-').replace(/"/g, '""')}","${r.guru || 'Tim Kesiswaan'}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Riwayat_Mutabaah_AzZahra_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Berkas CSV berhasil diunduh!', 'success');
+    }
+
+    function renderPelaporanWalas() {
+      const jenjang = document.getElementById('filterJenjangLaporan').value;
+      const statusCatatan = document.getElementById('filterStatusCatatanLaporan').value;
+      const targetTgl = document.getElementById('tglLaporanWalas').value || new Date().toISOString().split('T')[0];
+      const grid = document.getElementById('gridKartuLaporanWalas');
+      grid.innerHTML = '';
+
+      let daftarKelas = [];
+      if (jenjang === 'semua') {
+        Object.keys(DAFTAR_KELAS_RESMI).forEach(j => {
+          daftarKelas = daftarKelas.concat(DAFTAR_KELAS_RESMI[j]);
+        });
+      } else {
+        daftarKelas = DAFTAR_KELAS_RESMI[jenjang] || [];
+      }
+
+      let count = 0;
+      daftarKelas.forEach(kelas => {
+        const muridKelas = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
+        const catatanHariIni = state.riwayat.filter(r => r.kelas === kelas && r.tanggal.startsWith(targetTgl));
+        const muridKritis = muridKelas.filter(s => s.poin < 75);
+
+        if (statusCatatan === 'ada_kejadian' && catatanHariIni.length === 0) return;
+        if (statusCatatan === 'ada_kritis' && muridKritis.length === 0) return;
+
+        count++;
+        const walas = dapatkanInfoWalas(kelas);
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm space-y-3';
+        card.innerHTML = `
+          <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+            <div>
+              <h3 class="font-bold text-slate-800 text-sm">${kelas}</h3>
+              <p class="text-xs text-slate-400">${muridKelas.length} Murid Aktif</p>
+            </div>
+            <button onclick="bukaModalEditWalas('${kelas}')" class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs cursor-pointer" title="Edit Kontak Walas">
+              <i class="fa-solid fa-user-pen"></i>
+            </button>
+          </div>
+
+          <div class="text-xs space-y-1 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+            <div class="text-slate-600">Walas: <strong class="text-slate-800">${walas.nama || 'Belum diatur'}</strong></div>
+            <div class="text-slate-500 font-mono">WA: ${walas.wa || '-'}</div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="p-2 bg-amber-50 rounded-xl border border-amber-200 text-center">
+              <div class="text-xs font-bold text-amber-700">Catatan Hari Ini</div>
+              <div class="text-base font-extrabold text-amber-900">${catatanHariIni.length}</div>
+            </div>
+            <div class="p-2 bg-rose-50 rounded-xl border border-rose-200 text-center">
+              <div class="text-xs font-bold text-rose-700">Poin &lt; 75</div>
+              <div class="text-base font-extrabold text-rose-900">${muridKritis.length}</div>
+            </div>
+          </div>
+
+          <div class="pt-1 flex items-center gap-2">
+            <button onclick="bukaModalPratinjauWa('${kelas}')" class="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-200 cursor-pointer">
+              <i class="fa-solid fa-eye"></i> Draf
+            </button>
+            <button onclick="kirimWaLangsung('${kelas}')" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow cursor-pointer">
+              <i class="fa-brands fa-whatsapp"></i> Kirim WA
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('badgeSummaryLaporan').textContent = `Menampilkan ${count} Kelas`;
+    }
+
+    function susunPesanWaKelas(kelas) {
+      const tgl = document.getElementById('tglLaporanWalas').value || new Date().toISOString().split('T')[0];
+      const walas = dapatkanInfoWalas(kelas);
+      const catatanHariIni = state.riwayat.filter(r => r.kelas === kelas && r.tanggal.startsWith(tgl));
+      const muridKelas = state.siswa.filter(s => s.kelas === kelas && s.status === 'Aktif');
+      const muridKritis = muridKelas.filter(s => s.poin < 75);
+
+      let msg = `*LAPORAN MUTABA'AH KEDISIPLINAN MURID*\n`;
+      msg += `*SDIT AZ ZAHRA*\n`;
+      msg += `-----------------------------------------\n`;
+      msg += `Kelas: *${kelas}*\n`;
+      msg += `Wali Kelas: *${walas.nama || '-'}*\n`;
+      msg += `Tanggal Rekap: *${tgl}*\n`;
+      msg += `-----------------------------------------\n\n`;
+
+      if (catatanHariIni.length === 0) {
+        msg += `Alhamdulillah, *nihil catatan pelanggaran* hari ini untuk kelas ${kelas}.\n\n`;
+      } else {
+        msg += `*Rekap Catatan Hari Ini (${catatanHariIni.length} Peristiwa):*\n`;
+        catatanHariIni.forEach((c, idx) => {
+          msg += `${idx + 1}. *${c.nama}* - ${c.judul}\n`;
+        });
+        msg += `\n`;
+      }
+
+      if (muridKritis.length > 0) {
+        msg += `*Atensi Khusus (Poin < 75 pt):*\n`;
+        muridKritis.forEach((m, idx) => {
+          msg += `${idx + 1}. *${m.nama}* (${m.poin} pt)\n`;
+        });
+        msg += `\n`;
+      }
+
+      msg += `_Jazakumullahu khairan katsiran atas perhatian dan bimbingan Bapak/Ibu Walas._\n\n`;
+      msg += `*Tim Kesiswaan SDIT Az Zahra*`;
+      return msg;
+    }
+
+    function bukaModalPratinjauWa(kelas) {
+      state.selectedKelasWa = kelas;
+      const walas = dapatkanInfoWalas(kelas);
+      document.getElementById('labelTujuanWaModal').textContent = `Wali Kelas: ${walas.nama || kelas} (${walas.wa || 'No HP belum diatur'})`;
+      document.getElementById('textareaPratinjauWa').value = susunPesanWaKelas(kelas);
+      openModal('modalPratinjauWa');
+    }
+
+    function eksekusiSalinDraftWa() {
+      const text = document.getElementById('textareaPratinjauWa');
+      text.select();
+      document.execCommand('copy');
+      showToast('Draf pesan WhatsApp berhasil disalin!', 'success');
+    }
+
+    function eksekusiKirimWaModal() {
+      if (!state.selectedKelasWa) return;
+      kirimWaLangsung(state.selectedKelasWa, document.getElementById('textareaPratinjauWa').value);
+      closeModal('modalPratinjauWa');
+    }
+
+    function kirimWaLangsung(kelas, customText = null) {
+      const walas = dapatkanInfoWalas(kelas);
+      const text = customText || susunPesanWaKelas(kelas);
+      let hp = (walas.wa || '').replace(/[^0-9]/g, '');
+      if (hp.startsWith('0')) hp = '62' + hp.substring(1);
+
+      const encoded = encodeURIComponent(text);
+      let url = hp ? `https://api.whatsapp.com/send?phone=${hp}&text=${encoded}` : `https://api.whatsapp.com/send?text=${encoded}`;
+      window.open(url, '_blank');
+    }
+
+    function bukaModalEditWalas(kelas) {
+      state.selectedKelasWa = kelas;
+      const walas = dapatkanInfoWalas(kelas);
+      document.getElementById('editWalasNamaKelas').textContent = kelas;
+      document.getElementById('editWalasNama').value = walas.nama || '';
+      document.getElementById('editWalasHp').value = walas.wa || '';
+      openModal('modalEditWalas');
+    }
+
+    function simpanKontakWalas() {
+      if (!state.selectedKelasWa) return;
+      const nama = document.getElementById('editWalasNama').value.trim();
+      const wa = document.getElementById('editWalasHp').value.trim();
+
+      state.walasKontak[state.selectedKelasWa] = { nama: nama, wa: wa };
+      state.siswa.forEach(s => {
+        if (s.kelas === state.selectedKelasWa) {
+          s.waliKelas = nama;
+          s.hpWaliKelas = wa;
+        }
+      });
+      saveWalasKontak();
+      saveLocalData();
+      refreshAllViews();
+      closeModal('modalEditWalas');
+      showToast(`Kontak walas ${state.selectedKelasWa} berhasil disimpan!`, 'success');
+    }
+
+    function unduhTemplateExcelResmi() {
+      const data = [
+        ['NIS', 'Nama Lengkap Murid', 'Nama Orang Tua / Wali', 'No HP / WA Wali', 'Catatan Khusus'],
+        ['20240101', 'Contoh Nama Siswa', 'Bapak Fulan', '081234567890', '-']
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'FormatMurid');
+      XLSX.writeFile(wb, 'Format_Impor_Murid_SDIT_AzZahra.xlsx');
+    }
+
+    function handleFileExcelDipilih(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+          if (rows.length <= 1) {
+            showToast('Berkas Excel kosong atau tidak sesuai!', 'error');
+            return;
+          }
+
+          const existingNis = new Set(state.siswa.map(s => String(s.nis).trim()));
+          state.tempImportListExcel = [];
+          let duplikatCount = 0;
+
+          for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row || !row[0] || !row[1]) continue;
+            const nis = String(row[0]).trim();
+            const nama = String(row[1]).trim();
+            const wali = String(row[2] || '-').trim();
+            const hpWali = String(row[3] || '').trim();
+            const catatan = String(row[4] || '-').trim();
+
+            if (existingNis.has(nis)) {
+              duplikatCount++;
+              continue;
+            }
+
+            state.tempImportListExcel.push({
+              nis, nama, wali, hpWali, catatan, poin: 100, status: 'Aktif'
+            });
+          }
+
+          document.getElementById('previewContainerExcel').classList.remove('hidden');
+          document.getElementById('previewCountLabelExcel').textContent = `${state.tempImportListExcel.length} Murid Siap Diimpor`;
+          document.getElementById('previewDuplicateLabelExcel').textContent = duplikatCount > 0 ? `(${duplikatCount} NIS dilewati karena sudah ada)` : '';
+
+          const tbody = document.getElementById('previewTabelBodyExcel');
+          tbody.innerHTML = '';
+          state.tempImportListExcel.slice(0, 10).forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td class="p-2 font-mono">${item.nis}</td><td class="p-2 font-semibold">${item.nama}</td><td class="p-2 text-slate-500">${item.wali}</td>`;
+            tbody.appendChild(tr);
+          });
+
+          document.getElementById('btnEksekusiImportExcel').disabled = state.tempImportListExcel.length === 0;
+        } catch (err) {
+          showToast('Gagal membaca file Excel!', 'error');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    async function simpanSantriHasilImportExcel() {
+      if (state.tempImportListExcel.length === 0) return;
+      const targetKelas = document.getElementById('importKelasTujuan').value;
+      const namaWalas = document.getElementById('importWaliKelasNama').value.trim();
+      const hpWalas = document.getElementById('importWaliKelasHp').value.trim();
+
+      if (namaWalas || hpWalas) {
+        state.walasKontak[targetKelas] = {
+          nama: namaWalas || state.walasKontak[targetKelas]?.nama || '',
+          wa: hpWalas || state.walasKontak[targetKelas]?.wa || ''
+        };
+        saveWalasKontak();
+      }
+
+      const walasFinal = dapatkanInfoWalas(targetKelas);
+      const importedBatch = state.tempImportListExcel.map(s => ({
+        ...s,
+        kelas: targetKelas,
+        waliKelas: walasFinal.nama || '',
+        hpWaliKelas: walasFinal.wa || ''
+      }));
+
+      state.siswa = state.siswa.concat(importedBatch);
+      saveLocalData();
+      refreshAllViews();
+      closeModal('modalImportExcel');
+      showToast(`Alhamdulillah, ${importedBatch.length} murid berhasil diimpor!`, 'success');
+
+      try {
+        await panggilApiServer('tambahSantriBatch', importedBatch);
+      } catch (e) {
+        console.warn('Gagal sinkron batch ke server:', e);
+      }
+    }
+
+    function openModalPengacakanKelas() {
+      openModal('modalKenaikanKelas');
+      switchSubTabKenaikan('per-kelas');
+    }
+
+    function switchSubTabKenaikan(tab) {
+      ['per-kelas', 'per-murid', 'acak', 'lulus'].forEach(t => {
+        const btn = document.getElementById(`subTabBtn-${t}`);
+        const cnt = document.getElementById(`subTab${t.split('-').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join('')}Content`);
+        if (!btn || !cnt) return;
+        if (t === tab) {
+          btn.className = 'px-3 py-1.5 rounded-xl bg-emerald-800 text-white shadow-sm whitespace-nowrap cursor-pointer';
+          cnt.classList.remove('hidden');
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-xl text-slate-600 hover:bg-slate-100 whitespace-nowrap cursor-pointer';
+          cnt.classList.add('hidden');
+        }
+      });
+
+      if (tab === 'per-kelas') muatSantriPerKelas();
+      if (tab === 'per-murid') muatSantriPerMurid();
+      if (tab === 'acak') hitungSantriTingkatAsal();
+      if (tab === 'lulus') muatSantriKelas6Lulus();
+    }
+
+    function muatSantriPerKelas() {
+      const kelasAsal = document.getElementById('kenaikanRombelAsal').value;
+      const tbody = document.getElementById('tabelBodyKenaikanPerKelas');
+      if (!kelasAsal) {
+        tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">Silakan pilih Kelas Asal terlebih dahulu</td></tr>';
+        return;
+      }
+
+      const murid = state.siswa.filter(s => s.kelas === kelasAsal && s.status === 'Aktif');
+      tbody.innerHTML = '';
+      if (murid.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">Tidak ada murid aktif di kelas ini</td></tr>';
+        return;
+      }
+
+      murid.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2 text-center"><input type="checkbox" value="${s.nis}" checked class="chk-naik-perkelas rounded text-emerald-700 cursor-pointer"></td>
+          <td class="p-2 font-mono text-slate-500">${s.nis}</td>
+          <td class="p-2 font-bold text-slate-800">${s.nama}</td>
+          <td class="p-2 text-center font-bold font-mono text-emerald-700">${s.poin} pt</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateInfoWalasTujuanPerKelas() {
+      const kelasTujuan = document.getElementById('kenaikanRombelTujuan').value;
+      const walas = dapatkanInfoWalas(kelasTujuan);
+      document.getElementById('kenaikanWalasNama').value = walas.nama || '';
+      document.getElementById('kenaikanWalasHp').value = walas.wa || '';
+    }
+
+    function toggleSelectAllPerKelas() {
+      const chks = document.querySelectorAll('.chk-naik-perkelas');
+      const allChecked = Array.from(chks).every(c => c.checked);
+      chks.forEach(c => c.checked = !allChecked);
+    }
+
+    async function prosesKenaikanPerKelas() {
+      const asal = document.getElementById('kenaikanRombelAsal').value;
+      const tujuan = document.getElementById('kenaikanRombelTujuan').value;
+      const walasNama = document.getElementById('kenaikanWalasNama').value.trim();
+      const walasHp = document.getElementById('kenaikanWalasHp').value.trim();
+      const resetPoin = document.getElementById('checkResetPoinPerKelas').checked;
+
+      if (!asal || !tujuan) {
+        showToast('Pilih kelas asal dan kelas tujuan!', 'error');
+        return;
+      }
+      if (asal === tujuan) {
+        showToast('Kelas asal dan target tidak boleh sama!', 'error');
+        return;
+      }
+
+      const checkedNis = Array.from(document.querySelectorAll('.chk-naik-perkelas:checked')).map(c => c.value);
+      if (checkedNis.length === 0) {
+        showToast('Pilih setidaknya 1 murid!', 'error');
+        return;
+      }
+
+      if (walasNama || walasHp) {
+        state.walasKontak[tujuan] = { nama: walasNama, wa: walasHp };
+        saveWalasKontak();
+      }
+
+      const updates = [];
+      state.siswa.forEach(s => {
+        if (checkedNis.includes(String(s.nis).trim())) {
+          s.kelas = tujuan;
+          if (resetPoin) s.poin = 100;
+          if (walasNama) s.waliKelas = walasNama;
+          if (walasHp) s.hpWaliKelas = walasHp;
+          updates.push({ nis: s.nis, kelas: tujuan, poin: s.poin, waliKelas: walasNama, hpWaliKelas: walasHp });
+        }
+      });
+
+      saveLocalData();
+      refreshAllViews();
+      closeModal('modalKenaikanKelas');
+      showToast(`Alhamdulillah, ${checkedNis.length} murid berhasil dinaikkan ke ${tujuan}!`, 'success');
+
+      try {
+        await panggilApiServer('batchUpdateSiswa', updates);
+      } catch (e) {
+        console.warn('Gagal sinkron kenaikan ke server:', e);
+      }
+    }
+
+    function muatSantriPerMurid() {
+      const filter = document.getElementById('filterMuridAsal').value;
+      const tbody = document.getElementById('tabelBodyKenaikanPerMurid');
+      tbody.innerHTML = '';
+
+      let list = state.siswa.filter(s => s.status === 'Aktif');
+      if (filter !== 'semua') list = list.filter(s => s.kelas === filter);
+
+      list.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2 text-center"><input type="checkbox" value="${s.nis}" class="chk-naik-permurid rounded text-emerald-700 cursor-pointer"></td>
+          <td class="p-2"><div class="font-bold text-slate-800">${s.nama}</div><div class="font-mono text-slate-400 text-[11px]">${s.nis}</div></td>
+          <td class="p-2 text-slate-600">${s.kelas}</td>
+          <td class="p-2">
+            <select data-nis="${s.nis}" class="select-target-kelas-murid border border-slate-300 rounded-lg p-1 text-xs bg-white font-semibold">
+              <option value="">(Tetap / Belum Diubah)</option>
+              ${Object.keys(DAFTAR_KELAS_RESMI).flatMap(k => DAFTAR_KELAS_RESMI[k]).map(kls => `<option value="${kls}">${kls}</option>`).join('')}
+            </select>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function terapkanBulkKelasMurid() {
+      const bulkKelas = document.getElementById('bulkKelasTujuanMurid').value;
+      if (!bulkKelas) {
+        showToast('Pilih kelas tujuan cepat terlebih dahulu!', 'error');
+        return;
+      }
+      const checkedBoxes = document.querySelectorAll('.chk-naik-permurid:checked');
+      if (checkedBoxes.length === 0) {
+        showToast('Centang murid yang ingin disetel kelasnya!', 'error');
+        return;
+      }
+      checkedBoxes.forEach(chk => {
+        const sel = document.querySelector(`.select-target-kelas-murid[data-nis="${chk.value}"]`);
+        if (sel) sel.value = bulkKelas;
+      });
+      showToast(`Kelas tujuan diterapkan untuk ${checkedBoxes.length} murid`, 'info');
+    }
+
+    async function simpanKenaikanPerMurid() {
+      const resetPoin = document.getElementById('checkResetPoinPerMurid').checked;
+      const selects = document.querySelectorAll('.select-target-kelas-murid');
+      const updates = [];
+
+      selects.forEach(sel => {
+        const klsBaru = sel.value;
+        const nis = sel.getAttribute('data-nis');
+        if (klsBaru) {
+          const s = state.siswa.find(x => String(x.nis).trim() === String(nis).trim());
+          if (s) {
+            s.kelas = klsBaru;
+            if (resetPoin) s.poin = 100;
+            updates.push({ nis: s.nis, kelas: klsBaru, poin: s.poin });
+          }
+        }
+      });
+
+      if (updates.length === 0) {
+        showToast('Belum ada target kelas baru yang dipilih!', 'info');
+        return;
+      }
+
+      saveLocalData();
+      refreshAllViews();
+      closeModal('modalKenaikanKelas');
+      showToast(`Alhamdulillah, ${updates.length} murid berhasil didistribusikan!`, 'success');
+
+      try {
+        await panggilApiServer('batchUpdateSiswa', updates);
+      } catch (e) {
+        console.warn('Gagal sinkron distribusi ke server:', e);
+      }
+    }
+
+    function hitungSantriTingkatAsal() {
+      const jenjangAsal = Number(document.getElementById('acakJenjangAsal').value);
+      const jenjangTujuan = jenjangAsal + 1;
+      const targetRombel = DAFTAR_KELAS_RESMI[jenjangTujuan] || [];
+      document.getElementById('acakTargetLabel').value = targetRombel.join(' & ');
+
+      const rombelAsal = DAFTAR_KELAS_RESMI[jenjangAsal] || [];
+      const santri = state.siswa.filter(s => rombelAsal.includes(s.kelas) && s.status === 'Aktif');
+      document.getElementById('acakJumlahSantriLabel').textContent = `${santri.length} Murid Terdeteksi di Kelas ${jenjangAsal}`;
+      document.getElementById('containerHasilAcak').classList.add('hidden');
+      document.getElementById('btnSimpanAcakContainer').classList.add('hidden');
+    }
+
+    function jalankanSimulasiPengacakan() {
+      const jenjangAsal = Number(document.getElementById('acakJenjangAsal').value);
+      const rombelAsal = DAFTAR_KELAS_RESMI[jenjangAsal] || [];
+      const targetRombel = DAFTAR_KELAS_RESMI[jenjangAsal + 1] || [];
+
+      if (targetRombel.length < 2) {
+        showToast('Target rombel tidak valid!', 'error');
+        return;
+      }
+
+      const santri = state.siswa.filter(s => rombelAsal.includes(s.kelas) && s.status === 'Aktif');
+      if (santri.length === 0) {
+        showToast('Tidak ada murid aktif pada jenjang asal tersebut!', 'info');
+        return;
+      }
+
+      const shuffled = [...santri].sort((a, b) => b.poin - a.poin || Math.random() - 0.5);
+      state.simulasiAcakList = [];
+
+      shuffled.forEach((s, idx) => {
+        const tujuan = (idx % 2 === 0) ? targetRombel[0] : targetRombel[1];
+        state.simulasiAcakList.push({
+          nis: s.nis,
+          nama: s.nama,
+          kelasAsal: s.kelas,
+          poin: s.poin,
+          kelasBaru: tujuan
+        });
+      });
+
+      const tbody = document.getElementById('tabelBodyHasilAcak');
+      tbody.innerHTML = '';
+      state.simulasiAcakList.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2"><div class="font-bold text-slate-800">${item.nama}</div><div class="font-mono text-slate-400 text-[11px]">${item.nis}</div></td>
+          <td class="p-2 text-slate-600">${item.kelasAsal}</td>
+          <td class="p-2 text-center font-bold font-mono text-emerald-700">${item.poin} pt</td>
+          <td class="p-2 font-bold text-teal-800">${item.kelasBaru}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('containerHasilAcak').classList.remove('hidden');
+      document.getElementById('btnSimpanAcakContainer').classList.remove('hidden');
+      showToast('Kocok rombel selesai. Silakan periksa hasilnya!', 'info');
+    }
+
+    async function simpanHasilPengacakanKelas() {
+      if (state.simulasiAcakList.length === 0) return;
+      const updates = [];
+
+      state.simulasiAcakList.forEach(item => {
+        const s = state.siswa.find(x => String(x.nis).trim() === String(item.nis).trim());
+        if (s) {
+          s.kelas = item.kelasBaru;
+          s.poin = 100;
+          updates.push({ nis: s.nis, kelas: item.kelasBaru, poin: 100 });
+        }
+      });
+
+      saveLocalData();
+      refreshAllViews();
+      closeModal('modalKenaikanKelas');
+      showToast(`Alhamdulillah, pengacakan ${updates.length} murid berhasil diterapkan!`, 'success');
+
+      try {
+        await panggilApiServer('batchUpdateSiswa', updates);
+      } catch (e) {
+        console.warn('Gagal sinkron acak ke server:', e);
+      }
+    }
+
+    function muatSantriKelas6Lulus() {
+      const rombel6 = DAFTAR_KELAS_RESMI[6] || [];
+      const santri = state.siswa.filter(s => rombel6.includes(s.kelas) && s.status === 'Aktif');
+      const tbody = document.getElementById('tabelBodyKelas6Lulus');
+      tbody.innerHTML = '';
+
+      if (santri.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">Tidak ada murid aktif di Kelas 6</td></tr>';
+        return;
+      }
+
+      santri.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2 font-mono text-slate-500">${s.nis}</td>
+          <td class="p-2 font-bold text-slate-800">${s.nama}</td>
+          <td class="p-2 text-slate-600">${s.kelas}</td>
+          <td class="p-2 text-center"><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Siap Lulus</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function prosesKelulusanKelas6() {
+      const rombel6 = DAFTAR_KELAS_RESMI[6] || [];
+      const santri = state.siswa.filter(s => rombel6.includes(s.kelas) && s.status === 'Aktif');
+
+      if (santri.length === 0) {
+        showToast('Tidak ada murid kelas 6 yang dapat diluluskan!', 'info');
+        return;
+      }
+
+      const updates = [];
+      santri.forEach(s => {
+        s.status = 'Lulus';
+        updates.push({ nis: s.nis, status: 'Lulus' });
+      });
+
+      saveLocalData();
+      refreshAllViews();
+      closeModal('modalKenaikanKelas');
+      showToast(`Alhamdulillah, ${updates.length} murid kelas 6 resmi diarsipkan sebagai Alumni!`, 'success');
+
+      try {
+        await panggilApiServer('batchUpdateSiswa', updates);
+      } catch (e) {
+        console.warn('Gagal sinkron alumni ke server:', e);
+      }
+    }
+
+    function refreshAllViews() {
+      const aktif = state.siswa.filter(s => s.status === 'Aktif');
+      document.getElementById('statTotalSantri').textContent = aktif.length;
+
+      const rerata = aktif.length > 0
+        ? Math.round(aktif.reduce((acc, cur) => acc + Number(cur.poin), 0) / aktif.length)
+        : 100;
+      document.getElementById('statRerataPoin').textContent = rerata;
+
+      const kritis = aktif.filter(s => s.poin < 75);
+      document.getElementById('statPerluBimbingan').textContent = kritis.length;
+
+      document.getElementById('statCatatanPekanIni').textContent = state.riwayat.length;
+
+      const topList = [...aktif].sort((a, b) => b.poin - a.poin).slice(0, 5);
+      const containerTop = document.getElementById('listSantriTeladan');
+      containerTop.innerHTML = '';
+      if (topList.length === 0) {
+        containerTop.innerHTML = '<div class="text-slate-400 py-2">Belum ada data murid</div>';
+      } else {
+        topList.forEach((s, idx) => {
+          const item = document.createElement('div');
+          item.className = 'flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100';
+          item.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
+              <span class="font-bold text-slate-800 text-xs truncate">${s.nama} (${s.kelas})</span>
+            </div>
+            <span class="font-extrabold font-mono text-emerald-700 text-xs shrink-0">${s.poin} pt</span>
+          `;
+          containerTop.appendChild(item);
+        });
+      }
+
+      const bimbinganList = [...kritis].sort((a, b) => a.poin - b.poin).slice(0, 5);
+      const containerBimbingan = document.getElementById('listSantriBimbingan');
+      containerBimbingan.innerHTML = '';
+      if (bimbinganList.length === 0) {
+        containerBimbingan.innerHTML = '<div class="text-slate-400 py-2">Alhamdulillah, seluruh murid aman di atas 75 pt</div>';
+      } else {
+        bimbinganList.forEach((s, idx) => {
+          const item = document.createElement('div');
+          item.className = 'flex items-center justify-between p-2 rounded-xl bg-rose-50 border border-rose-100';
+          item.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-5 h-5 rounded-full bg-rose-200 text-rose-800 text-xs font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
+              <span class="font-bold text-slate-800 text-xs truncate">${s.nama} (${s.kelas})</span>
+            </div>
+            <span class="font-extrabold font-mono text-rose-600 text-xs shrink-0">${s.poin} pt</span>
+          `;
+          containerBimbingan.appendChild(item);
+        });
+      }
+
+      if (state.activeTab === 'siswa') renderTabelSiswa();
+      if (state.activeTab === 'riwayat') renderTabelRiwayat();
+      if (state.activeTab === 'laporan') renderPelaporanWalas();
+      if (state.activeTab === 'input') filterPilihanSantri();
+    }
+
+    function initApp() {
+      const tglLaporan = document.getElementById('tglLaporanWalas');
+      if (tglLaporan) tglLaporan.value = new Date().toISOString().split('T')[0];
+
+      const inputTgl = document.getElementById('inputTanggalPeristiwa');
+      if (inputTgl) inputTgl.value = new Date().toISOString().split('T')[0];
+
+      loadWalasKontak();
+      loadLocalData();
+
+      if (isAppsScriptEnvironment() || state.apiEndpoint) {
+        panggilApiServer('getInitialData')
+          .then(response => {
+            if (response && response.status === 'success' && response.data) {
+              setConnectionStatus(true);
+              const serverSiswa = response.data.siswa || [];
+              const serverRiwayat = response.data.riwayat || [];
+
+              if (serverSiswa.length > 0 || state.siswa.length === 0) {
+                state.siswa = serverSiswa;
+              }
+              if (serverRiwayat.length > 0 || state.riwayat.length === 0) {
+                state.riwayat = serverRiwayat;
+              }
+
+              sinkronisasiKontakDariDataSiswa();
+              saveLocalData();
+              refreshAllViews();
+            } else {
+              setConnectionStatus(false);
+            }
+          })
+          .catch(() => {
+            setConnectionStatus(false);
+          });
+      } else {
+        setConnectionStatus(false);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
