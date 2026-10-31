@@ -100,11 +100,12 @@
         font-size: 16px !important;
       }
     }
+    /* Khusus iPhone 11, 12, 13, 14, 15, 16 agar tidak terpotong notch / poni */
     .pt-safe-top {
-      padding-top: max(env(safe-area-inset-top, 0px), 12px);
+      padding-top: max(env(safe-area-inset-top, 0px), 2.75rem);
     }
     .pb-safe {
-      padding-bottom: max(env(safe-area-inset-bottom, 0px), 14px);
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 1rem);
     }
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
@@ -139,7 +140,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-1.5 sm:p-4 md:p-6 lg:p-8 antialiased selection:bg-brand-500 selection:text-white pb-28 sm:pb-8 pt-safe-top">
+<body class="min-h-screen flex items-center justify-center p-1.5 sm:p-4 md:p-6 lg:p-8 antialiased selection:bg-brand-500 selection:text-white pb-32 sm:pb-8 pt-safe-top">
 
   <!-- ==================== LUXOA MAIN CONTAINER CARD ==================== -->
   <div class="w-full max-w-[1400px] bg-[#9e98ce] rounded-2xl sm:rounded-4xl md:rounded-5xl shadow-[0_25px_60px_-15px_rgba(76,29,149,0.3)] border border-white/40 p-2.5 sm:p-5 lg:p-7 flex flex-col md:flex-row gap-3 sm:gap-4 lg:gap-6 backdrop-blur-md">
@@ -214,7 +215,7 @@
             <button onclick="sinkronkanUlangData()" title="Segarkan" class="w-8 h-8 rounded-xl bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xs active:scale-90 transition cursor-pointer">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>
-            <button onclick="toggleMobileSidebar(true)" title="Menu Navigasi" class="w-8 h-8 rounded-xl bg-[#2e1b4e] text-white flex items-center justify-center text-xs shadow-md active:scale-90 transition cursor-pointer">
+            <button onclick="toggleMobileSidebar(true)" title="Menu Navigasi Lengkap" class="w-8 h-8 rounded-xl bg-[#2e1b4e] text-white flex items-center justify-center text-xs shadow-md active:scale-90 transition cursor-pointer">
               <i class="fa-solid fa-bars-staggered"></i>
             </button>
           </div>
@@ -249,34 +250,6 @@
         </div>
 
       </header>
-
-      <!-- HORIZONTAL QUICK PILL NAVIGATION (Khusus Tampilan HP - Sleek & Scrollable) -->
-      <nav aria-label="Navigasi Menu HP" class="flex md:hidden items-center gap-1.5 pt-2 pb-1 overflow-x-auto no-scrollbar no-print">
-        <button onclick="switchTab('dasbor')" id="mobPillNav-dasbor" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-[#2e1b4e] text-white text-[11px] font-bold shadow-xs whitespace-nowrap transition-all active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-house text-[10px]"></i>
-          <span>Dasbor</span>
-        </button>
-        <button onclick="switchTab('input')" id="mobPillNav-input" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-white/25 text-white/90 hover:bg-white/40 text-[11px] font-bold border border-white/20 whitespace-nowrap transition-all active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-pen-to-square text-[10px]"></i>
-          <span>Catat</span>
-        </button>
-        <button onclick="switchTab('siswa')" id="mobPillNav-siswa" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-white/25 text-white/90 hover:bg-white/40 text-[11px] font-bold border border-white/20 whitespace-nowrap transition-all active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-user-graduate text-[10px]"></i>
-          <span>Data Murid</span>
-        </button>
-        <button onclick="switchTab('riwayat')" id="mobPillNav-riwayat" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-white/25 text-white/90 hover:bg-white/40 text-[11px] font-bold border border-white/20 whitespace-nowrap transition-all active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-clock-rotate-left text-[10px]"></i>
-          <span>Riwayat</span>
-        </button>
-        <button onclick="switchTab('laporan')" id="mobPillNav-laporan" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-white/25 text-white/90 hover:bg-white/40 text-[11px] font-bold border border-white/20 whitespace-nowrap transition-all active:scale-95 cursor-pointer">
-          <i class="fa-brands fa-whatsapp text-emerald-300 text-xs"></i>
-          <span>Walas</span>
-        </button>
-        <button onclick="switchTab('cetak')" id="mobPillNav-cetak" class="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-white/25 text-white/90 hover:bg-white/40 text-[11px] font-bold border border-white/20 whitespace-nowrap transition-all active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-print text-[10px]"></i>
-          <span>Cetak</span>
-        </button>
-      </nav>
 
       <!-- TAB CONTENTS WRAPPER -->
       <main class="mt-3 sm:mt-4 flex-1">
@@ -2266,17 +2239,6 @@
           btn.className = 'w-11 h-11 rounded-2xl flex items-center justify-center text-white bg-[#2e1b4e] shadow-lg transition-all active:scale-90 cursor-pointer';
         } else {
           btn.className = 'w-11 h-11 rounded-2xl flex items-center justify-center text-brand-950/70 hover:bg-white/40 hover:text-brand-950 transition-all active:scale-90 cursor-pointer';
-        }
-      });
-
-      // Update Mobile Horizontal Quick Pills
-      ['dasbor', 'input', 'siswa', 'riwayat', 'laporan', 'cetak'].forEach(t => {
-        const pillBtn = document.getElementById(`mobPillNav-${t}`);
-        if (!pillBtn) return;
-        if (t === tabId) {
-          pillBtn.className = 'flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-[#2e1b4e] text-white text-[11px] font-bold shadow-xs whitespace-nowrap transition-all active:scale-95 cursor-pointer';
-        } else {
-          pillBtn.className = 'flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-white/25 text-white/90 hover:bg-white/40 text-[11px] font-bold border border-white/20 whitespace-nowrap transition-all active:scale-95 cursor-pointer';
         }
       });
 
