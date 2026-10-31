@@ -30,6 +30,38 @@
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            },
+            accent: {
+              lime: '#a3e635',
+              teal: '#14b8a6',
+              rose: '#f43f5e'
+            }
+          },
+          borderRadius: {
+            '4xl': '2rem',
+            '5xl': '2.5rem',
+          }
+        }
+      }
+    }
+  </script>
   
   <!-- SheetJS (xlsx) untuk Olah File Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -41,8 +73,9 @@
     }
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f8fafc;
-      color: #1e293b;
+      background-color: #b8b3db;
+      background-image: radial-gradient(circle at 10% 20%, rgba(240, 238, 252, 0.4) 0%, rgba(184, 179, 219, 0.9) 90%);
+      color: #1e1b4b;
       -webkit-tap-highlight-color: transparent;
       -webkit-font-smoothing: antialiased;
     }
@@ -67,11 +100,9 @@
         font-size: 16px !important;
       }
     }
-    /* iPhone Safe Area Top (Notch iPhone 11) */
     .pt-safe-top {
       padding-top: max(env(safe-area-inset-top, 0px), 12px);
     }
-    /* iPhone Safe Area Bottom (Home Bar) */
     .pb-safe {
       padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 6px);
     }
@@ -102,791 +133,943 @@
         background: white !important;
         color: black !important;
       }
-      header, aside, .no-print {
+      header, aside, .no-print, .luxoa-sidebar {
         display: none !important;
       }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white pb-24 sm:pb-8">
+<body class="min-h-screen flex items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8 antialiased selection:bg-brand-500 selection:text-white pb-24 sm:pb-8">
 
-  <!-- Top App Header dengan Safe Area Top untuk iPhone 11 Notch -->
-  <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg sticky top-0 z-40 pt-safe-top transition-all no-print">
-    <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between py-2 sm:py-3.5">
-        
-        <!-- Logo & Identitas Sekolah -->
-        <div class="flex items-center space-x-2.5 sm:space-x-3.5">
-          <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-1 flex items-center justify-center shadow-inner shrink-0 overflow-hidden">
-            <img src="/logo.png" alt="Logo SDIT Az Zahra" class="w-full h-full object-contain" onerror="this.classList.add('hidden'); document.getElementById('defaultLogoBadge').classList.remove('hidden');">
-            <div id="defaultLogoBadge" class="hidden w-full h-full flex items-center justify-center text-emerald-300">
-              <i class="fa-solid fa-mosque text-base sm:text-xl"></i>
-            </div>
-          </div>
-          <div class="min-w-0">
-            <div class="flex items-center gap-1.5 sm:gap-2">
-              <h1 class="text-xs sm:text-xl font-extrabold tracking-tight text-white leading-tight truncate">SDIT AZ ZAHRA</h1>
-              <span class="text-[11px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 whitespace-nowrap">
-                Kesiswaan
-              </span>
-            </div>
-            <p class="text-[11px] sm:text-xs text-emerald-200/90 font-medium truncate">Mutaba'ah & Kedisiplinan Murid</p>
-          </div>
+  <!-- ==================== LUXOA MAIN CONTAINER CARD ==================== -->
+  <div class="w-full max-w-[1400px] bg-[#9e98ce] rounded-3xl sm:rounded-5xl shadow-[0_25px_60px_-15px_rgba(76,29,149,0.3)] border border-white/40 p-3 sm:p-5 lg:p-7 flex flex-col md:flex-row gap-4 lg:gap-6 backdrop-blur-md">
+
+    <!-- FLOATING ICON SIDEBAR (Luxoa Desktop Navigation) -->
+    <aside aria-label="Sidebar Menu" class="luxoa-sidebar hidden md:flex flex-col items-center justify-between py-6 px-3 bg-white/20 rounded-3xl sm:rounded-4xl border border-white/30 backdrop-blur-md shrink-0 w-18 shadow-inner no-print">
+      
+      <!-- Top Brand Icon -->
+      <div class="flex flex-col items-center gap-6">
+        <div class="w-12 h-12 rounded-2xl bg-white/80 shadow-md flex items-center justify-center text-brand-900 border border-white/60">
+          <i class="fa-solid fa-shapes text-xl text-brand-800"></i>
         </div>
 
-        <!-- Indikator Koneksi 3-Status & Tombol Segarkan -->
-        <div class="flex items-center gap-2">
-          <div id="connStatusBadge" title="Sedang menghubungkan ke Google Sheets..." class="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20 shadow-sm backdrop-blur">
-            <span id="connPulseDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)] transition-all duration-300"></span>
-          </div>
-
-          <button onclick="sinkronkanUlangData()" title="Segarkan Data" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-90 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/10 cursor-pointer">
-            <i class="fa-solid fa-arrows-rotate text-emerald-300 text-xs"></i>
-            <span class="hidden sm:inline">Segarkan</span>
+        <!-- Navigation Buttons -->
+        <nav class="flex flex-col items-center gap-3">
+          <button onclick="switchTab('dasbor')" id="sidebarBtn-dasbor" title="Dasbor & Analitik" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white bg-[#2e1b4e] shadow-lg transition-all active:scale-90 cursor-pointer">
+            <i class="fa-solid fa-house text-sm"></i>
           </button>
-        </div>
-
+          <button onclick="switchTab('input')" id="sidebarBtn-input" title="Input Catatan Kilat" class="w-11 h-11 rounded-2xl flex items-center justify-center text-brand-950/70 hover:bg-white/40 hover:text-brand-950 transition-all active:scale-90 cursor-pointer">
+            <i class="fa-solid fa-pen-to-square text-sm"></i>
+          </button>
+          <button onclick="switchTab('siswa')" id="sidebarBtn-siswa" title="Data Murid & Rombel" class="w-11 h-11 rounded-2xl flex items-center justify-center text-brand-950/70 hover:bg-white/40 hover:text-brand-950 transition-all active:scale-90 cursor-pointer">
+            <i class="fa-solid fa-user-graduate text-sm"></i>
+          </button>
+          <button onclick="switchTab('riwayat')" id="sidebarBtn-riwayat" title="Riwayat & Koreksi" class="w-11 h-11 rounded-2xl flex items-center justify-center text-brand-950/70 hover:bg-white/40 hover:text-brand-950 transition-all active:scale-90 cursor-pointer">
+            <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+          </button>
+          <button onclick="switchTab('laporan')" id="sidebarBtn-laporan" title="WhatsApp Gateway Walas" class="w-11 h-11 rounded-2xl flex items-center justify-center text-brand-950/70 hover:bg-white/40 hover:text-brand-950 transition-all active:scale-90 cursor-pointer">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+          </button>
+          <button onclick="switchTab('cetak')" id="sidebarBtn-cetak" title="Cetak Rapor & Laporan" class="w-11 h-11 rounded-2xl flex items-center justify-center text-brand-950/70 hover:bg-white/40 hover:text-brand-950 transition-all active:scale-90 cursor-pointer">
+            <i class="fa-solid fa-print text-sm"></i>
+          </button>
+        </nav>
       </div>
 
-      <!-- Navigation Tabs (Desktop View) -->
-      <nav class="hidden sm:flex space-x-1 sm:space-x-1.5 border-t border-emerald-800/70 pt-2 pb-2.5 overflow-x-auto text-xs sm:text-sm font-semibold custom-scrollbar">
-        <button onclick="switchTab('dasbor')" id="tabBtn-dasbor" class="nav-tab active px-3 py-2 rounded-xl text-white bg-white/20 transition flex items-center gap-2 whitespace-nowrap shadow-sm cursor-pointer">
-          <i class="fa-solid fa-chart-pie text-emerald-300"></i> Dasbor
+      <!-- Bottom Status & Actions -->
+      <div class="flex flex-col items-center gap-3">
+        <button onclick="sinkronkanUlangData()" title="Segarkan Data Google Sheets" class="w-10 h-10 rounded-2xl bg-white/40 hover:bg-white/70 text-brand-950 flex items-center justify-center text-xs transition active:scale-90 cursor-pointer">
+          <i class="fa-solid fa-arrows-rotate"></i>
         </button>
-        <button onclick="switchTab('input')" id="tabBtn-input" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-pen-to-square text-emerald-300"></i> Input Catatan
-        </button>
-        <button onclick="switchTab('siswa')" id="tabBtn-siswa" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-user-graduate text-emerald-300"></i> Data Murid
-        </button>
-        <button onclick="switchTab('riwayat')" id="tabBtn-riwayat" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-clock-rotate-left text-emerald-300"></i> Riwayat & Koreksi
-        </button>
-        <button onclick="switchTab('laporan')" id="tabBtn-laporan" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-brands fa-whatsapp text-emerald-300 text-sm"></i> Lapor Walas
-        </button>
-        <button onclick="switchTab('cetak')" id="tabBtn-cetak" class="nav-tab px-3 py-2 rounded-xl text-emerald-100 hover:bg-white/10 hover:text-white transition flex items-center gap-2 whitespace-nowrap cursor-pointer">
-          <i class="fa-solid fa-print text-emerald-300"></i> Cetak Laporan
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Content Body -->
-  <main class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-3.5 sm:py-8 flex-1 w-full">
-
-    <!-- ==================== TAB 1: DASBOR & STATISTIK ==================== -->
-    <section id="tab-dasbor" class="tab-content space-y-3.5 sm:space-y-6">
-      
-      <!-- Greeting Banner -->
-      <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-teal-900 to-emerald-800 p-4 sm:p-8 text-white shadow-lg sm:shadow-xl border border-emerald-700/40">
-        <div class="relative z-10 space-y-1 sm:space-y-2 max-w-2xl">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-white/15 text-emerald-200 border border-white/20">
-            <i class="fa-solid fa-star-and-crescent text-emerald-300"></i> Menegakkan Adab Sebelum Menuntut Ilmu
-          </span>
-          <h2 class="text-base sm:text-3xl font-extrabold tracking-tight">Portal Kesiswaan SDIT Az Zahra</h2>
-          <p class="text-xs sm:text-sm text-emerald-100/90 font-normal leading-relaxed">
-            Pantau pembiasaan adab harian, poin kedisiplinan, koreksi catatan salah input, dan pelaporan wali kelas resmi.
-          </p>
-          <!-- Tombol Pintas Cepat (Mobile & Desktop) -->
-          <div class="pt-2 flex flex-wrap items-center gap-2">
-            <button onclick="switchTab('input')" class="py-1.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-emerald-950 text-xs font-extrabold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
-              <i class="fa-solid fa-pen-to-square"></i> Input Catatan
-            </button>
-            <button onclick="switchTab('laporan')" class="py-1.5 px-3 rounded-xl bg-white/20 hover:bg-white/30 active:scale-95 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/30 cursor-pointer">
-              <i class="fa-brands fa-whatsapp text-emerald-300"></i> Lapor Walas
-            </button>
-            <button onclick="switchTab('cetak')" class="py-1.5 px-3 rounded-xl bg-white/20 hover:bg-white/30 active:scale-95 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/30 cursor-pointer">
-              <i class="fa-solid fa-print text-emerald-300"></i> Cetak Laporan
-            </button>
-          </div>
-        </div>
-        <div class="absolute -right-6 -bottom-6 opacity-10 text-[110px] sm:text-[180px] pointer-events-none font-quran text-white">
-          ۞
-        </div>
+        <div id="sidebarConnDot" title="Status Terhubung" class="w-3 h-3 rounded-full bg-amber-400 animate-pulse shadow-[0_0_10px_rgba(251,191,36,0.9)]"></div>
       </div>
+    </aside>
 
-      <!-- Stat Cards Grid -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
+    <!-- MAIN APP CANVAS AREA -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- TOP HEADER BAR (Luxoa Inspired) -->
+      <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-white/20 no-print">
         
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 mb-1">
-            <span class="text-xs font-bold truncate">Murid Aktif</span>
-            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs sm:text-sm shrink-0">
-              <i class="fa-solid fa-users"></i>
-            </div>
+        <!-- App Title & Subtitle -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-white/30 border border-white/40 flex md:hidden items-center justify-center text-brand-950 shadow-sm shrink-0">
+            <i class="fa-solid fa-shapes text-lg"></i>
           </div>
-          <div id="statTotalSantri" class="text-lg sm:text-3xl font-extrabold text-slate-800">0</div>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">12 Rombel Resmi</p>
-        </div>
-
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 mb-1">
-            <span class="text-xs font-bold truncate">Rerata Poin</span>
-            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-xs sm:text-sm shrink-0">
-              <i class="fa-solid fa-award"></i>
-            </div>
-          </div>
-          <div id="statRerataPoin" class="text-lg sm:text-3xl font-extrabold text-teal-700">100</div>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">Standar: 100 pt</p>
-        </div>
-
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 mb-1">
-            <span class="text-xs font-bold truncate">Perlu Atensi</span>
-            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center text-xs sm:text-sm shrink-0">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-          </div>
-          <div id="statPerluBimbingan" class="text-lg sm:text-3xl font-extrabold text-rose-600">0</div>
-          <p class="text-xs text-rose-500 font-semibold mt-0.5">Di bawah 75 pt</p>
-        </div>
-
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 mb-1">
-            <span class="text-xs font-bold truncate">Total Catatan</span>
-            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xs sm:text-sm shrink-0">
-              <i class="fa-solid fa-scroll"></i>
-            </div>
-          </div>
-          <div id="statCatatanPekanIni" class="text-lg sm:text-3xl font-extrabold text-amber-700">0</div>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">Semua Rombel</p>
-        </div>
-
-      </div>
-
-      <!-- 2 Columns: Teladan & Perlu Bimbingan -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3.5 sm:gap-6">
-        
-        <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm space-y-3">
-          <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xs">
-                <i class="fa-solid fa-crown"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-800 text-xs sm:text-base">Murid Teladan Pekan Ini</h3>
-                <p class="text-xs text-slate-400">Poin tertinggi mutaba'ah</p>
-              </div>
-            </div>
-            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
-              Mumtaz
-            </span>
-          </div>
-
-          <div id="listSantriTeladan" class="space-y-2 text-xs"></div>
-        </div>
-
-        <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm space-y-3">
-          <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center text-xs">
-                <i class="fa-solid fa-hand-holding-heart"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-slate-800 text-xs sm:text-base">Perlu Pendampingan Khusus</h3>
-                <p class="text-xs text-slate-400">Poin di bawah 75 pt</p>
-              </div>
-            </div>
-            <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
-              Atensi Walas/BK
-            </span>
-          </div>
-
-          <div id="listSantriBimbingan" class="space-y-2 text-xs"></div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- ==================== TAB 2: INPUT CATATAN HARIAN ==================== -->
-    <section id="tab-input" class="tab-content hidden space-y-3.5 sm:space-y-6">
-      
-      <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm p-4 sm:p-7 max-w-4xl mx-auto space-y-4">
-        
-        <!-- Header Formulir & Toggle Jenis Catatan -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div>
-            <h2 class="text-sm sm:text-xl font-bold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-pen-to-square text-emerald-800"></i> Input Catatan Harian
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Catat pelanggaran tata tertib atau apresiasi amal shalih murid secara kilat</p>
-          </div>
-
-          <div class="grid grid-cols-2 p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold w-full sm:w-auto">
-            <button type="button" onclick="setJenisInput('pelanggaran')" id="toggleBtnPelanggaran" class="py-2 sm:py-1.5 px-4 rounded-xl bg-white text-rose-700 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-triangle-exclamation"></i> Pelanggaran
-            </button>
-            <button type="button" onclick="setJenisInput('kebaikan')" id="toggleBtnKebaikan" class="py-2 sm:py-1.5 px-4 rounded-xl text-slate-600 hover:text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-star"></i> Kebaikan
-            </button>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black tracking-widest uppercase text-brand-950/70">PORTAL MUTABA'AH</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/30 text-brand-950 border border-white/40">SDIT AZ ZAHRA</span>
+            </div>
+            <h1 class="text-lg sm:text-2xl font-black text-white tracking-tight">Luxoa Kesiswaan</h1>
           </div>
         </div>
 
-        <!-- Pemilih Metode Pencarian Siswa: Cari Cepat vs Checklist Sekelas -->
-        <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100/90 border border-slate-200 text-xs font-bold">
-          <button type="button" onclick="setMetodeInputSiswa('cari')" id="btnMetodeCari" class="flex-1 py-1.5 px-3 rounded-lg bg-white text-emerald-900 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-magnifying-glass text-emerald-700"></i> 1. Cari Nama & Multi-Pilih (Ketik 2 Huruf)
-          </button>
-          <button type="button" onclick="setMetodeInputSiswa('checklist')" id="btnMetodeChecklist" class="flex-1 py-1.5 px-3 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-list-check text-emerald-700"></i> 2. Checklist Rombel (Tap Nama Sekelas)
-          </button>
-        </div>
-
-        <form id="formInputCatatan" onsubmit="handleFormSubmit(event)" class="space-y-4">
+        <!-- Filter Pill Controls & Quick Action Button -->
+        <div class="flex items-center flex-wrap gap-2">
           
-          <!-- AREA 1: METODE CARI NAMA CEPAT + MULTI TAGS -->
-          <div id="containerMetodeCari" class="p-3 sm:p-4 rounded-2xl bg-emerald-50/40 border border-emerald-200/80 space-y-3">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
-              <label class="font-bold text-slate-800 flex items-center gap-1.5 text-xs">
-                <i class="fa-solid fa-users text-emerald-700"></i> Cari & Pilih Murid (Bisa Pilih Banyak Anak Sekaligus) *
-              </label>
-              <span class="text-[11px] text-slate-500 italic">Ketik nama murid, klik untuk memasukkan ke daftar</span>
+          <!-- Period Selector Pill (Daily, Weekly, Monthly) -->
+          <div class="flex items-center p-1 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-xs font-bold text-white shadow-inner">
+            <button onclick="setDashboardPeriodFilter('daily')" id="btnPeriodDaily" class="py-1.5 px-3 rounded-xl bg-[#2e1b4e] text-white shadow-sm transition-all cursor-pointer">
+              Harian
+            </button>
+            <button onclick="setDashboardPeriodFilter('weekly')" id="btnPeriodWeekly" class="py-1.5 px-3 rounded-xl text-white/80 hover:text-white transition-all cursor-pointer">
+              Pekan Ini
+            </button>
+            <button onclick="setDashboardPeriodFilter('monthly')" id="btnPeriodMonthly" class="py-1.5 px-3 rounded-xl text-white/80 hover:text-white transition-all cursor-pointer">
+              Bulanan
+            </button>
+          </div>
+
+          <!-- Connection Badge & Refresh Button -->
+          <div id="connStatusBadge" title="Menghubungkan ke Google Sheets..." class="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/20 border border-white/30 shadow-sm">
+            <span id="connPulseDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.9)]"></span>
+          </div>
+
+          <!-- + Add Catatan Button (Primary Action Pill) -->
+          <button onclick="switchTab('input')" class="py-2 px-4 rounded-2xl bg-[#2e1b4e] hover:bg-[#23143c] active:scale-95 text-white text-xs font-black transition flex items-center gap-2 shadow-lg cursor-pointer">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Catat Adab</span>
+          </button>
+        </div>
+
+      </header>
+
+      <!-- TAB CONTENTS WRAPPER -->
+      <main class="mt-4 flex-1">
+
+        <!-- ==================== TAB 1: DASBOR & BENTO ANALITIK ==================== -->
+        <section id="tab-dasbor" class="tab-content space-y-4 sm:space-y-6">
+          
+          <!-- Luxoa Welcome Banner & Top Metrics Strip -->
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 text-white">
+            <div class="space-y-1">
+              <h2 class="text-xl sm:text-3xl font-extrabold tracking-tight">Ahlan wa Sahlan, Tim Kesiswaan!</h2>
+              <p class="text-xs sm:text-sm text-white/80 font-medium">Laporan analitik kedisiplinan dan mutaba'ah karakter murid hari ini.</p>
             </div>
 
-            <!-- Input Pencarian Realtime -->
-            <div class="relative">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-emerald-700 text-sm"></i>
-              <input type="text" id="inputPencarianSantriCepat" oninput="handlePencarianSantriRealtime(this.value)" placeholder="Ketik nama murid atau NIS (contoh: Yusuf / Farhan / 2024)..." class="w-full pl-10 pr-10 py-2.5 sm:py-3 text-base sm:text-xs font-semibold rounded-xl border border-emerald-300 bg-white focus:ring-2 focus:ring-emerald-600 focus:outline-none shadow-sm">
-              <button type="button" onclick="document.getElementById('inputPencarianSantriCepat').value=''; handlePencarianSantriRealtime('');" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 text-xs p-1">
-                <i class="fa-solid fa-circle-xmark"></i>
+            <!-- Top Metric Digits -->
+            <div class="flex items-center gap-6 sm:gap-8 self-start lg:self-end">
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-white/70 block">Total Catatan Aktif</span>
+                <div class="flex items-baseline gap-1.5">
+                  <span id="statTopTotalCatatan" class="text-2xl sm:text-3xl font-black text-white">0</span>
+                  <span class="text-xs text-white/80 font-semibold">kejadian</span>
+                </div>
+              </div>
+              <div class="h-8 w-px bg-white/20"></div>
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-white/70 block">Indeks Adab Rerata</span>
+                <div class="flex items-baseline gap-1.5">
+                  <span id="statTopRerataPoin" class="text-2xl sm:text-3xl font-black text-white">100</span>
+                  <span class="text-xs text-lime-300 font-bold font-mono">pt</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BENTO GRID: 3 TOP CARDS (Battery Pill, SVG Trend Curve, Category Bars) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
+            
+            <!-- CARD 1: Luxoa Battery / Pill Progress Widget (Discipline Health Meter) -->
+            <div class="lg:col-span-4 bg-white/95 rounded-3xl p-5 border border-white/60 shadow-xl flex flex-col justify-between space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-slate-800 text-sm">Rasio Karakter Adab</h3>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-brand-100 text-brand-800 font-mono">
+                  <i class="fa-solid fa-bolt text-brand-600 mr-1"></i>Realtime
+                </span>
+              </div>
+
+              <!-- Battery Pill Capsule (Luxoa Style) -->
+              <div class="relative w-full py-4 flex flex-col items-center justify-center">
+                <div class="w-full h-20 rounded-2xl border-4 border-[#7c3aed] p-1.5 flex items-center justify-between relative bg-slate-50/50 shadow-inner">
+                  <!-- Positive / Negative Gradient Bar -->
+                  <div id="meterBarKebaikan" style="width: 85%;" class="h-full rounded-xl bg-gradient-to-r from-emerald-400 to-[#a3e635] flex items-center justify-center text-xs font-black text-emerald-950 transition-all duration-700 shadow-sm">
+                    <span id="labelPercentKebaikan">85%</span>
+                  </div>
+                  <div id="meterBarPelanggaran" style="width: 15%;" class="h-full rounded-xl bg-gradient-to-r from-rose-400 to-rose-500 ml-1 flex items-center justify-center text-[10px] font-black text-white transition-all duration-700 shadow-sm">
+                    <span id="labelPercentPelanggaran">15%</span>
+                  </div>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-2 font-medium">Berdasarkan total aktivitas catatan murid</div>
+              </div>
+
+              <!-- Legend Dots -->
+              <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs font-bold">
+                <div class="flex items-center gap-1.5 text-emerald-700">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#a3e635]"></span>
+                  <span>Amal Shalih (<span id="countLegKebaikan">0</span>)</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-rose-600">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                  <span>Pelanggaran (<span id="countLegPelanggaran">0</span>)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2: Luxoa Training Duration Curved Graph (Tren Sepekan Senin-Jumat) -->
+            <div class="lg:col-span-5 bg-white/95 rounded-3xl p-5 border border-white/60 shadow-xl flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-bold text-slate-800 text-sm">Tren Mutaba'ah Sepekan</h3>
+                  <p class="text-[11px] text-slate-400 font-medium">Fluktuasi kejadian hari sekolah (Senin - Jumat)</p>
+                </div>
+                <div class="flex items-center gap-1">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                    Senin – Jumat
+                  </span>
+                </div>
+              </div>
+
+              <!-- SVG Interactive Line Graph -->
+              <div class="relative w-full h-36 flex items-center justify-center">
+                <svg id="svgChartTrenMingguan" class="w-full h-full overflow-visible" viewBox="0 0 320 120">
+                  <defs>
+                    <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#a3e635" stop-opacity="0.6"/>
+                      <stop offset="100%" stop-color="#a3e635" stop-opacity="0.0"/>
+                    </linearGradient>
+                    <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.4"/>
+                      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.0"/>
+                    </linearGradient>
+                  </defs>
+                  
+                  <!-- Area & Line Paths (Populated via JS) -->
+                  <path id="svgAreaPathKebaikan" d="M 20 80 Q 80 40, 150 60 T 300 30 L 300 110 L 20 110 Z" fill="url(#curveGradient)" />
+                  <path id="svgLinePathKebaikan" d="M 20 80 Q 80 40, 150 60 T 300 30" fill="none" stroke="#a3e635" stroke-width="3" stroke-linecap="round" />
+                  
+                  <path id="svgLinePathPelanggaran" d="M 20 95 Q 80 85, 150 70 T 300 90" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="3,3" stroke-linecap="round" />
+                  
+                  <!-- Peak Highlight Dot (Like 56min in Luxoa) -->
+                  <circle id="svgPeakDot" cx="230" cy="42" r="5" fill="#a3e635" stroke="#ffffff" stroke-width="2" class="shadow-md" />
+                </svg>
+
+                <!-- Floating Peak Tooltip -->
+                <div id="chartTooltipFloating" class="absolute -top-1 right-12 bg-[#2e1b4e] text-white text-[10px] font-black px-2 py-0.5 rounded-lg shadow-md border border-white/20">
+                  <span id="chartTooltipText">Puncak: Rabu</span>
+                </div>
+              </div>
+
+              <!-- Day Labels (Sen, Sel, Rab, Kam, Jum) -->
+              <div class="grid grid-cols-5 text-center text-[11px] font-bold text-slate-400 pt-2 border-t border-slate-100">
+                <span>Sen</span>
+                <span>Sel</span>
+                <span>Rab</span>
+                <span>Kam</span>
+                <span>Jum</span>
+              </div>
+            </div>
+
+            <!-- CARD 3: Calories Burned Style (Pembiasaan & Jenjang Bars) -->
+            <div class="lg:col-span-3 bg-white/95 rounded-3xl p-5 border border-white/60 shadow-xl flex flex-col justify-between space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-slate-800 text-sm">Status Jenjang</h3>
+                <span class="text-[11px] font-bold text-slate-400">1 - 6</span>
+              </div>
+
+              <!-- Bar Comparison Columns -->
+              <div class="h-36 flex items-end justify-between gap-1.5 px-1 pt-2">
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div id="barJenjang1" style="height: 60%;" class="w-full max-w-[20px] rounded-t-lg bg-[#a3e635] transition-all"></div>
+                  <span class="text-[10px] font-bold text-slate-400">K1</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div id="barJenjang2" style="height: 80%;" class="w-full max-w-[20px] rounded-t-lg bg-[#7c3aed] transition-all"></div>
+                  <span class="text-[10px] font-bold text-slate-400">K2</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div id="barJenjang3" style="height: 45%;" class="w-full max-w-[20px] rounded-t-lg bg-[#a3e635] transition-all"></div>
+                  <span class="text-[10px] font-bold text-slate-400">K3</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div id="barJenjang4" style="height: 90%;" class="w-full max-w-[20px] rounded-t-lg bg-[#7c3aed] transition-all"></div>
+                  <span class="text-[10px] font-bold text-slate-400">K4</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div id="barJenjang5" style="height: 70%;" class="w-full max-w-[20px] rounded-t-lg bg-[#a3e635] transition-all"></div>
+                  <span class="text-[10px] font-bold text-slate-400">K5</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div id="barJenjang6" style="height: 85%;" class="w-full max-w-[20px] rounded-t-lg bg-[#7c3aed] transition-all"></div>
+                  <span class="text-[10px] font-bold text-slate-400">K6</span>
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold">
+                <span class="text-slate-500">Kepatuhan Tertinggi:</span>
+                <span class="text-brand-700 font-extrabold">Kelas 4 (94%)</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BENTO GRID LOWER SECTION: Live Workout Table & Daily Agenda Widget -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- LOWER LEFT: Sport Workout Table (Live Feed Mutaba'ah Terbaru) -->
+            <div class="lg:col-span-8 bg-white/95 rounded-3xl p-5 border border-white/60 shadow-xl space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                <div>
+                  <h3 class="font-bold text-slate-800 text-sm sm:text-base">Aktivitas Mutaba'ah Terbaru</h3>
+                  <p class="text-xs text-slate-400">Pencatatan pelanggaran dan apresiasi amal shalih terkini</p>
+                </div>
+                <button onclick="switchTab('riwayat')" class="text-xs font-bold text-brand-700 hover:text-brand-900 transition flex items-center gap-1 cursor-pointer">
+                  Lihat Semua <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </button>
+              </div>
+
+              <!-- List Feed Items (Luxoa Horizontal Row Style) -->
+              <div id="luxoaLiveWorkoutFeed" class="space-y-2.5">
+                <!-- Injected dynamically via renderLuxoaFeed() -->
+              </div>
+            </div>
+
+            <!-- LOWER RIGHT: Sport Schedule (Agenda & Sidak Harian Kesiswaan) -->
+            <div class="lg:col-span-4 bg-white/95 rounded-3xl p-5 border border-white/60 shadow-xl space-y-4 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                  <h3 class="font-bold text-slate-800 text-sm">Agenda & Sidak Harian</h3>
+                  <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-mono" id="labelTanggalHariIniAgenda">Hari Ini</span>
+                </div>
+
+                <!-- Schedule Timeline Items (Luxoa Style) -->
+                <div class="mt-3 space-y-3">
+                  
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                    <div class="w-12 text-center shrink-0">
+                      <span class="text-xs font-black text-slate-800 block">07:00</span>
+                      <span class="text-[10px] font-semibold text-slate-400">Pagi</span>
+                    </div>
+                    <div class="h-8 w-1 rounded-full bg-[#a3e635]"></div>
+                    <div class="flex-1 min-w-0">
+                      <div class="font-bold text-slate-800 text-xs truncate">Penyambutan & Senyum Sapa</div>
+                      <div class="text-[11px] text-slate-400">Pintu Gerbang Utama</div>
+                    </div>
+                  </div>
+
+                  <div class="p-3 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex items-center gap-3">
+                    <div class="w-12 text-center shrink-0">
+                      <span class="text-xs font-black text-brand-900 block">09:30</span>
+                      <span class="text-[10px] font-semibold text-brand-600">Dhuha</span>
+                    </div>
+                    <div class="h-8 w-1 rounded-full bg-[#7c3aed]"></div>
+                    <div class="flex-1 min-w-0">
+                      <div class="font-bold text-brand-950 text-xs truncate">Monitoring Sholat Dhuha</div>
+                      <div class="text-[11px] text-brand-700/80">Masjid SDIT Az Zahra</div>
+                    </div>
+                  </div>
+
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                    <div class="w-12 text-center shrink-0">
+                      <span class="text-xs font-black text-slate-800 block">12:15</span>
+                      <span class="text-[10px] font-semibold text-slate-400">Dzuhur</span>
+                    </div>
+                    <div class="h-8 w-1 rounded-full bg-[#a3e635]"></div>
+                    <div class="flex-1 min-w-0">
+                      <div class="font-bold text-slate-800 text-xs truncate">Adab Makan Siang & Sholat</div>
+                      <div class="text-[11px] text-slate-400">Rombel Kelas 1 s/d 6</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Quick Lapor Walas Shortcut Box -->
+            <div class="p-3.5 rounded-2xl bg-[#2e1b4e] text-white flex items-center justify-between gap-3 shadow-md">
+              <div class="space-y-0.5">
+                <div class="font-bold text-xs">WhatsApp Gateway Walas</div>
+                <div class="text-[10px] text-white/70">Kirimkan rekap hari ini ke 12 rombel</div>
+              </div>
+              <button onclick="switchTab('laporan')" class="p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white transition active:scale-90 cursor-pointer">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
               </button>
             </div>
 
-            <!-- Hasil Auto-Suggest Pencarian (Muncul saat mengetik) -->
-            <div id="hasilPencarianSantriDropdown" class="hidden max-h-48 overflow-y-auto bg-white border border-emerald-300 rounded-xl shadow-lg divide-y divide-slate-100 z-20"></div>
+          </div>
 
-            <!-- Kotak Tag Murid Terpilih (Chips Multi-Pilih) -->
-            <div class="space-y-1.5">
-              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
-                <span>Murid yang Terpilih (<span id="jumlahSantriTerpilihBadge" class="text-emerald-800 font-extrabold">0</span> anak):</span>
-                <button type="button" onclick="kosongkanSemuaSantriTerpilih()" id="btnResetSantriTerpilih" class="hidden text-rose-600 hover:underline cursor-pointer">
-                  Hapus Semua Pilihan
-                </button>
-              </div>
-              <div id="chipsSantriTerpilihContainer" class="min-h-[42px] p-2 bg-white rounded-xl border border-slate-200 flex flex-wrap items-center gap-1.5">
-                <span id="placeholderSantriKosong" class="text-xs text-slate-400 italic">Belum ada murid dipilih. Ketik nama di atas untuk menambahkan.</span>
-              </div>
+        </div>
+
+      </main>
+
+      <!-- ==================== TAB 2: INPUT CATATAN KILAT ==================== -->
+      <section id="tab-input" class="tab-content hidden space-y-4">
+        
+        <div class="bg-white/95 rounded-3xl p-4 sm:p-7 border border-white/60 shadow-xl space-y-5">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <h2 class="text-base sm:text-xl font-extrabold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-[#7c3aed]"></i> Formulir Mutaba'ah Kilat
+              </h2>
+              <p class="text-xs text-slate-400">Pilih murid dan catat amal shalih atau pelanggaran dengan cepat.</p>
+            </div>
+
+            <!-- Toggle Jenis: Pelanggaran vs Kebaikan -->
+            <div class="flex items-center p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold w-full sm:w-auto">
+              <button type="button" id="toggleBtnPelanggaran" onclick="setJenisInput('pelanggaran')" class="flex-1 sm:flex-initial py-2 sm:py-1.5 px-4 rounded-xl bg-white text-rose-700 shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-circle-minus"></i> Pelanggaran
+              </button>
+              <button type="button" id="toggleBtnKebaikan" onclick="setJenisInput('kebaikan')" class="flex-1 sm:flex-initial py-2 sm:py-1.5 px-4 rounded-xl text-slate-600 hover:text-slate-800 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-circle-plus"></i> Amal Shalih
+              </button>
             </div>
           </div>
 
-          <!-- AREA 2: METODE CHECKLIST ROMBEL SEKELAS (Untuk Sidak / Halaqah / Sholat) -->
-          <div id="containerMetodeChecklist" class="hidden p-3 sm:p-4 rounded-2xl bg-teal-50/40 border border-teal-200/80 space-y-3">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-              <div class="flex items-center gap-2">
-                <label class="font-bold text-slate-800 flex items-center gap-1.5 text-xs">
-                  <i class="fa-solid fa-list-check text-teal-700"></i> Pilih Kelas:
-                </label>
-                <select id="checklistFilterKelas" onchange="renderGridChecklistKelas()" class="text-base sm:text-xs font-bold rounded-xl border border-teal-300 p-2 bg-white focus:ring-2 focus:ring-teal-600 focus:outline-none">
-                  <optgroup label="Kelas 1">
-                    <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
-                    <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
-                  </optgroup>
-                  <optgroup label="Kelas 2">
-                    <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
-                    <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
-                  </optgroup>
-                  <optgroup label="Kelas 3">
-                    <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
-                    <option value="3 Sultan Arslan">3 Sultan Arslan</option>
-                  </optgroup>
-                  <optgroup label="Kelas 4">
-                    <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
-                    <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
-                  </optgroup>
-                  <optgroup label="Kelas 5">
-                    <option value="5 Osman Ghazy">5 Osman Ghazy</option>
-                    <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
-                  </optgroup>
-                  <optgroup label="Kelas 6">
-                    <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
-                    <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
-                  </optgroup>
+          <form id="formInputCatatan" onsubmit="handleFormSubmit(event)" class="space-y-4 text-xs">
+            
+            <!-- PILIHAN METODE SELEKSI MURID -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-700">Pilih Murid Sasaran:</span>
+                <div class="flex items-center p-1 rounded-xl bg-slate-200/80 text-[11px] font-bold">
+                  <button type="button" id="btnMetodeCari" onclick="setMetodeInputSiswa('cari')" class="py-1 px-2.5 rounded-lg bg-white text-brand-900 shadow-xs cursor-pointer">
+                    <i class="fa-solid fa-magnifying-glass mr-1"></i> Cari Cepat
+                  </button>
+                  <button type="button" id="btnMetodeChecklist" onclick="setMetodeInputSiswa('checklist')" class="py-1 px-2.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">
+                    <i class="fa-solid fa-list-check mr-1"></i> Checklist Rombel
+                  </button>
+                </div>
+              </div>
+
+              <!-- Container Cari Cepat -->
+              <div id="containerMetodeCari" class="relative">
+                <div class="relative">
+                  <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                  <input type="text" id="inputPencarianSantriCepat" oninput="handlePencarianSantriRealtime(this.value)" placeholder="Ketik 2-3 huruf nama murid atau NIS..." class="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#7c3aed] text-base sm:text-xs">
+                </div>
+                <div id="hasilPencarianSantriDropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-white rounded-2xl border border-slate-200 shadow-xl z-30 max-h-56 overflow-y-auto divide-y divide-slate-100"></div>
+              </div>
+
+              <!-- Container Checklist Rombel -->
+              <div id="containerMetodeChecklist" class="hidden space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <select id="checklistFilterKelas" onchange="renderGridChecklistKelas()" class="flex-1 border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 text-base sm:text-xs">
+                    <optgroup label="Kelas 1">
+                      <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
+                      <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
+                    </optgroup>
+                    <optgroup label="Kelas 2">
+                      <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
+                      <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
+                    </optgroup>
+                    <optgroup label="Kelas 3">
+                      <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
+                      <option value="3 Sultan Arslan">3 Sultan Arslan</option>
+                    </optgroup>
+                    <optgroup label="Kelas 4">
+                      <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
+                      <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
+                    </optgroup>
+                    <optgroup label="Kelas 5">
+                      <option value="5 Osman Ghazy">5 Osman Ghazy</option>
+                      <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
+                    </optgroup>
+                    <optgroup label="Kelas 6">
+                      <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
+                      <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
+                    </optgroup>
+                  </select>
+                  <button type="button" onclick="togglePilihSemuaChecklist()" class="py-2 px-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs cursor-pointer">
+                    Pilih / Batal Semua
+                  </button>
+                </div>
+                <div id="gridKartuNamaSiswaChecklist" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-48 overflow-y-auto p-1"></div>
+              </div>
+
+              <!-- Chip Murid Terpilih -->
+              <div class="pt-2 border-t border-slate-200 flex flex-col gap-1.5">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-bold text-slate-600">Murid Terpilih (<span id="jumlahSantriTerpilihBadge" class="text-brand-700">0</span>):</span>
+                  <button type="button" id="btnResetSantriTerpilih" onclick="kosongkanSemuaSantriTerpilih()" class="hidden text-rose-600 hover:underline font-bold cursor-pointer">
+                    Kosongkan Semua
+                  </button>
+                </div>
+                <div id="chipsSantriTerpilihContainer" class="flex flex-wrap gap-1.5 min-h-[32px] p-2 bg-white rounded-xl border border-slate-200">
+                  <span id="placeholderSantriKosong" class="text-xs text-slate-400 italic">Belum ada murid dipilih. Ketik nama di atas atau gunakan checklist sekelas.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- DETAIL PERISTIWA / KEJADIAN -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="sm:col-span-2 space-y-1">
+                <label id="labelJenisCatatan" class="block font-bold text-slate-700">Jenis Catatan / Pelanggaran *</label>
+                <input type="text" id="inputJudulCatatan" required placeholder="Contoh: Terlambat Masuk Halaqah Pagi" class="w-full border border-slate-300 rounded-xl p-2.5 font-semibold focus:ring-2 focus:ring-[#7c3aed] focus:outline-none text-base sm:text-xs">
+              </div>
+
+              <div class="space-y-1">
+                <label id="labelPoinCatatan" class="block font-bold text-slate-700">Nilai Poin *</label>
+                <div class="flex items-center gap-1.5">
+                  <input type="number" id="inputPoin" required value="-5" class="w-full border border-slate-300 rounded-xl p-2.5 font-mono font-bold text-slate-800 text-base sm:text-xs">
+                  <div id="presetPoinContainer" class="grid grid-cols-2 gap-1 w-28 shrink-0">
+                    <button type="button" onclick="setPresetPoin(-5)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-5</button>
+                    <button type="button" onclick="setPresetPoin(-10)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-10</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="space-y-1">
+                <label class="block font-bold text-slate-700">Tanggal Kejadian</label>
+                <input type="date" id="inputTanggalPeristiwa" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-semibold text-base sm:text-xs">
+              </div>
+
+              <div class="space-y-1">
+                <label class="block font-bold text-slate-700">Tindakan / Pembinaan</label>
+                <input type="text" id="inputTindakan" placeholder="Contoh: Nasihat santun & istighfar" class="w-full border border-slate-300 rounded-xl p-2.5 font-semibold text-base sm:text-xs">
+              </div>
+
+              <div class="space-y-1">
+                <label class="block font-bold text-slate-700">Guru / Pencatat</label>
+                <input type="text" id="inputGuruPencatat" placeholder="Tim Kesiswaan" class="w-full border border-slate-300 rounded-xl p-2.5 font-semibold text-base sm:text-xs">
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <label class="block font-bold text-slate-700">Keterangan Tambahan (Opsional)</label>
+              <textarea id="inputDetailCatatan" rows="2" placeholder="Catatan tambahan bila diperlukan..." class="w-full border border-slate-300 rounded-xl p-2.5 font-semibold text-base sm:text-xs"></textarea>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+              <button type="button" onclick="resetFormCatatan()" class="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer">
+                Reset
+              </button>
+              <button type="submit" id="btnSubmitCatatan" class="py-2.5 px-6 rounded-xl bg-[#2e1b4e] hover:bg-[#23143c] active:scale-95 text-white font-black transition flex items-center gap-2 shadow-lg cursor-pointer">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Catatan (<span id="btnSubmitCountLabel">0 Murid</span>)
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 3: DATA MURID & EDIT BIODATA ==================== -->
+      <section id="tab-siswa" class="tab-content hidden space-y-4">
+        
+        <div class="bg-white/95 rounded-3xl p-4 sm:p-6 border border-white/60 shadow-xl space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <h2 class="text-base sm:text-xl font-extrabold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-user-graduate text-[#7c3aed]"></i> Direktori Murid & Rombel
+              </h2>
+              <p class="text-xs text-slate-400">Kelola data murid, koreksi poin, naik kelas, dan impor Excel.</p>
+            </div>
+
+            <div class="flex items-center flex-wrap gap-2">
+              <button onclick="openModal('modalTambahSiswa')" class="py-2 px-3.5 rounded-xl bg-[#2e1b4e] hover:bg-[#23143c] text-white text-xs font-bold transition flex items-center gap-1.5 shadow cursor-pointer">
+                <i class="fa-solid fa-user-plus"></i> Tambah Murid
+              </button>
+              <button onclick="openModal('modalImportExcel')" class="py-2 px-3.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow cursor-pointer">
+                <i class="fa-solid fa-file-excel"></i> Impor Excel
+              </button>
+              <button onclick="openModalPengacakanKelas()" class="py-2 px-3.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow cursor-pointer">
+                <i class="fa-solid fa-shuffle"></i> Naik / Acak Kelas
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter & Kolom Pencarian Murid -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <div class="relative">
+              <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400"></i>
+              <input type="text" id="cariTabelSiswa" oninput="renderTabelSiswa()" placeholder="Cari nama atau NIS murid..." class="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-xl bg-white font-semibold focus:outline-none focus:ring-2 focus:ring-[#7c3aed]">
+            </div>
+
+            <div>
+              <select id="filterTabelKelas" onchange="renderTabelSiswa()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#7c3aed]">
+                <option value="semua">Semua Rombel (1 - 6)</option>
+                <optgroup label="Kelas 1">
+                  <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
+                  <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
+                </optgroup>
+                <optgroup label="Kelas 2">
+                  <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
+                  <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
+                </optgroup>
+                <optgroup label="Kelas 3">
+                  <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
+                  <option value="3 Sultan Arslan">3 Sultan Arslan</option>
+                </optgroup>
+                <optgroup label="Kelas 4">
+                  <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
+                  <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
+                </optgroup>
+                <optgroup label="Kelas 5">
+                  <option value="5 Osman Ghazy">5 Osman Ghazy</option>
+                  <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
+                </optgroup>
+                <optgroup label="Kelas 6">
+                  <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
+                  <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div>
+              <select id="filterTabelStatus" onchange="renderTabelSiswa()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#7c3aed]">
+                <option value="semua">Semua Status</option>
+                <option value="Aktif" selected>Hanya Murid Aktif</option>
+                <option value="Lulus">Lulus (Alumni)</option>
+                <option value="Mutasi">Mutasi / Pindah</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabel Desktop -->
+          <div class="hidden md:block border border-slate-200 rounded-2xl overflow-hidden max-h-[500px] overflow-y-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 font-bold text-slate-600 border-b border-slate-200 sticky top-0 z-10">
+                <tr>
+                  <th class="py-3 px-4">NIS</th>
+                  <th class="py-3 px-4">Nama Lengkap</th>
+                  <th class="py-3 px-4">Kelas</th>
+                  <th class="py-3 px-4">Wali Kelas</th>
+                  <th class="py-3 px-4 text-center">Saldo Poin</th>
+                  <th class="py-3 px-4">Wali Murid</th>
+                  <th class="py-3 px-4 text-center">Status</th>
+                  <th class="py-3 px-4 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tabelBodySiswa" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+
+          <!-- Tampilan Mobile Cards -->
+          <div id="mobileCardsMurid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:hidden"></div>
+
+          <!-- Empty State -->
+          <div id="emptyStateSiswa" class="hidden text-center py-10 space-y-2">
+            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-lg">
+              <i class="fa-solid fa-users-slash"></i>
+            </div>
+            <div class="font-bold text-slate-700 text-sm">Tidak ada murid yang sesuai filter</div>
+            <p class="text-xs text-slate-400">Coba ubah kata kunci pencarian atau rombel kelas.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 4: RIWAYAT & KOREKSI ==================== -->
+      <section id="tab-riwayat" class="tab-content hidden space-y-4">
+        
+        <div class="bg-white/95 rounded-3xl p-4 sm:p-6 border border-white/60 shadow-xl space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <h2 class="text-base sm:text-xl font-extrabold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-[#7c3aed]"></i> Riwayat Mutaba'ah & Koreksi
+              </h2>
+              <p class="text-xs text-slate-400">Log lengkap seluruh peristiwa adab murid beserta fitur koreksi / pembatalan.</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="exportDataToCSV()" class="py-2 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 border border-slate-300 cursor-pointer">
+                <i class="fa-solid fa-file-csv"></i> Ekspor CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Riwayat -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <div>
+              <select id="filterRiwayatTipe" onchange="renderTabelRiwayat()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#7c3aed]">
+                <option value="semua">Semua Jenis Catatan</option>
+                <option value="Pelanggaran">Pelanggaran Saja</option>
+                <option value="Kebaikan">Amal Shalih / Kebaikan</option>
+              </select>
+            </div>
+
+            <div>
+              <input type="date" id="filterRiwayatTanggal" onchange="renderTabelRiwayat()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#7c3aed]">
+            </div>
+
+            <div>
+              <button onclick="resetFilterRiwayat()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold border border-slate-200 transition cursor-pointer">
+                Reset Filter
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabel Riwayat Desktop -->
+          <div class="hidden md:block border border-slate-200 rounded-2xl overflow-hidden max-h-[500px] overflow-y-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 font-bold text-slate-600 border-b border-slate-200 sticky top-0 z-10">
+                <tr>
+                  <th class="py-3 px-4">Waktu</th>
+                  <th class="py-3 px-4">Murid & Rombel</th>
+                  <th class="py-3 px-4 text-center">Tipe</th>
+                  <th class="py-3 px-4">Peristiwa / Catatan</th>
+                  <th class="py-3 px-4 text-center">Poin</th>
+                  <th class="py-3 px-4 text-center">Saldo Akhir</th>
+                  <th class="py-3 px-4">Tindakan</th>
+                  <th class="py-3 px-4">Pencatat</th>
+                  <th class="py-3 px-4 text-center">Koreksi</th>
+                </tr>
+              </thead>
+              <tbody id="tabelBodyRiwayat" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+
+          <!-- Tampilan Mobile Cards Riwayat -->
+          <div id="mobileCardsRiwayat" class="space-y-2.5 md:hidden"></div>
+
+          <!-- Empty State Riwayat -->
+          <div id="emptyStateRiwayat" class="hidden text-center py-10 space-y-2">
+            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-lg">
+              <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <div class="font-bold text-slate-700 text-sm">Belum ada riwayat mutaba'ah</div>
+            <p class="text-xs text-slate-400">Catatan mutaba'ah baru akan langsung tercantum di sini.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 5: WHATSAPP GATEWAY WALAS ==================== -->
+      <section id="tab-laporan" class="tab-content hidden space-y-4">
+        
+        <div class="bg-white/95 rounded-3xl p-4 sm:p-6 border border-white/60 shadow-xl space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold mb-1">
+                <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp Gateway Terpadu
+              </div>
+              <h2 class="text-base sm:text-xl font-extrabold text-slate-800">Pelaporan Harian ke Wali Kelas</h2>
+              <p class="text-xs text-slate-400">Kirimkan rekapitulasi mutaba'ah murid langsung ke nomor WhatsApp Wali Kelas dengan satu sentuhan.</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <input type="date" id="tglLaporanWalas" onchange="renderPelaporanWalas()" class="border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 text-xs focus:ring-2 focus:ring-emerald-600">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <select id="filterJenjangLaporan" onchange="renderPelaporanWalas()" class="border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-700 focus:outline-none">
+              <option value="semua">Semua Jenjang (1 - 6)</option>
+              <option value="1">Jenjang Kelas 1</option>
+              <option value="2">Jenjang Kelas 2</option>
+              <option value="3">Jenjang Kelas 3</option>
+              <option value="4">Jenjang Kelas 4</option>
+              <option value="5">Jenjang Kelas 5</option>
+              <option value="6">Jenjang Kelas 6</option>
+            </select>
+
+            <select id="filterStatusCatatanLaporan" onchange="renderPelaporanWalas()" class="border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-700 focus:outline-none">
+              <option value="semua">Semua Status Aktivitas</option>
+              <option value="ada_kejadian">Hanya yang Ada Catatan Hari Ini</option>
+              <option value="ada_kritis">Hanya yang Ada Murid &lt;75 pt</option>
+            </select>
+          </div>
+
+          <div id="badgeSummaryLaporan" class="text-xs font-bold text-slate-500">Menampilkan 12 Kelas</div>
+          <div id="gridKartuLaporanWalas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 6: SISTEM CETAK LAPORAN RESMI (PDF / PRINT) ==================== -->
+      <section id="tab-cetak" class="tab-content hidden space-y-4">
+        
+        <!-- Panel Konfigurasi Cetak (No-Print) -->
+        <div class="bg-white/95 rounded-3xl p-4 sm:p-6 border border-white/60 shadow-xl space-y-4 no-print">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <h2 class="text-base sm:text-xl font-extrabold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-print text-[#7c3aed]"></i> Cetak Rapor & Laporan Mutaba'ah
+              </h2>
+              <p class="text-xs text-slate-400">Atur kop surat, penandatangan, format laporan, dan cetak ke printer / simpan PDF.</p>
+            </div>
+            
+            <button onclick="window.print()" class="py-2.5 px-5 rounded-2xl bg-[#2e1b4e] hover:bg-[#23143c] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+            </button>
+          </div>
+
+          <!-- Pilihan Jenis Laporan & Filter -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Pilih Model Dokumen</label>
+              <select id="cetakTipeLaporan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#7c3aed]">
+                <option value="rekap_semester" selected>Rekapitulasi Mutaba'ah Rombel (Semester / 6 Bulan)</option>
+                <option value="rekap_kelas">Rekapitulasi Mutaba'ah Rombel (Bulanan)</option>
+                <option value="rapor_murid">Lembar Evaluasi Perorangan (Murid)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Pilih Kelas / Rombel</label>
+              <select id="cetakFilterKelas" onchange="syncWalasKeInputCetak(); updateDropdownMuridCetak(); generateLaporanCetak();" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#7c3aed]">
+                <optgroup label="Kelas 1">
+                  <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
+                  <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
+                </optgroup>
+                <optgroup label="Kelas 2">
+                  <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
+                  <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
+                </optgroup>
+                <optgroup label="Kelas 3">
+                  <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
+                  <option value="3 Sultan Arslan">3 Sultan Arslan</option>
+                </optgroup>
+                <optgroup label="Kelas 4">
+                  <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
+                  <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
+                </optgroup>
+                <optgroup label="Kelas 5">
+                  <option value="5 Osman Ghazy">5 Osman Ghazy</option>
+                  <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
+                </optgroup>
+                <optgroup label="Kelas 6">
+                  <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
+                  <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Filter Khusus Semester (6 Bulan) -->
+            <div id="cetakPeriodeSemesterContainer">
+              <label class="block font-bold text-slate-700 mb-1">Semester & Tahun Ajaran</label>
+              <div class="flex items-center gap-1.5">
+                <select id="cetakPilihanSemester" onchange="generateLaporanCetak()" class="flex-1 border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800">
+                  <option value="ganjil" selected>Semester Ganjil (Juli - Des)</option>
+                  <option value="genap">Semester Genap (Jan - Jun)</option>
+                </select>
+                <select id="cetakTahunAjaranSemester" onchange="generateLaporanCetak()" class="w-32 border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800">
+                  <option value="2026/2027" selected>2026/2027</option>
+                  <option value="2025/2026">2025/2026</option>
                 </select>
               </div>
+            </div>
 
+            <!-- Filter Bulan (Hidden if Semester) -->
+            <div id="cetakPeriodeBulanContainer" class="hidden">
+              <label class="block font-bold text-slate-700 mb-1">Periode Bulan</label>
+              <input type="month" id="cetakPeriodeBulan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-semibold text-slate-800">
+            </div>
+
+            <!-- Filter Pilihan Murid (Untuk Lembar Perorangan) -->
+            <div id="cetakPilihMuridContainer" class="hidden">
+              <label class="block font-bold text-slate-700 mb-1">Pilih Nama Murid</label>
+              <select id="cetakPilihanMurid" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800"></select>
+            </div>
+          </div>
+
+          <!-- Pengaturan Kop Surat (Upload PNG/JPG) -->
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
+                  <i class="fa-solid fa-image text-brand-600"></i> Kop Surat Resmi Sekolah
+                </span>
+                <p class="text-[11px] text-slate-400">Unggah berkas gambar Kop Surat Yayasan/Sekolah dalam format PNG atau JPG transparan.</p>
+              </div>
               <div class="flex items-center gap-2">
-                <button type="button" onclick="togglePilihSemuaChecklist()" class="text-teal-800 hover:underline font-bold text-xs cursor-pointer">
-                  Pilih / Batal Semua
+                <input type="file" id="inputUploadKopSurat" accept="image/png, image/jpeg" onchange="handleUploadKopSurat(event)" class="hidden">
+                <button type="button" onclick="document.getElementById('inputUploadKopSurat').click()" class="py-1.5 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer">
+                  <i class="fa-solid fa-cloud-arrow-up text-brand-600"></i> Unggah Gambar Kop
+                </button>
+                <button type="button" id="btnHapusKopKustom" onclick="hapusKopKustom()" class="hidden py-1.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold text-xs cursor-pointer">
+                  Hapus Kop Gambar
                 </button>
               </div>
             </div>
-
-            <!-- Grid Tap Kartu Nama Sekelas -->
-            <div id="gridKartuNamaSiswaChecklist" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-56 overflow-y-auto p-1 custom-scrollbar"></div>
-            <p class="text-[11px] text-slate-500 italic">* Cukup ketuk (tap) kartu nama anak yang melanggar atau beramal shalih. Kartu yang terpilih akan berwarna hijau.</p>
           </div>
 
-          <!-- Detail Input Catatan -->
-          <div class="space-y-3">
-            <div>
-              <label id="labelJenisCatatan" class="block text-xs font-bold text-slate-700 mb-1">
-                Jenis Pelanggaran *
-              </label>
-              <input type="text" id="inputJudulCatatan" required placeholder="Contoh: Terlambat masuk halaqah tahfiz" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">
-                Keterangan / Kronologi Tambahan (Opsional)
-              </label>
-              <textarea id="inputDetailCatatan" rows="2" placeholder="Tuliskan keterangan tempat atau kronologi jika ada..." class="w-full text-base sm:text-xs rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none"></textarea>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
-              <div>
-                <label id="labelPoinCatatan" class="block text-xs font-bold text-slate-700 mb-1">
-                  Pengurangan Poin *
-                </label>
-                <div class="relative">
-                  <input type="number" id="inputPoin" required value="-5" class="w-full text-base sm:text-xs font-bold rounded-xl border border-slate-300 p-2.5 sm:p-3 pr-12 focus:ring-2 focus:ring-emerald-600 focus:outline-none font-mono">
-                  <span class="absolute right-3.5 top-3 text-xs text-slate-400 font-bold">Poin</span>
-                </div>
-                <div class="grid grid-cols-4 gap-1.5 mt-2" id="presetPoinContainer">
-                  <button type="button" onclick="setPresetPoin(-5)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-5</button>
-                  <button type="button" onclick="setPresetPoin(-10)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-10</button>
-                  <button type="button" onclick="setPresetPoin(-15)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-15</button>
-                  <button type="button" onclick="setPresetPoin(-30)" class="py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs cursor-pointer">-30</button>
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">
-                  Tindakan Edukatif / Pembinaan (Opsional)
-                </label>
-                <input type="text" id="inputTindakan" placeholder="Contoh: Membaca Al-Qur'an 1/2 juz (boleh kosong)" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">
-                  Pencatat (Bapak / Ibu Walas) (Opsional)
-                </label>
-                <input type="text" id="inputGuruPencatat" placeholder="Nama Pencatat (Default: Tim Kesiswaan)" class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-              </div>
-
-              <div>
-                <label class="block font-bold text-slate-700 mb-1 text-xs">
-                  Tanggal Kejadian *
-                </label>
-                <input type="date" id="inputTanggalPeristiwa" required class="w-full text-base sm:text-xs font-semibold rounded-xl border border-slate-300 p-2.5 sm:p-3 focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Tombol Aksi Simpan -->
-          <div class="pt-2.5 border-t border-slate-100 flex items-center justify-end gap-2">
-            <button type="button" onclick="resetFormCatatan()" class="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-600 text-xs font-bold hover:bg-slate-50 transition active:scale-95 cursor-pointer">
-              Reset Form
-            </button>
-            <button type="submit" id="btnSubmitCatatan" class="flex-1 sm:flex-initial py-2.5 px-6 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
-              <i class="fa-solid fa-floppy-disk"></i> Simpan Catatan (<span id="btnSubmitCountLabel">0 Murid</span>)
-            </button>
-          </div>
-
-        </form>
-
-      </div>
-
-    </section>
-
-    <!-- ==================== TAB 3: DATA MURID & EDIT BIODATA ==================== -->
-    <section id="tab-siswa" class="tab-content hidden space-y-3">
-      
-      <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col gap-2.5">
-        
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
-          <select id="filterTabelKelas" onchange="renderTabelSiswa()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 font-bold text-slate-700 focus:outline-none">
-            <option value="semua">Semua 12 Kelas</option>
-            <optgroup label="Kelas 1">
-              <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
-              <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
-            </optgroup>
-            <optgroup label="Kelas 2">
-              <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
-              <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
-            </optgroup>
-            <optgroup label="Kelas 3">
-              <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
-              <option value="3 Sultan Arslan">3 Sultan Arslan</option>
-            </optgroup>
-            <optgroup label="Kelas 4">
-              <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
-              <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
-            </optgroup>
-            <optgroup label="Kelas 5">
-              <option value="5 Osman Ghazy">5 Osman Ghazy</option>
-              <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
-            </optgroup>
-            <optgroup label="Kelas 6">
-              <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
-              <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
-            </optgroup>
-          </select>
-
-          <select id="filterTabelStatus" onchange="renderTabelSiswa()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 font-bold text-slate-700 focus:outline-none">
-            <option value="Aktif">Status: Aktif Saja</option>
-            <option value="semua">Semua Status (Aktif/Lulus/Mutasi)</option>
-            <option value="Lulus">Hanya Lulus / Alumni</option>
-            <option value="Mutasi">Hanya Mutasi / Pindah</option>
-          </select>
-
-          <div class="relative w-full">
-            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-            <input type="text" id="cariTabelSiswa" onkeyup="renderTabelSiswa()" placeholder="Cari Nama / NIS murid..." class="w-full pl-9 pr-3 py-2 text-base sm:text-xs border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 w-full pt-1 border-t border-slate-100">
-          <button onclick="openModal('modalImportExcel')" class="py-2 px-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-file-excel"></i> <span class="truncate">Impor Excel</span>
-          </button>
-          <button onclick="openModalPengacakanKelas()" class="py-2 px-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-shuffle"></i> <span class="truncate">Kenaikan Kelas</span>
-          </button>
-          <button onclick="openModal('modalTambahSiswa')" class="py-2 px-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-user-plus"></i> <span class="truncate">Tambah</span>
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Tampilan Kartu Murid untuk Mobile Phone -->
-      <div id="mobileCardsMurid" class="space-y-2 sm:hidden"></div>
-
-      <!-- Tampilan Tabel Murid untuk Desktop -->
-      <div class="hidden sm:block bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-xs">
-              <tr>
-                <th class="py-3 px-4">NIS</th>
-                <th class="py-3 px-4">Nama Lengkap Murid</th>
-                <th class="py-3 px-4">Kelas</th>
-                <th class="py-3 px-4">Wali Kelas</th>
-                <th class="py-3 px-4 text-center">Saldo Poin</th>
-                <th class="py-3 px-4">Orang Tua / Wali</th>
-                <th class="py-3 px-4 text-center">Status</th>
-                <th class="py-3 px-4 text-center">Aksi / Edit</th>
-              </tr>
-            </thead>
-            <tbody id="tabelBodySiswa" class="divide-y divide-slate-100 font-medium"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="emptyStateSiswa" class="hidden p-8 text-center text-slate-400 space-y-2 bg-white rounded-2xl border border-slate-200">
-        <i class="fa-solid fa-folder-open text-3xl"></i>
-        <p class="text-xs">Tidak ditemukan data murid dengan kriteria filter tersebut.</p>
-      </div>
-
-    </section>
-
-    <!-- ==================== TAB 4: RIWAYAT MUTABA'AH & KOREKSI INPUT ==================== -->
-    <section id="tab-riwayat" class="tab-content hidden space-y-3">
-      
-      <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5">
-        
-        <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
-          <select id="filterRiwayatTipe" onchange="renderTabelRiwayat()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 font-bold text-slate-700">
-            <option value="semua">Semua Tipe</option>
-            <option value="Pelanggaran">Pelanggaran</option>
-            <option value="Kebaikan">Kebaikan</option>
-          </select>
-
-          <input type="date" id="filterRiwayatTanggal" onchange="renderTabelRiwayat()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 font-bold text-slate-700">
-        </div>
-
-        <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
-          <button onclick="resetFilterRiwayat()" class="text-xs text-emerald-700 hover:underline font-bold px-1 cursor-pointer">
-            Reset
-          </button>
-          <button onclick="exportDataToCSV()" class="py-2 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-download"></i> Ekspor CSV
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Tampilan Kartu Riwayat di Smartphone dengan Tombol Koreksi -->
-      <div id="mobileCardsRiwayat" class="space-y-2 sm:hidden"></div>
-
-      <!-- Tampilan Tabel Riwayat di Desktop dengan Kolom Koreksi -->
-      <div class="hidden sm:block bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-xs">
-              <tr>
-                <th class="py-3 px-4">Tanggal & Jam</th>
-                <th class="py-3 px-4">Nama Murid (Kelas)</th>
-                <th class="py-3 px-4 text-center">Tipe</th>
-                <th class="py-3 px-4">Catatan / Peristiwa</th>
-                <th class="py-3 px-4 text-center">Poin</th>
-                <th class="py-3 px-4 text-center">Saldo Akhir</th>
-                <th class="py-3 px-4">Tindakan / Pembinaan</th>
-                <th class="py-3 px-4">Pencatat</th>
-                <th class="py-3 px-4 text-center">Koreksi</th>
-              </tr>
-            </thead>
-            <tbody id="tabelBodyRiwayat" class="divide-y divide-slate-100 font-medium"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="emptyStateRiwayat" class="hidden p-8 text-center text-slate-400 space-y-2 bg-white rounded-2xl border border-slate-200">
-        <i class="fa-solid fa-clipboard-list text-3xl"></i>
-        <p class="text-xs">Belum ada catatan mutaba'ah yang tersimpan.</p>
-      </div>
-
-    </section>
-
-    <!-- ==================== TAB 5: PELAPORAN WALI KELAS VIA WHATSAPP ==================== -->
-    <section id="tab-laporan" class="tab-content hidden space-y-3.5 sm:space-y-6">
-      
-      <div class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-3.5 border border-emerald-700/50">
-        <div class="space-y-1 max-w-2xl">
-          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-700/60 border border-emerald-500/40 text-emerald-200 text-xs font-bold">
-            <i class="fa-brands fa-whatsapp text-emerald-300"></i> WhatsApp Gateway Terpadu
-          </div>
-          <h2 class="text-sm sm:text-2xl font-extrabold tracking-tight">Pelaporan Harian ke Wali Kelas</h2>
-          <p class="text-xs text-emerald-100/90 leading-relaxed font-normal">
-            Kirimkan rekapitulasi mutaba'ah murid langsung ke nomor WhatsApp Bapak/Ibu Walas dengan satu kali ketuk.
-          </p>
-        </div>
-
-        <div class="bg-white/10 backdrop-blur-md p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-white/20 shrink-0 text-xs space-y-1">
-          <label class="block font-bold text-emerald-200 text-xs">
-            <i class="fa-solid fa-calendar-day mr-1"></i> Tanggal Rekap Laporan:
-          </label>
-          <input type="date" id="tglLaporanWalas" onchange="renderPelaporanWalas()" class="bg-white text-slate-800 font-bold p-2 sm:px-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-emerald-400 text-base sm:text-xs">
-        </div>
-      </div>
-
-      <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full sm:w-auto">
-          <select id="filterJenjangLaporan" onchange="renderPelaporanWalas()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 font-bold text-slate-700 focus:outline-none">
-            <option value="semua">Semua Jenjang (1 - 6)</option>
-            <option value="1">Jenjang Kelas 1</option>
-            <option value="2">Jenjang Kelas 2</option>
-            <option value="3">Jenjang Kelas 3</option>
-            <option value="4">Jenjang Kelas 4</option>
-            <option value="5">Jenjang Kelas 5</option>
-            <option value="6">Jenjang Kelas 6</option>
-          </select>
-
-          <select id="filterStatusCatatanLaporan" onchange="renderPelaporanWalas()" class="text-base sm:text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 font-bold text-slate-700 focus:outline-none">
-            <option value="semua">Semua Status Aktivitas</option>
-            <option value="ada_kejadian">Hanya yang Ada Catatan Hari Ini</option>
-            <option value="ada_kritis">Hanya yang Ada Murid &lt;75 pt</option>
-          </select>
-        </div>
-
-        <div id="badgeSummaryLaporan" class="text-xs font-bold text-slate-500 whitespace-nowrap self-start sm:self-center">
-          Menampilkan 12 Kelas
-        </div>
-      </div>
-
-      <div id="gridKartuLaporanWalas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5"></div>
-
-    </section>
-
-    <!-- ==================== TAB 6: SISTEM CETAK LAPORAN RESMI (PDF / PRINT) ==================== -->
-    <section id="tab-cetak" class="tab-content hidden space-y-4">
-      
-      <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm space-y-4 no-print">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-          <div>
-            <h2 class="text-sm sm:text-xl font-bold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-print text-emerald-700"></i> Sistem Generator Laporan Resmi
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Atur kop surat, parameter cetak, dan tanda tangan pejabat pengesah sebelum mencetak.</p>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button type="button" onclick="window.print()" class="py-2.5 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer">
-              <i class="fa-solid fa-print"></i> Cetak Dokumen / PDF
-            </button>
-          </div>
-        </div>
-
-        <!-- Panel Konfigurasi Kop Surat & Pejabat Penandatangan -->
-        <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-          <div class="flex items-center justify-between text-xs pb-2 border-b border-slate-200">
-            <span class="font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-image text-emerald-700"></i> Kustomisasi Kop Surat & Pejabat Penandatangan
+          <!-- Pengaturan Penandatangan Dokumen -->
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-3">
+            <span class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-signature text-teal-600"></i> Identitas Penandatangan Lembar Laporan
             </span>
-            <div class="flex items-center gap-2">
-              <button type="button" onclick="document.getElementById('inputUploadKopSurat').click()" class="py-1 px-2.5 rounded-lg bg-teal-100 hover:bg-teal-200 text-teal-800 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
-                <i class="fa-solid fa-upload"></i> Unggah Gambar Kop (PNG/JPG)
-              </button>
-              <button type="button" id="btnHapusKopKustom" onclick="hapusKopKustom()" class="hidden py-1 px-2 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-bold transition cursor-pointer">
-                <i class="fa-solid fa-trash-can"></i> Hapus Gambar Kop
-              </button>
-              <input type="file" id="inputUploadKopSurat" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handleUploadKopSurat(event)">
-            </div>
-          </div>
 
-          <!-- Input Kolom Tanda Tangan: Walas & Kesiswaan -->
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Nama Wali Kelas</label>
-              <input type="text" id="cetakInputNamaWalas" oninput="updateInfoPenandatangan()" placeholder="Nama Wali Kelas" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold text-base sm:text-xs">
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">NIY Wali Kelas</label>
-              <input type="text" id="cetakInputNiyWalas" oninput="updateInfoPenandatangan()" placeholder="Contoh: NIY. 2018.04.112" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-mono font-semibold text-base sm:text-xs">
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Nama Koord. Kesiswaan</label>
-              <input type="text" id="cetakInputNamaKesiswaan" oninput="updateInfoPenandatangan()" placeholder="Nama Koord. Kesiswaan" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold text-base sm:text-xs">
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">NIY Koord. Kesiswaan</label>
-              <input type="text" id="cetakInputNiyKesiswaan" oninput="updateInfoPenandatangan()" placeholder="Contoh: NIY. AZ-2024.KES.01" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-mono font-semibold text-base sm:text-xs">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Kota & Titimangsa Surat</label>
-              <input type="text" id="cetakInputKotaTitimangsa" oninput="updateInfoPenandatangan()" placeholder="Contoh: Bandar Lampung, 01 Oktober 2026" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold text-base sm:text-xs">
-            </div>
-            <div class="flex items-end">
-              <p class="text-[11px] text-slate-400 italic">Data kop gambar dan nama penandatangan akan disimpan otomatis di perangkat Anda.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 text-xs">
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Nama Wali Kelas</label>
+                <input type="text" id="cetakInputNamaWalas" oninput="updateInfoPenandatangan()" placeholder="Nama Walas" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">NIY Wali Kelas</label>
+                <input type="text" id="cetakInputNiyWalas" oninput="updateInfoPenandatangan()" placeholder="Contoh: AZ-2022.01" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-mono font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Nama Koordinator Kesiswaan</label>
+                <input type="text" id="cetakInputNamaKesiswaan" oninput="updateInfoPenandatangan()" placeholder="Tim Kesiswaan" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">NIY Kesiswaan</label>
+                <input type="text" id="cetakInputNiyKesiswaan" oninput="updateInfoPenandatangan()" placeholder="Contoh: AZ-2024.KES.01" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-mono font-semibold">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-600 mb-1">Kota & Titimangsa</label>
+                <input type="text" id="cetakInputKotaTitimangsa" oninput="updateInfoPenandatangan()" placeholder="Bandar Lampung, ..." class="w-full border border-slate-300 rounded-xl p-2 bg-white font-semibold">
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Filter Generator Laporan -->
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Model Dokumen</label>
-            <select id="cetakTipeLaporan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
-              <option value="rekap_kelas">Rekapitulasi Mutaba'ah Rombel (Bulanan)</option>
-              <option value="rekap_semester">Rekapitulasi Mutaba'ah Rombel (Semester / 6 Bulan)</option>
-              <option value="kartu_santri">Lembar Evaluasi Per Murid</option>
-            </select>
+        <!-- AREA CETAK FORMAL (KERTAS A4 PRINT OUT) -->
+        <div id="printAreaSection" class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl space-y-6 text-slate-900">
+          
+          <!-- Area Kop Gambar Kustom -->
+          <div id="areaKopGambarKustom" class="hidden text-center border-b-2 border-slate-900 pb-3">
+            <img id="imgKopKustomPreview" src="" alt="Kop Surat SDIT Az Zahra" class="max-h-32 mx-auto object-contain w-full">
           </div>
 
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Pilih Kelas</label>
-            <select id="cetakFilterKelas" onchange="syncWalasKeInputCetak(); updateDropdownMuridCetak(); generateLaporanCetak();" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
-              <optgroup label="Kelas 1">
-                <option value="1 Umar bin Abdul Aziz">1 Umar bin Abdul Aziz</option>
-                <option value="1 Abdurrahman Ad Dakhil">1 Abdurrahman Ad Dakhil</option>
-              </optgroup>
-              <optgroup label="Kelas 2">
-                <option value="2 Abu Ja'far Al Manshur">2 Abu Ja'far Al Manshur</option>
-                <option value="2 Harun Ar Rasyid">2 Harun Ar Rasyid</option>
-              </optgroup>
-              <optgroup label="Kelas 3">
-                <option value="3 Nuruddin Zanki">3 Nuruddin Zanki</option>
-                <option value="3 Sultan Arslan">3 Sultan Arslan</option>
-              </optgroup>
-              <optgroup label="Kelas 4">
-                <option value="4 Shalahuddin Al Ayyubi">4 Shalahuddin Al Ayyubi</option>
-                <option value="4 Malik Al Aziz Imaduddin">4 Malik Al Aziz Imaduddin</option>
-              </optgroup>
-              <optgroup label="Kelas 5">
-                <option value="5 Osman Ghazy">5 Osman Ghazy</option>
-                <option value="5 Saifudin Qutuz">5 Saifudin Qutuz</option>
-              </optgroup>
-              <optgroup label="Kelas 6">
-                <option value="6 Sulaiman Al Qonuni">6 Sulaiman Al Qonuni</option>
-                <option value="6 Muhammad Al Fatih">6 Muhammad Al Fatih</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <div id="cetakPilihMuridContainer" class="hidden">
-            <label class="block font-bold text-slate-700 mb-1">Pilih Murid</label>
-            <select id="cetakPilihanMurid" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs"></select>
-          </div>
-
-          <!-- Periode Bulanan -->
-          <div id="cetakPeriodeBulanContainer">
-            <label class="block font-bold text-slate-700 mb-1">Bulan & Tahun Rekap</label>
-            <input type="month" id="cetakPeriodeBulan" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white font-bold text-slate-800 text-base sm:text-xs">
-          </div>
-
-          <!-- Periode Semester (6 Bulan) -->
-          <div id="cetakPeriodeSemesterContainer" class="hidden space-y-1">
-            <label class="block font-bold text-slate-700 mb-1">Semester / 6 Bulan</label>
-            <div class="grid grid-cols-2 gap-1.5">
-              <select id="cetakPilihanSemester" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 text-base sm:text-xs">
-                <option value="ganjil">Semester Ganjil (Juli - Des)</option>
-                <option value="genap">Semester Genap (Jan - Jun)</option>
-              </select>
-              <select id="cetakTahunAjaranSemester" onchange="generateLaporanCetak()" class="w-full border border-slate-300 rounded-xl p-2 bg-white font-bold text-slate-800 text-base sm:text-xs">
-                <option value="2026/2027">2026/2027</option>
-                <option value="2025/2026">2025/2026</option>
-                <option value="2024/2025">2024/2025</option>
-                <option value="2027/2028">2027/2028</option>
-              </select>
+          <!-- Area Kop Surat Standar Sekolah -->
+          <div id="areaKopSuratStandar" class="border-b-4 border-double border-slate-900 pb-4 flex items-center justify-between gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-emerald-800 text-white flex items-center justify-center font-bold text-2xl shrink-0 shadow-sm">
+              <i class="fa-solid fa-shapes"></i>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Area Dokumen Cetak Fisik / PDF Preview -->
-      <div id="printAreaSection" class="bg-white p-6 sm:p-10 rounded-2xl sm:rounded-3xl border border-slate-300 shadow-sm max-w-5xl mx-auto space-y-6">
-        
-        <!-- AREA KOP SURAT GAMBAR KUSTOM (JIKA DIUNGGAH) -->
-        <div id="areaKopGambarKustom" class="hidden w-full pb-3 border-b-2 border-slate-800">
-          <img id="imgKopKustomPreview" src="" alt="Kop Surat Resmi" class="w-full h-auto max-h-36 object-contain">
-        </div>
-
-        <!-- KOP SURAT STANDAR (TEKS + LOGO DEFAULT) -->
-        <div id="areaKopSuratStandar" class="flex items-center gap-4 pb-4 border-b-4 border-emerald-900 border-double">
-          <div class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center p-1">
-            <img src="/logo.png" alt="Logo SDIT Az Zahra" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/120x120/064e3b/ffffff?text=AZ+ZAHRA';">
-          </div>
-          <div class="flex-1 text-center pr-4">
-            <h2 class="text-xs sm:text-sm font-bold uppercase tracking-widest text-slate-600">Yayasan Pendidikan Islam Az Zahra</h2>
-            <h1 class="text-base sm:text-2xl font-extrabold text-emerald-950 tracking-wide uppercase">SEKOLAH DASAR ISLAM TERPADU AZ ZAHRA</h1>
-            <p class="text-[11px] sm:text-xs text-slate-600 italic mt-0.5">NPSN: 699xxxxx | Terakreditasi A | Alamat: Kompleks Pendidikan Terpadu Az Zahra</p>
-            <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Website: sdit-azzahra.sch.id | Email: kesiswaan@sdit-azzahra.sch.id</p>
-          </div>
-        </div>
-
-        <!-- KONTEN DINAMIS DOKUMEN CETAK -->
-        <div id="kontenLaporanDinamis"></div>
-
-        <!-- TANDA TANGAN RESMI -->
-        <div class="pt-8 grid grid-cols-2 gap-4 text-xs font-semibold text-slate-800 break-inside-avoid">
-          <div class="text-center space-y-16">
-            <p>Mengetahui,<br><span class="font-bold">Wali Kelas</span></p>
-            <div>
-              <p id="cetakNamaWalasTtd" class="font-bold underline uppercase">( ........................................ )</p>
-              <p id="cetakNiyWalasTtd" class="text-slate-500 text-[11px]">NIY: .........................</p>
+            <div class="text-center flex-1">
+              <h2 class="text-base sm:text-lg font-black uppercase tracking-wider text-slate-900">YAYASAN AZ ZAHRA LAMPUNG</h2>
+              <h1 class="text-lg sm:text-2xl font-black uppercase text-emerald-900 tracking-tight">SD ISLAM TERPADU AZ ZAHRA</h1>
+              <p class="text-[11px] text-slate-600 font-medium leading-tight mt-0.5">
+                Jl. Mayjen DI Panjaitan No. 34, Gotong Royong, Kec. Tanjung Karang Pusat, Kota Bandar Lampung<br>
+                Telp: (0721) 255555 | Email: sditazzahra.bdl@gmail.com | NPSN: 10807219
+              </p>
+            </div>
+            <div class="w-16 h-16 rounded-2xl border-2 border-emerald-800 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0 text-center leading-tight">
+              AKREDITASI<br><strong class="text-sm">A</strong>
             </div>
           </div>
 
-          <div class="text-center space-y-16">
-            <p id="cetakTanggalSuratTtd">Kota Sekolah, 01 Oktober 2026<br><span class="font-bold">Koordinator Kesiswaan</span></p>
-            <div>
-              <p id="cetakNamaKesiswaanTtd" class="font-bold underline uppercase">( Tim Kesiswaan SDIT Az Zahra )</p>
-              <p id="cetakNiyKesiswaanTtd" class="text-slate-500 text-[11px]">NIY: AZ-2024.KES.01</p>
+          <!-- Konten Laporan Dinamis -->
+          <div id="kontenLaporanDinamis" class="space-y-4"></div>
+
+          <!-- Blok Kolom Tanda Tangan Resmi -->
+          <div class="pt-8 grid grid-cols-2 gap-8 text-xs font-semibold text-slate-800">
+            <div class="text-center space-y-16">
+              <p>Mengetahui,<br><span class="font-bold">Wali Kelas</span></p>
+              <div>
+                <p id="cetakNamaWalasTtd" class="font-bold text-slate-900 underline">( ........................................ )</p>
+                <p id="cetakNiyWalasTtd" class="text-slate-500 font-mono text-[11px]">NIY: .........................</p>
+              </div>
+            </div>
+
+            <div class="text-center space-y-16">
+              <p id="cetakTanggalSuratTtd">Bandar Lampung, ....................<br><span class="font-bold">Koordinator Kesiswaan</span></p>
+              <div>
+                <p id="cetakNamaKesiswaanTtd" class="font-bold text-slate-900 underline">( Tim Kesiswaan SDIT Az Zahra )</p>
+                <p id="cetakNiyKesiswaanTtd" class="text-slate-500 font-mono text-[11px]">NIY: AZ-2024.KES.01</p>
+              </div>
             </div>
           </div>
+
         </div>
 
-      </div>
+      </section>
 
-    </section>
-
-  </main>
+    </div>
+  </div>
 
   <!-- Bottom Mobile Dock Navigation (Khusus iPhone iOS & Android) -->
   <aside aria-label="Navigasi Bawah" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-safe no-print">
     <div class="grid grid-cols-6 h-14 items-center px-1">
-      <button onclick="switchTab('dasbor')" id="mobNav-dasbor" class="flex flex-col items-center justify-center py-1 text-emerald-800 transition active:scale-90 cursor-pointer">
+      <button onclick="switchTab('dasbor')" id="mobNav-dasbor" class="flex flex-col items-center justify-center py-1 text-brand-900 transition active:scale-90 cursor-pointer">
         <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
         <span class="text-[10px] font-bold">Dasbor</span>
       </button>
@@ -1773,10 +1956,11 @@
       walasKontak: {},
       selectedNisStatus: null,
       selectedNisInput: null,
-      selectedSantriListInput: [], // Menampung array NIS murid yang dipilih untuk input batch
-      metodeInputAktif: 'cari',   // 'cari' atau 'checklist'
+      selectedSantriListInput: [],
+      metodeInputAktif: 'cari',
       jenisInputAktif: 'pelanggaran',
       activeTab: 'dasbor',
+      dashboardPeriod: 'daily', // 'daily', 'weekly', 'monthly'
       selectedKelasWa: null,
       simulasiAcakList: [],
       tempImportListExcel: [],
@@ -1872,108 +2056,35 @@
 
     function setConnectionStatus(status) {
       const dot = document.getElementById('connPulseDot');
+      const sideDot = document.getElementById('sidebarConnDot');
       const badge = document.getElementById('connStatusBadge');
-      if (!dot) return;
 
       if (status === 'connected' || status === true) {
-        dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]';
+        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.9)]';
+        if (sideDot) sideDot.className = 'w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.9)]';
         if (badge) badge.title = 'Terhubung ke Google Sheets';
       } else if (status === 'connecting' || status === 'loading') {
-        dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]';
+        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.9)]';
+        if (sideDot) sideDot.className = 'w-3 h-3 rounded-full bg-amber-400 animate-pulse shadow-[0_0_10px_rgba(251,191,36,0.9)]';
         if (badge) badge.title = 'Sedang menyinkronkan dengan Google Sheets...';
       } else {
-        dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]';
+        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.9)]';
+        if (sideDot) sideDot.className = 'w-3 h-3 rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.9)]';
         if (badge) badge.title = 'Koneksi terputus ke Google Sheets';
       }
     }
 
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      if (!container) return;
-
-      const toast = document.createElement('div');
-      const bgColors = {
-        success: 'bg-emerald-800 text-white border border-emerald-600',
-        error: 'bg-rose-800 text-white border border-rose-600',
-        info: 'bg-slate-800 text-white border border-slate-600'
-      };
-      const icons = {
-        success: 'fa-circle-check text-emerald-300',
-        error: 'fa-circle-exclamation text-rose-300',
-        info: 'fa-circle-info text-teal-300'
-      };
-
-      toast.className = `p-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-semibold transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto ${bgColors[type] || bgColors.info}`;
-      toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-sm shrink-0"></i><span class="flex-1">${message}</span>`;
-      container.appendChild(toast);
-
-      requestAnimationFrame(() => {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-      });
-
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-2');
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    function loadWalasKontak() {
-      try {
-        const saved = localStorage.getItem('sdit_azzahra_walas');
-        if (saved) {
-          state.walasKontak = JSON.parse(saved);
+    function setDashboardPeriodFilter(period) {
+      state.dashboardPeriod = period;
+      ['daily', 'weekly', 'monthly'].forEach(p => {
+        const btn = document.getElementById(`btnPeriod${p.charAt(0).toUpperCase() + p.slice(1)}`);
+        if (!btn) return;
+        if (p === period) {
+          btn.className = 'py-1.5 px-3 rounded-xl bg-[#2e1b4e] text-white shadow-sm transition-all cursor-pointer';
         } else {
-          state.walasKontak = { ...DEFAULT_WALI_KELAS };
-        }
-      } catch (e) {
-        state.walasKontak = { ...DEFAULT_WALI_KELAS };
-      }
-    }
-
-    function saveWalasKontak() {
-      try {
-        localStorage.setItem('sdit_azzahra_walas', JSON.stringify(state.walasKontak));
-      } catch (e) {
-        console.warn('Gagal menyimpan kontak walas:', e);
-      }
-    }
-
-    function sinkronisasiKontakDariDataSiswa() {
-      state.siswa.forEach(s => {
-        if (s.kelas && (s.waliKelas || s.hpWaliKelas)) {
-          if (!state.walasKontak[s.kelas]) {
-            state.walasKontak[s.kelas] = {
-              nama: s.waliKelas || 'Bapak/Ibu Walas',
-              wa: s.hpWaliKelas || ''
-            };
-          } else {
-            if (s.waliKelas && !state.walasKontak[s.kelas].nama) state.walasKontak[s.kelas].nama = s.waliKelas;
-            if (s.hpWaliKelas && !state.walasKontak[s.kelas].wa) state.walasKontak[s.kelas].wa = s.hpWaliKelas;
-          }
+          btn.className = 'py-1.5 px-3 rounded-xl text-white/80 hover:text-white transition-all cursor-pointer';
         }
       });
-      saveWalasKontak();
-    }
-
-    function loadLocalData() {
-      try {
-        const savedSiswa = localStorage.getItem('sdit_azzahra_siswa');
-        const savedRiwayat = localStorage.getItem('sdit_azzahra_riwayat');
-
-        if (savedSiswa && savedSiswa.includes('20240101')) {
-          localStorage.removeItem('sdit_azzahra_siswa');
-          localStorage.removeItem('sdit_azzahra_riwayat');
-          state.siswa = [];
-          state.riwayat = [];
-        } else {
-          state.siswa = savedSiswa ? JSON.parse(savedSiswa) : [];
-          state.riwayat = savedRiwayat ? JSON.parse(savedRiwayat) : [];
-        }
-        sinkronisasiKontakDariDataSiswa();
-      } catch (e) {
-        state.siswa = [];
-        state.riwayat = [];
-      }
       refreshAllViews();
     }
 
@@ -2015,28 +2126,31 @@
       const activeSec = document.getElementById(`tab-${tabId}`);
       if (activeSec) activeSec.classList.remove('hidden');
 
-      document.querySelectorAll('.nav-tab').forEach(btn => {
-        btn.classList.remove('active', 'text-white', 'bg-white/20');
-        btn.classList.add('text-emerald-100');
+      // Update Desktop Sidebar Buttons (Luxoa Pill highlight)
+      ['dasbor', 'input', 'siswa', 'riwayat', 'laporan', 'cetak'].forEach(t => {
+        const btn = document.getElementById(`sidebarBtn-${t}`);
+        if (!btn) return;
+        if (t === tabId) {
+          btn.className = 'w-11 h-11 rounded-2xl flex items-center justify-center text-white bg-[#2e1b4e] shadow-lg transition-all active:scale-90 cursor-pointer';
+        } else {
+          btn.className = 'w-11 h-11 rounded-2xl flex items-center justify-center text-brand-950/70 hover:bg-white/40 hover:text-brand-950 transition-all active:scale-90 cursor-pointer';
+        }
       });
-      const activeBtn = document.getElementById(`tabBtn-${tabId}`);
-      if (activeBtn) {
-        activeBtn.classList.add('active', 'text-white', 'bg-white/20');
-        activeBtn.classList.remove('text-emerald-100');
-      }
 
+      // Update Mobile Navigation
       ['dasbor', 'input', 'siswa', 'riwayat', 'laporan', 'cetak'].forEach(t => {
         const mobBtn = document.getElementById(`mobNav-${t}`);
         if (!mobBtn) return;
         if (t === tabId) {
           mobBtn.classList.remove('text-slate-400');
-          mobBtn.classList.add('text-emerald-800');
+          mobBtn.classList.add('text-brand-900');
         } else {
-          mobBtn.classList.remove('text-emerald-800');
+          mobBtn.classList.remove('text-brand-900');
           mobBtn.classList.add('text-slate-400');
         }
       });
 
+      if (tabId === 'dasbor') refreshAllViews();
       if (tabId === 'siswa') renderTabelSiswa();
       if (tabId === 'riwayat') renderTabelRiwayat();
       if (tabId === 'laporan') renderPelaporanWalas();
@@ -2664,9 +2778,13 @@
     }
 
     function renderTabelSiswa() {
-      const kelasFilter = document.getElementById('filterTabelKelas').value;
-      const statusFilter = document.getElementById('filterTabelStatus').value;
-      const keyword = (document.getElementById('cariTabelSiswa').value || '').toLowerCase();
+      const elKelas = document.getElementById('filterTabelKelas');
+      const elStatus = document.getElementById('filterTabelStatus');
+      const elCari = document.getElementById('cariTabelSiswa');
+
+      const kelasFilter = elKelas ? elKelas.value : 'semua';
+      const statusFilter = elStatus ? elStatus.value : 'semua';
+      const keyword = (elCari && elCari.value) ? elCari.value.toLowerCase().trim() : '';
 
       let list = state.siswa;
       if (statusFilter !== 'semua') list = list.filter(s => s.status === statusFilter);
@@ -2682,14 +2800,15 @@
       const mobileContainer = document.getElementById('mobileCardsMurid');
       const emptyState = document.getElementById('emptyStateSiswa');
 
+      if (!tbody || !mobileContainer) return;
       tbody.innerHTML = '';
       mobileContainer.innerHTML = '';
 
       if (list.length === 0) {
-        emptyState.classList.remove('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
         return;
       }
-      emptyState.classList.add('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
 
       list.forEach(s => {
         const walas = dapatkanInfoWalas(s.kelas);
@@ -2940,23 +3059,28 @@
       const imgPreview = document.getElementById('imgKopKustomPreview');
       const btnHapus = document.getElementById('btnHapusKopKustom');
 
+      if (!imgPreview) return;
+
       if (state.customKopBase64) {
         imgPreview.src = state.customKopBase64;
-        areaKopGambar.classList.remove('hidden');
-        areaKopStandar.classList.add('hidden');
+        if (areaKopGambar) areaKopGambar.classList.remove('hidden');
+        if (areaKopStandar) areaKopStandar.classList.add('hidden');
         if (btnHapus) btnHapus.classList.remove('hidden');
       } else {
         imgPreview.src = '';
-        areaKopGambar.classList.add('hidden');
-        areaKopStandar.classList.remove('hidden');
+        if (areaKopGambar) areaKopGambar.classList.add('hidden');
+        if (areaKopStandar) areaKopStandar.classList.remove('hidden');
         if (btnHapus) btnHapus.classList.add('hidden');
       }
     }
 
     function syncWalasKeInputCetak() {
-      const kelas = document.getElementById('cetakFilterKelas').value;
+      const elKelas = document.getElementById('cetakFilterKelas');
+      if (!elKelas) return;
+      const kelas = elKelas.value;
       const walas = dapatkanInfoWalas(kelas);
       const inputNamaWalas = document.getElementById('cetakInputNamaWalas');
+      if (!inputNamaWalas) return;
       
       if (!inputNamaWalas.value || inputNamaWalas.dataset.autofilled === 'true') {
         inputNamaWalas.value = walas.nama && walas.nama !== 'Bapak/Ibu Walas' ? walas.nama : '';
@@ -2966,20 +3090,31 @@
     }
 
     function updateInfoPenandatangan() {
-      const namaWalas = document.getElementById('cetakInputNamaWalas').value.trim();
-      const niyWalas = document.getElementById('cetakInputNiyWalas').value.trim();
-      const namaKesiswaan = document.getElementById('cetakInputNamaKesiswaan').value.trim();
-      const niyKesiswaan = document.getElementById('cetakInputNiyKesiswaan').value.trim();
-      const titimangsa = document.getElementById('cetakInputKotaTitimangsa').value.trim();
+      const elWalas = document.getElementById('cetakInputNamaWalas');
+      const elNiyWalas = document.getElementById('cetakInputNiyWalas');
+      const elKesiswaan = document.getElementById('cetakInputNamaKesiswaan');
+      const elNiyKesiswaan = document.getElementById('cetakInputNiyKesiswaan');
+      const elTitimangsa = document.getElementById('cetakInputKotaTitimangsa');
 
-      document.getElementById('cetakNamaWalasTtd').textContent = `( ${namaWalas || '........................................'} )`;
-      document.getElementById('cetakNiyWalasTtd').textContent = `NIY: ${niyWalas || '.........................'}`;
+      const namaWalas = elWalas ? elWalas.value.trim() : '';
+      const niyWalas = elNiyWalas ? elNiyWalas.value.trim() : '';
+      const namaKesiswaan = elKesiswaan ? elKesiswaan.value.trim() : '';
+      const niyKesiswaan = elNiyKesiswaan ? elNiyKesiswaan.value.trim() : '';
+      const titimangsa = elTitimangsa ? elTitimangsa.value.trim() : '';
 
-      document.getElementById('cetakNamaKesiswaanTtd').textContent = `( ${namaKesiswaan || 'Tim Kesiswaan SDIT Az Zahra'} )`;
-      document.getElementById('cetakNiyKesiswaanTtd').textContent = `NIY: ${niyKesiswaan || 'AZ-2024.KES.01'}`;
+      const ttdWalas = document.getElementById('cetakNamaWalasTtd');
+      const ttdNiyWalas = document.getElementById('cetakNiyWalasTtd');
+      const ttdKesiswaan = document.getElementById('cetakNamaKesiswaanTtd');
+      const ttdNiyKesiswaan = document.getElementById('cetakNiyKesiswaanTtd');
+      const ttdTgl = document.getElementById('cetakTanggalSuratTtd');
+
+      if (ttdWalas) ttdWalas.textContent = `( ${namaWalas || '........................................'} )`;
+      if (ttdNiyWalas) ttdNiyWalas.textContent = `NIY: ${niyWalas || '.........................'}`;
+      if (ttdKesiswaan) ttdKesiswaan.textContent = `( ${namaKesiswaan || 'Tim Kesiswaan SDIT Az Zahra'} )`;
+      if (ttdNiyKesiswaan) ttdNiyKesiswaan.textContent = `NIY: ${niyKesiswaan || 'AZ-2024.KES.01'}`;
 
       const tglFormatted = titimangsa || `Bandar Lampung, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
-      document.getElementById('cetakTanggalSuratTtd').innerHTML = `${tglFormatted}<br><span class="font-bold">Koordinator Kesiswaan</span>`;
+      if (ttdTgl) ttdTgl.innerHTML = `${tglFormatted}<br><span class="font-bold">Koordinator Kesiswaan</span>`;
 
       const dataToSave = {
         niyWalas: niyWalas,
@@ -2994,12 +3129,17 @@
       terapkanTampilanKopSurat();
 
       const savedTtd = state.penandatanganCetak;
-      if (savedTtd.namaKesiswaan) document.getElementById('cetakInputNamaKesiswaan').value = savedTtd.namaKesiswaan;
-      if (savedTtd.niyKesiswaan) document.getElementById('cetakInputNiyKesiswaan').value = savedTtd.niyKesiswaan;
-      if (savedTtd.niyWalas) document.getElementById('cetakInputNiyWalas').value = savedTtd.niyWalas;
+      const elKesiswaan = document.getElementById('cetakInputNamaKesiswaan');
+      const elNiyKesiswaan = document.getElementById('cetakInputNiyKesiswaan');
+      const elNiyWalas = document.getElementById('cetakInputNiyWalas');
+      const elTitimangsa = document.getElementById('cetakInputKotaTitimangsa');
+
+      if (savedTtd.namaKesiswaan && elKesiswaan) elKesiswaan.value = savedTtd.namaKesiswaan;
+      if (savedTtd.niyKesiswaan && elNiyKesiswaan) elNiyKesiswaan.value = savedTtd.niyKesiswaan;
+      if (savedTtd.niyWalas && elNiyWalas) elNiyWalas.value = savedTtd.niyWalas;
       
       const defaultTitimangsa = `Bandar Lampung, ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
-      document.getElementById('cetakInputKotaTitimangsa').value = savedTtd.titimangsa || defaultTitimangsa;
+      if (elTitimangsa) elTitimangsa.value = savedTtd.titimangsa || defaultTitimangsa;
 
       syncWalasKeInputCetak();
     }
@@ -3928,7 +4068,7 @@
           <td class="p-2 font-mono text-slate-500">${s.nis}</td>
           <td class="p-2 font-bold text-slate-800">${s.nama}</td>
           <td class="p-2 text-slate-600">${s.kelas}</td>
-          <td class="p-2 text-center"><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Siap Lulus</span></td>
+          <td class="p-2 text-center font-bold text-blue-700">Lulus</td>
         `;
         tbody.appendChild(tr);
       });
@@ -3937,9 +4077,8 @@
     async function prosesKelulusanKelas6() {
       const rombel6 = DAFTAR_KELAS_RESMI[6] || [];
       const santri = state.siswa.filter(s => rombel6.includes(s.kelas) && s.status === 'Aktif');
-
       if (santri.length === 0) {
-        showToast('Tidak ada murid kelas 6 yang dapat diluluskan!', 'info');
+        showToast('Tidak ada murid aktif di Kelas 6 untuk diluluskan!', 'info');
         return;
       }
 
@@ -3952,69 +4091,198 @@
       saveLocalData();
       refreshAllViews();
       closeModal('modalKenaikanKelas');
-      showToast(`Alhamdulillah, ${updates.length} murid kelas 6 resmi diarsipkan sebagai Alumni!`, 'success');
+      showToast(`Alhamdulillah, ${santri.length} murid kelas 6 dinyatakan Lulus!`, 'success');
 
       try {
         await panggilApiServer('batchUpdateSiswa', updates);
       } catch (e) {
-        console.warn('Gagal sinkron alumni ke server:', e);
+        console.warn('Gagal sinkron kelulusan ke server:', e);
       }
+    }
+
+    function loadWalasKontak() {
+      try {
+        const saved = localStorage.getItem('sdit_azzahra_walas_kontak');
+        state.walasKontak = saved ? JSON.parse(saved) : { ...DEFAULT_WALI_KELAS };
+      } catch (e) {
+        state.walasKontak = { ...DEFAULT_WALI_KELAS };
+      }
+    }
+
+    function saveWalasKontak() {
+      try {
+        localStorage.setItem('sdit_azzahra_walas_kontak', JSON.stringify(state.walasKontak));
+      } catch (e) {
+        console.warn('Gagal menyimpan kontak walas:', e);
+      }
+    }
+
+    function sinkronisasiKontakDariDataSiswa() {
+      state.siswa.forEach(s => {
+        if (s.kelas && (s.waliKelas || s.hpWaliKelas)) {
+          if (!state.walasKontak[s.kelas] || !state.walasKontak[s.kelas].nama) {
+            state.walasKontak[s.kelas] = {
+              nama: s.waliKelas || '',
+              wa: s.hpWaliKelas || ''
+            };
+          }
+        }
+      });
+      saveWalasKontak();
+    }
+
+    function loadLocalData() {
+      try {
+        const localSiswa = localStorage.getItem('sdit_azzahra_siswa');
+        const localRiwayat = localStorage.getItem('sdit_azzahra_riwayat');
+        if (localSiswa) state.siswa = JSON.parse(localSiswa);
+        if (localRiwayat) state.riwayat = JSON.parse(localRiwayat);
+      } catch (e) {
+        console.warn('Gagal memuat local data:', e);
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      const colors = {
+        success: 'bg-emerald-800 text-white border-emerald-700',
+        error: 'bg-rose-700 text-white border-rose-600',
+        info: 'bg-[#2e1b4e] text-white border-purple-800'
+      };
+      const icons = {
+        success: '<i class="fa-solid fa-circle-check text-emerald-300 mr-2"></i>',
+        error: '<i class="fa-solid fa-triangle-exclamation text-rose-300 mr-2"></i>',
+        info: '<i class="fa-solid fa-circle-info text-purple-300 mr-2"></i>'
+      };
+
+      toast.className = `p-3.5 px-4 rounded-2xl shadow-xl border text-xs font-bold pointer-events-auto flex items-center justify-between gap-3 max-w-md w-full transition-all duration-300 transform translate-y-2 opacity-0 ${colors[type] || colors.info}`;
+      toast.innerHTML = `
+        <div class="flex items-center min-w-0">
+          ${icons[type] || icons.info}
+          <span class="truncate">${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-white/70 hover:text-white p-1 shrink-0 cursor-pointer">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      `;
+
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function renderLuxoaFeed() {
+      const container = document.getElementById('luxoaLiveWorkoutFeed');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const recentItems = state.riwayat.slice(0, 4);
+      if (recentItems.length === 0) {
+        container.innerHTML = '<div class="p-6 text-center text-slate-400 text-xs">Belum ada mutaba\'ah yang tercatat hari ini</div>';
+        return;
+      }
+
+      recentItems.forEach(r => {
+        const isPelanggaran = r.tipe === 'Pelanggaran';
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-2xl bg-slate-50 hover:bg-purple-50/50 border border-slate-200/80 transition-all flex items-center justify-between gap-3';
+        item.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-2xl ${isPelanggaran ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'} flex items-center justify-center font-black text-xs shrink-0 shadow-inner">
+              ${(r.nama || 'A').charAt(0)}
+            </div>
+            <div class="min-w-0">
+              <div class="font-bold text-slate-800 text-xs sm:text-sm truncate">${r.nama}</div>
+              <div class="text-[11px] text-slate-400 truncate">${r.judul} • <span class="font-semibold text-brand-700">${r.kelas}</span></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <div class="text-right">
+              <span class="text-xs font-black font-mono ${isPelanggaran ? 'text-rose-600' : 'text-emerald-700'}">
+                ${r.poin > 0 ? '+' : ''}${r.poin} pt
+              </span>
+              <span class="block text-[10px] text-slate-400">${r.tanggal ? r.tanggal.split(' ')[0] : ''}</span>
+            </div>
+            <button onclick="bukaModalEditCatatan('${r.id}')" title="Koreksi" class="w-8 h-8 rounded-xl bg-white hover:bg-slate-100 text-slate-600 flex items-center justify-center text-xs border border-slate-200 cursor-pointer">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
     }
 
     function refreshAllViews() {
       const aktif = state.siswa.filter(s => s.status === 'Aktif');
-      document.getElementById('statTotalSantri').textContent = aktif.length;
 
       const rerata = aktif.length > 0
         ? Math.round(aktif.reduce((acc, cur) => acc + Number(cur.poin), 0) / aktif.length)
         : 100;
-      document.getElementById('statRerataPoin').textContent = rerata;
+      
+      const statRerata = document.getElementById('statRerataPoin');
+      if (statRerata) statRerata.textContent = rerata;
+      const topRerata = document.getElementById('statTopRerataPoin');
+      if (topRerata) topRerata.textContent = rerata;
 
-      const kritis = aktif.filter(s => s.poin < 75);
-      document.getElementById('statPerluBimbingan').textContent = kritis.length;
+      // Filter Riwayat berdasarkan Pilihan Period (Daily, Weekly, Monthly)
+      let riwayatTerpilih = state.riwayat;
+      const todayStr = new Date().toISOString().split('T')[0];
 
-      document.getElementById('statCatatanPekanIni').textContent = state.riwayat.length;
-
-      const topList = [...aktif].sort((a, b) => b.poin - a.poin).slice(0, 5);
-      const containerTop = document.getElementById('listSantriTeladan');
-      containerTop.innerHTML = '';
-      if (topList.length === 0) {
-        containerTop.innerHTML = '<div class="text-slate-400 py-2">Belum ada data murid</div>';
-      } else {
-        topList.forEach((s, idx) => {
-          const item = document.createElement('div');
-          item.className = 'flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100';
-          item.innerHTML = `
-            <div class="flex items-center gap-2 min-w-0">
-              <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
-              <span class="font-bold text-slate-800 text-xs truncate">${s.nama} (${s.kelas})</span>
-            </div>
-            <span class="font-extrabold font-mono text-emerald-700 text-xs shrink-0">${s.poin} pt</span>
-          `;
-          containerTop.appendChild(item);
-        });
+      if (state.dashboardPeriod === 'daily') {
+        riwayatTerpilih = state.riwayat.filter(r => r.tanggal && r.tanggal.startsWith(todayStr));
+      } else if (state.dashboardPeriod === 'weekly') {
+        const batasTujuhHariLalu = new Date();
+        batasTujuhHariLalu.setDate(batasTujuhHariLalu.getDate() - 7);
+        const strBatas = batasTujuhHariLalu.toISOString().split('T')[0];
+        riwayatTerpilih = state.riwayat.filter(r => r.tanggal && r.tanggal.split(' ')[0] >= strBatas);
+      } else if (state.dashboardPeriod === 'monthly') {
+        const blnStr = todayStr.substring(0, 7);
+        riwayatTerpilih = state.riwayat.filter(r => r.tanggal && r.tanggal.startsWith(blnStr));
       }
 
-      const bimbinganList = [...kritis].sort((a, b) => a.poin - b.poin).slice(0, 5);
-      const containerBimbingan = document.getElementById('listSantriBimbingan');
-      containerBimbingan.innerHTML = '';
-      if (bimbinganList.length === 0) {
-        containerBimbingan.innerHTML = '<div class="text-slate-400 py-2">Alhamdulillah, seluruh murid aman di atas 75 pt</div>';
-      } else {
-        bimbinganList.forEach((s, idx) => {
-          const item = document.createElement('div');
-          item.className = 'flex items-center justify-between p-2 rounded-xl bg-rose-50 border border-rose-100';
-          item.innerHTML = `
-            <div class="flex items-center gap-2 min-w-0">
-              <span class="w-5 h-5 rounded-full bg-rose-200 text-rose-800 text-xs font-extrabold flex items-center justify-center shrink-0">${idx + 1}</span>
-              <span class="font-bold text-slate-800 text-xs truncate">${s.nama} (${s.kelas})</span>
-            </div>
-            <span class="font-extrabold font-mono text-rose-600 text-xs shrink-0">${s.poin} pt</span>
-          `;
-          containerBimbingan.appendChild(item);
-        });
+      const topTotalCatatan = document.getElementById('statTopTotalCatatan');
+      if (topTotalCatatan) topTotalCatatan.textContent = riwayatTerpilih.length;
+
+      // Update Battery Progress Meter (Luxoa Style)
+      const countKebaikan = riwayatTerpilih.filter(r => r.tipe === 'Kebaikan').length;
+      const countPelanggaran = riwayatTerpilih.filter(r => r.tipe === 'Pelanggaran').length;
+      const totalKegiatan = countKebaikan + countPelanggaran;
+
+      let pctKebaikan = 80;
+      let pctPelanggaran = 20;
+      if (totalKegiatan > 0) {
+        pctKebaikan = Math.max(15, Math.min(85, Math.round((countKebaikan / totalKegiatan) * 100)));
+        pctPelanggaran = 100 - pctKebaikan;
       }
 
+      const barKebaikan = document.getElementById('meterBarKebaikan');
+      const barPelanggaran = document.getElementById('meterBarPelanggaran');
+      const lblKebaikan = document.getElementById('labelPercentKebaikan');
+      const lblPelanggaran = document.getElementById('labelPercentPelanggaran');
+
+      if (barKebaikan) barKebaikan.style.width = `${pctKebaikan}%`;
+      if (barPelanggaran) barPelanggaran.style.width = `${pctPelanggaran}%`;
+      if (lblKebaikan) lblKebaikan.textContent = `${pctKebaikan}%`;
+      if (lblPelanggaran) lblPelanggaran.textContent = `${pctPelanggaran}%`;
+
+      const legKebaikan = document.getElementById('countLegKebaikan');
+      const legPelanggaran = document.getElementById('countLegPelanggaran');
+      if (legKebaikan) legKebaikan.textContent = countKebaikan;
+      if (legPelanggaran) legPelanggaran.textContent = countPelanggaran;
+
+      // Render Live Feed Luxoa
+      renderLuxoaFeed();
+
+      // Render Tab Lainnya jika sedang aktif
       if (state.activeTab === 'siswa') renderTabelSiswa();
       if (state.activeTab === 'riwayat') renderTabelRiwayat();
       if (state.activeTab === 'laporan') renderPelaporanWalas();
@@ -4045,6 +4313,7 @@
               setConnectionStatus('connected');
               state.siswa = response.data.siswa || [];
               state.riwayat = response.data.riwayat || [];
+              state.totalCatatanRiil = response.data.totalCatatan || state.riwayat.length;
 
               sinkronisasiKontakDariDataSiswa();
               saveLocalData();
