@@ -390,7 +390,7 @@
               <div class="flex items-center justify-between">
                 <div>
                   <h3 class="font-bold text-slate-800 text-sm">Pelanggaran Jenjang</h3>
-                  <p class="text-[11px] text-slate-400 font-medium">Kasus per tingkat rombel (K1 – K6)</p>
+                  <p class="text-[11px] text-slate-400 font-medium">Total akumulatif kasus rombel (K1 – K6)</p>
                 </div>
                 <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
               </div>
@@ -4565,11 +4565,13 @@
       if (legKebaikan) legKebaikan.textContent = countKebaikan;
       if (legPelanggaran) legPelanggaran.textContent = countPelanggaran;
 
-      // Update Statistik Bar Pelanggaran Jenjang K1 - K6
+      // Update Statistik Bar Pelanggaran Jenjang K1 - K6 SECARA AKUMULATIF (Seluruh Riwayat)
       const jenjangCounts = [0, 0, 0, 0, 0, 0];
-      riwayatTerpilih.forEach(r => {
+      state.riwayat.forEach(r => {
         if (r.tipe === 'Pelanggaran' && r.kelas) {
-          const match = r.kelas.trim().match(/^([1-6])/);
+          const strKelas = String(r.kelas).trim();
+          // Ekstrak angka pertama kelas (1 sampai 6)
+          const match = strKelas.match(/^[^\d]*([1-6])/);
           if (match) {
             const j = parseInt(match[1], 10);
             if (j >= 1 && j <= 6) {
@@ -4586,7 +4588,7 @@
         const bar = document.getElementById(`barJenjang${j}`);
         if (lbl) lbl.textContent = count;
         if (bar) {
-          const pctHeight = count === 0 ? 8 : Math.max(12, Math.round((count / maxJenjang) * 100));
+          const pctHeight = count === 0 ? 8 : Math.max(14, Math.round((count / maxJenjang) * 100));
           bar.style.height = `${pctHeight}%`;
         }
       }
