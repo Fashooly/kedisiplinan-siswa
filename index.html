@@ -104,7 +104,7 @@
       padding-top: max(env(safe-area-inset-top, 0px), 12px);
     }
     .pb-safe {
-      padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 6px);
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 14px);
     }
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
@@ -139,10 +139,10 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8 antialiased selection:bg-brand-500 selection:text-white pb-24 sm:pb-8">
+<body class="min-h-screen flex items-center justify-center p-1.5 sm:p-4 md:p-6 lg:p-8 antialiased selection:bg-brand-500 selection:text-white pb-28 sm:pb-8 pt-safe-top">
 
   <!-- ==================== LUXOA MAIN CONTAINER CARD ==================== -->
-  <div class="w-full max-w-[1400px] bg-[#9e98ce] rounded-3xl sm:rounded-5xl shadow-[0_25px_60px_-15px_rgba(76,29,149,0.3)] border border-white/40 p-3 sm:p-5 lg:p-7 flex flex-col md:flex-row gap-4 lg:gap-6 backdrop-blur-md">
+  <div class="w-full max-w-[1400px] bg-[#9e98ce] rounded-2xl sm:rounded-4xl md:rounded-5xl shadow-[0_25px_60px_-15px_rgba(76,29,149,0.3)] border border-white/40 p-2.5 sm:p-5 lg:p-7 flex flex-col md:flex-row gap-3 sm:gap-4 lg:gap-6 backdrop-blur-md">
 
     <!-- FLOATING ICON SIDEBAR (Luxoa Desktop Navigation) -->
     <aside aria-label="Sidebar Menu" class="luxoa-sidebar hidden md:flex flex-col items-center justify-between py-6 px-3 bg-white/20 rounded-3xl sm:rounded-4xl border border-white/30 backdrop-blur-md shrink-0 w-18 shadow-inner no-print">
@@ -189,46 +189,58 @@
     <div class="flex-1 flex flex-col min-w-0">
 
       <!-- TOP HEADER BAR (Luxoa Inspired) -->
-      <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-white/20 no-print">
+      <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 pb-3 sm:pb-4 border-b border-white/20 no-print">
         
         <!-- App Title & Subtitle -->
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-white/30 border border-white/40 flex md:hidden items-center justify-center text-brand-950 shadow-sm shrink-0">
-            <i class="fa-solid fa-shapes text-lg"></i>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-black tracking-widest uppercase text-brand-950/70">PORTAL MUTABA'AH</span>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/30 text-brand-950 border border-white/40">SDIT AZ ZAHRA</span>
+        <div class="flex items-center justify-between sm:justify-start gap-2.5">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/30 border border-white/40 flex md:hidden items-center justify-center text-brand-950 shadow-sm shrink-0">
+              <i class="fa-solid fa-shapes text-base sm:text-lg"></i>
             </div>
-            <h1 class="text-lg sm:text-2xl font-black text-white tracking-tight">Luxoa Kesiswaan</h1>
+            <div>
+              <div class="flex items-center gap-1.5 sm:gap-2">
+                <span class="text-[10px] sm:text-xs font-black tracking-wider uppercase text-brand-950/80">MUTABA'AH</span>
+                <span class="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-white/30 text-brand-950 border border-white/40">SDIT AZ ZAHRA</span>
+              </div>
+              <h1 class="text-base sm:text-2xl font-black text-white tracking-tight leading-tight">Luxoa Kesiswaan</h1>
+            </div>
+          </div>
+
+          <!-- Quick Refresh Button di Layar HP (Kanan Atas Header) -->
+          <div class="flex sm:hidden items-center gap-1.5">
+            <div id="connStatusBadgeMobile" title="Koneksi Google Sheets" class="flex items-center justify-center w-8 h-8 rounded-xl bg-white/20 border border-white/30 shadow-xs">
+              <span id="connPulseDotMobile" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            </div>
+            <button onclick="sinkronkanUlangData()" title="Segarkan" class="w-8 h-8 rounded-xl bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xs active:scale-90 transition cursor-pointer">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
           </div>
         </div>
 
         <!-- Filter Pill Controls & Quick Action Button -->
-        <div class="flex items-center flex-wrap gap-2">
+        <div class="flex items-center justify-between sm:justify-end flex-wrap gap-2 pt-1 sm:pt-0">
           
           <!-- Period Selector Pill (Daily, Weekly, Monthly) -->
-          <div class="flex items-center p-1 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-xs font-bold text-white shadow-inner">
-            <button onclick="setDashboardPeriodFilter('daily')" id="btnPeriodDaily" class="py-1.5 px-3 rounded-xl bg-[#2e1b4e] text-white shadow-sm transition-all cursor-pointer">
+          <div class="flex items-center p-1 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-[11px] sm:text-xs font-bold text-white shadow-inner flex-1 sm:flex-initial justify-between sm:justify-start">
+            <button onclick="setDashboardPeriodFilter('daily')" id="btnPeriodDaily" class="flex-1 sm:flex-initial py-1 sm:py-1.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl bg-[#2e1b4e] text-white shadow-sm transition-all text-center cursor-pointer">
               Harian
             </button>
-            <button onclick="setDashboardPeriodFilter('weekly')" id="btnPeriodWeekly" class="py-1.5 px-3 rounded-xl text-white/80 hover:text-white transition-all cursor-pointer">
+            <button onclick="setDashboardPeriodFilter('weekly')" id="btnPeriodWeekly" class="flex-1 sm:flex-initial py-1 sm:py-1.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-white/80 hover:text-white transition-all text-center cursor-pointer">
               Pekan Ini
             </button>
-            <button onclick="setDashboardPeriodFilter('monthly')" id="btnPeriodMonthly" class="py-1.5 px-3 rounded-xl text-white/80 hover:text-white transition-all cursor-pointer">
+            <button onclick="setDashboardPeriodFilter('monthly')" id="btnPeriodMonthly" class="flex-1 sm:flex-initial py-1 sm:py-1.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-white/80 hover:text-white transition-all text-center cursor-pointer">
               Bulanan
             </button>
           </div>
 
-          <!-- Connection Badge & Refresh Button -->
-          <div id="connStatusBadge" title="Menghubungkan ke Google Sheets..." class="flex items-center justify-center w-9 h-9 rounded-2xl bg-white/20 border border-white/30 shadow-sm">
+          <!-- Connection Badge & Refresh Button (Desktop Only) -->
+          <div id="connStatusBadge" title="Menghubungkan ke Google Sheets..." class="hidden sm:flex items-center justify-center w-9 h-9 rounded-2xl bg-white/20 border border-white/30 shadow-sm">
             <span id="connPulseDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.9)]"></span>
           </div>
 
           <!-- + Add Catatan Button (Primary Action Pill) -->
-          <button onclick="switchTab('input')" class="py-2 px-4 rounded-2xl bg-[#2e1b4e] hover:bg-[#23143c] active:scale-95 text-white text-xs font-black transition flex items-center gap-2 shadow-lg cursor-pointer">
-            <i class="fa-solid fa-plus text-xs"></i>
+          <button onclick="switchTab('input')" class="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-[#2e1b4e] hover:bg-[#23143c] active:scale-95 text-white text-xs font-black transition flex items-center gap-1.5 sm:gap-2 shadow-lg cursor-pointer shrink-0">
+            <i class="fa-solid fa-plus text-[11px] sm:text-xs"></i>
             <span>Catat Adab</span>
           </button>
         </div>
@@ -236,33 +248,32 @@
       </header>
 
       <!-- TAB CONTENTS WRAPPER -->
-      <main class="mt-4 flex-1">
+      <main class="mt-3 sm:mt-4 flex-1">
 
         <!-- ==================== TAB 1: DASBOR & BENTO ANALITIK ==================== -->
-        <section id="tab-dasbor" class="tab-content space-y-4 sm:space-y-6">
+        <section id="tab-dasbor" class="tab-content space-y-3 sm:space-y-6">
           
           <!-- Luxoa Welcome Banner & Top Metrics Strip -->
-          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 text-white">
-            <div class="space-y-1">
-              <h2 class="text-xl sm:text-3xl font-extrabold tracking-tight">Ahlan wa Sahlan, Tim Kesiswaan!</h2>
-              <p class="text-xs sm:text-sm text-white/80 font-medium">Laporan analitik kedisiplinan dan mutaba'ah karakter murid hari ini.</p>
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-3 sm:gap-4 text-white">
+            <div class="space-y-0.5 sm:space-y-1">
+              <h2 class="text-lg sm:text-3xl font-extrabold tracking-tight leading-tight">Ahlan wa Sahlan, Guru & Kesiswaan!</h2>
+              <p class="text-[11px] sm:text-sm text-white/85 font-medium">Laporan analitik mutaba'ah & kedisiplinan murid SDIT Az Zahra.</p>
             </div>
 
-            <!-- Top Metric Digits -->
-            <div class="flex items-center gap-6 sm:gap-8 self-start lg:self-end">
+            <!-- Top Metric Digits (Responsive Horizontal Card di HP) -->
+            <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-8 bg-white/10 sm:bg-transparent p-2.5 sm:p-0 rounded-2xl border border-white/20 sm:border-0 w-full sm:w-auto">
               <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-white/70 block">Total Catatan Aktif</span>
-                <div class="flex items-baseline gap-1.5">
-                  <span id="statTopTotalCatatan" class="text-2xl sm:text-3xl font-black text-white">0</span>
-                  <span class="text-xs text-white/80 font-semibold">kejadian</span>
+                <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-white/75 block">Total Catatan Aktif</span>
+                <div class="flex items-baseline gap-1">
+                  <span id="statTopTotalCatatan" class="text-xl sm:text-3xl font-black text-white">0</span>
+                  <span class="text-[10px] sm:text-xs text-white/80 font-semibold">kejadian</span>
                 </div>
               </div>
-              <div class="h-8 w-px bg-white/20"></div>
-              <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-white/70 block">Indeks Adab Rerata</span>
-                <div class="flex items-baseline gap-1.5">
-                  <span id="statTopRerataPoin" class="text-2xl sm:text-3xl font-black text-white">100</span>
-                  <span class="text-xs text-lime-300 font-bold font-mono">pt</span>
+              <div class="border-l border-white/20 pl-3 sm:pl-0 sm:border-0">
+                <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-white/75 block">Indeks Adab Rerata</span>
+                <div class="flex items-baseline gap-1">
+                  <span id="statTopRerataPoin" class="text-xl sm:text-3xl font-black text-white">100</span>
+                  <span class="text-[10px] sm:text-xs text-lime-300 font-bold font-mono">pt</span>
                 </div>
               </div>
             </div>
@@ -1052,55 +1063,55 @@
 
             <div class="text-center space-y-16">
               <p id="cetakTanggalSuratTtd">Bandar Lampung, ....................<br><span class="font-bold">Koordinator Kesiswaan</span></p>
-              <div>
-                <p id="cetakNamaKesiswaanTtd" class="font-bold text-slate-900 underline">( Tim Kesiswaan SDIT Az Zahra )</p>
-                <p id="cetakNiyKesiswaanTtd" class="text-slate-500 font-mono text-[11px]">NIY: AZ-2024.KES.01</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-  </div>
-
-  <!-- Bottom Mobile Dock Navigation (Khusus iPhone iOS & Android) -->
-  <aside aria-label="Navigasi Bawah" class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-safe no-print">
-    <div class="grid grid-cols-6 h-14 items-center px-1">
+  <!-- Bottom Mobile Dock Navigation (Khusus iPhone iOS & Android Modern Floating Pill) -->
+  <aside aria-label="Navigasi Bawah" class="md:hidden fixed bottom-2 left-2 right-2 z-40 bg-white/95 backdrop-blur-xl border border-white/60 shadow-[0_10px_30px_rgba(46,16,101,0.2)] rounded-3xl pb-safe no-print px-1 py-1">
+    <div class="grid grid-cols-6 h-13 items-center">
       <button onclick="switchTab('dasbor')" id="mobNav-dasbor" class="flex flex-col items-center justify-center py-1 text-brand-900 transition active:scale-90 cursor-pointer">
-        <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
-        <span class="text-[10px] font-bold">Dasbor</span>
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all bg-brand-100/70 text-brand-900">
+          <i class="fa-solid fa-chart-pie text-sm"></i>
+        </div>
+        <span class="text-[9px] font-bold mt-0.5">Dasbor</span>
       </button>
       <button onclick="switchTab('input')" id="mobNav-input" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
-        <i class="fa-solid fa-pen-to-square text-base mb-0.5"></i>
-        <span class="text-[10px] font-bold">Catat</span>
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-pen-to-square text-sm"></i>
+        </div>
+        <span class="text-[9px] font-bold mt-0.5">Catat</span>
       </button>
       <button onclick="switchTab('siswa')" id="mobNav-siswa" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
-        <i class="fa-solid fa-user-graduate text-base mb-0.5"></i>
-        <span class="text-[10px] font-bold">Murid</span>
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-user-graduate text-sm"></i>
+        </div>
+        <span class="text-[9px] font-bold mt-0.5">Murid</span>
       </button>
       <button onclick="switchTab('riwayat')" id="mobNav-riwayat" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
-        <i class="fa-solid fa-clock-rotate-left text-base mb-0.5"></i>
-        <span class="text-[10px] font-bold">Riwayat</span>
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+        </div>
+        <span class="text-[9px] font-bold mt-0.5">Riwayat</span>
       </button>
       <button onclick="switchTab('laporan')" id="mobNav-laporan" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
-        <i class="fa-brands fa-whatsapp text-base mb-0.5"></i>
-        <span class="text-[10px] font-bold">Walas</span>
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all text-emerald-600">
+          <i class="fa-brands fa-whatsapp text-base"></i>
+        </div>
+        <span class="text-[9px] font-bold mt-0.5">Walas</span>
       </button>
       <button onclick="switchTab('cetak')" id="mobNav-cetak" class="flex flex-col items-center justify-center py-1 text-slate-400 transition active:scale-90 cursor-pointer">
-        <i class="fa-solid fa-print text-base mb-0.5"></i>
-        <span class="text-[10px] font-bold">Cetak</span>
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center transition-all">
+          <i class="fa-solid fa-print text-sm"></i>
+        </div>
+        <span class="text-[9px] font-bold mt-0.5">Cetak</span>
       </button>
     </div>
   </aside>
 
-  <!-- ==================== MODAL DIALOGS ==================== -->
+  <!-- ==================== MODAL DIALOGS (Bottom Sheets on Mobile) ==================== -->
 
   <!-- MODAL: Tambah Murid Baru Manual -->
   <div id="modalTambahSiswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-4 sm:p-7 shadow-2xl border border-slate-200 space-y-3.5 max-h-[92vh] overflow-y-auto">
+      <!-- Drag handle indicator for mobile sheet -->
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <h3 class="font-bold text-slate-800 text-xs sm:text-base flex items-center gap-2">
           <i class="fa-solid fa-user-plus text-emerald-700"></i> Daftarkan Murid Baru
@@ -1177,6 +1188,7 @@
   <!-- MODAL: EDIT DATA MURID LENGKAP -->
   <div id="modalEditSiswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-4 sm:p-7 shadow-2xl border border-slate-200 space-y-3.5 max-h-[92vh] overflow-y-auto">
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <h3 class="font-bold text-slate-800 text-xs sm:text-base flex items-center gap-2">
           <i class="fa-solid fa-user-pen text-teal-700"></i> Edit Data Murid
@@ -1265,6 +1277,7 @@
   <!-- MODAL: EDIT RIWAYAT CATATAN SALAH INPUT -->
   <div id="modalEditCatatan" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-4 sm:p-7 shadow-2xl border border-slate-200 space-y-3.5 max-h-[92vh] overflow-y-auto">
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <h3 class="font-bold text-slate-800 text-xs sm:text-base flex items-center gap-2">
           <i class="fa-solid fa-pen-to-square text-amber-600"></i> Koreksi Catatan Mutaba'ah
@@ -1353,6 +1366,7 @@
   <!-- MODAL: Ubah Status Murid -->
   <div id="modalUbahStatus" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-sm w-full p-4 sm:p-6 shadow-2xl border border-slate-200">
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <h3 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-2">
           <i class="fa-solid fa-user-gear text-emerald-700"></i> Perbarui Status Murid
@@ -1392,7 +1406,7 @@
   <!-- MODAL: Impor File Excel (.xlsx) -->
   <div id="modalImportExcel" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-2xl w-full p-4 sm:p-7 shadow-2xl border border-slate-200 flex flex-col max-h-[92vh]">
-      
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-xs">
@@ -1517,7 +1531,7 @@
   <!-- MODAL: Kenaikan & Pengacakan Kelas -->
   <div id="modalKenaikanKelas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-3xl w-full p-4 sm:p-7 shadow-2xl border border-slate-200 flex flex-col max-h-[92vh]">
-      
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xs">
@@ -1862,6 +1876,7 @@
   <!-- MODAL: Pratinjau WhatsApp -->
   <div id="modalPratinjauWa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-xl w-full p-4 sm:p-7 shadow-2xl border border-slate-200 flex flex-col max-h-[92vh]">
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-sm">
@@ -1904,6 +1919,7 @@
   <!-- MODAL: Edit Kontak Wali Kelas -->
   <div id="modalEditWalas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 z-50">
     <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-sm w-full p-4 sm:p-6 shadow-2xl border border-slate-200">
+      <div class="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2 sm:hidden"></div>
       <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
         <h3 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-2">
           <i class="fa-solid fa-user-tie text-emerald-700"></i> Edit Kontak Wali Kelas
@@ -2058,19 +2074,27 @@
       const dot = document.getElementById('connPulseDot');
       const sideDot = document.getElementById('sidebarConnDot');
       const badge = document.getElementById('connStatusBadge');
+      const mobDot = document.getElementById('connPulseDotMobile');
+      const mobBadge = document.getElementById('connStatusBadgeMobile');
 
       if (status === 'connected' || status === true) {
         if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.9)]';
         if (sideDot) sideDot.className = 'w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.9)]';
+        if (mobDot) mobDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.9)]';
         if (badge) badge.title = 'Terhubung ke Google Sheets';
+        if (mobBadge) mobBadge.title = 'Terhubung ke Google Sheets';
       } else if (status === 'connecting' || status === 'loading') {
         if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.9)]';
         if (sideDot) sideDot.className = 'w-3 h-3 rounded-full bg-amber-400 animate-pulse shadow-[0_0_10px_rgba(251,191,36,0.9)]';
+        if (mobDot) mobDot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_6px_rgba(251,191,36,0.9)]';
         if (badge) badge.title = 'Sedang menyinkronkan dengan Google Sheets...';
+        if (mobBadge) mobBadge.title = 'Sedang menyinkronkan...';
       } else {
         if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.9)]';
         if (sideDot) sideDot.className = 'w-3 h-3 rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.9)]';
+        if (mobDot) mobDot.className = 'w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.9)]';
         if (badge) badge.title = 'Koneksi terputus ke Google Sheets';
+        if (mobBadge) mobBadge.title = 'Terputus';
       }
     }
 
@@ -2137,16 +2161,25 @@
         }
       });
 
-      // Update Mobile Navigation
+      // Update Mobile Navigation (Floating Dock Active Highlights)
       ['dasbor', 'input', 'siswa', 'riwayat', 'laporan', 'cetak'].forEach(t => {
         const mobBtn = document.getElementById(`mobNav-${t}`);
         if (!mobBtn) return;
+        const iconContainer = mobBtn.querySelector('div');
         if (t === tabId) {
           mobBtn.classList.remove('text-slate-400');
           mobBtn.classList.add('text-brand-900');
+          if (iconContainer) {
+            iconContainer.className = 'w-8 h-8 rounded-xl flex items-center justify-center transition-all bg-brand-100/90 text-brand-900 shadow-xs font-bold scale-105';
+          }
         } else {
           mobBtn.classList.remove('text-brand-900');
           mobBtn.classList.add('text-slate-400');
+          if (iconContainer) {
+            iconContainer.className = t === 'laporan'
+              ? 'w-8 h-8 rounded-xl flex items-center justify-center transition-all text-emerald-600'
+              : 'w-8 h-8 rounded-xl flex items-center justify-center transition-all';
+          }
         }
       });
 
