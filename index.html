@@ -450,6 +450,27 @@
 
           </div>
 
+          <!-- BENTO WIDGET BARU: 5 SISWA POIN TERENDAH (PRIORITAS BIMBINGAN) -->
+          <div class="bg-white/95 rounded-3xl p-4 sm:p-5 border border-white/60 shadow-xl space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100 gap-2">
+              <div class="min-w-0">
+                <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-extrabold mb-1">
+                  <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Perhatian Khusus Kesiswaan
+                </div>
+                <h3 class="font-bold text-slate-800 text-xs sm:text-base truncate">5 Siswa Poin Terendah</h3>
+                <p class="text-[10px] sm:text-xs text-slate-400 truncate">Murid yang paling membutuhkan bimbingan & evaluasi kedisiplinan</p>
+              </div>
+              <button onclick="switchTab('peringkat')" class="text-[11px] sm:text-xs font-bold text-rose-600 hover:text-rose-800 transition flex items-center gap-1 cursor-pointer shrink-0">
+                Lihat Semua Urutan <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
+            </div>
+
+            <!-- List 5 Siswa Poin Terendah -->
+            <div id="containerTop5Terendah" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2.5">
+              <!-- Injected dynamically via renderTop5Terendah() -->
+            </div>
+          </div>
+
           <!-- BENTO GRID LOWER SECTION: Live Workout Table & Daily Agenda Widget -->
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4">
             
@@ -471,67 +492,91 @@
               </div>
             </div>
 
-            <!-- LOWER RIGHT: Sport Schedule (Agenda & Sidak Harian Kesiswaan) -->
-            <div class="lg:col-span-4 bg-white/95 rounded-3xl p-4 sm:p-5 border border-white/60 shadow-xl space-y-3 sm:space-y-4 flex flex-col justify-between">
-              <div>
+            <!-- LOWER RIGHT: 5 Siswa Poin Terendah & Agenda Harian -->
+            <div class="lg:col-span-4 space-y-3 sm:space-y-4 flex flex-col justify-between">
+              
+              <!-- WIDGET: 5 SISWA POIN TERENDAH (Hanya Nama, Kelas, dan Poin) -->
+              <div class="bg-white/95 rounded-3xl p-4 sm:p-5 border border-white/60 shadow-xl space-y-3">
                 <div class="flex items-center justify-between pb-2 border-b border-slate-100 gap-2">
-                  <h3 class="font-bold text-slate-800 text-xs sm:text-sm truncate">Agenda & Sidak Harian</h3>
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-mono shrink-0" id="labelTanggalHariIniAgenda">Hari Ini</span>
+                  <div class="min-w-0">
+                    <h3 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5 truncate">
+                      <i class="fa-solid fa-triangle-exclamation text-rose-500 shrink-0"></i> 5 Siswa Poin Terendah
+                    </h3>
+                    <p class="text-[10px] text-slate-400 truncate">Perlu bimbingan kesiswaan</p>
+                  </div>
+                  <button onclick="switchTab('peringkat')" class="text-[10px] font-bold text-rose-600 hover:text-rose-800 flex items-center gap-0.5 shrink-0 cursor-pointer">
+                    Semua <i class="fa-solid fa-chevron-right text-[8px]"></i>
+                  </button>
                 </div>
 
-                <!-- Schedule Timeline Items (Luxoa Style) -->
-                <div class="mt-3 space-y-2.5 sm:space-y-3">
-                  
-                  <div class="p-2.5 sm:p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 sm:gap-3">
-                    <div class="w-11 sm:w-12 text-center shrink-0">
-                      <span class="text-[11px] sm:text-xs font-black text-slate-800 block">07:00</span>
-                      <span class="text-[9px] sm:text-[10px] font-semibold text-slate-400">Pagi</span>
-                    </div>
-                    <div class="h-8 w-1 rounded-full bg-[#a3e635] shrink-0"></div>
-                    <div class="flex-1 min-w-0">
-                      <div class="font-bold text-slate-800 text-[11px] sm:text-xs truncate">Penyambutan & Senyum Sapa</div>
-                      <div class="text-[10px] sm:text-[11px] text-slate-400 truncate">Pintu Gerbang Utama</div>
-                    </div>
-                  </div>
-
-                  <div class="p-2.5 sm:p-3 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex items-center gap-2.5 sm:gap-3">
-                    <div class="w-11 sm:w-12 text-center shrink-0">
-                      <span class="text-[11px] sm:text-xs font-black text-brand-900 block">09:30</span>
-                      <span class="text-[9px] sm:text-[10px] font-semibold text-brand-600">Dhuha</span>
-                    </div>
-                    <div class="h-8 w-1 rounded-full bg-[#7c3aed] shrink-0"></div>
-                    <div class="flex-1 min-w-0">
-                      <div class="font-bold text-brand-950 text-[11px] sm:text-xs truncate">Monitoring Sholat Dhuha</div>
-                      <div class="text-[10px] sm:text-[11px] text-brand-700/80 truncate">Masjid SDIT Az Zahra</div>
-                    </div>
-                  </div>
-
-                  <div class="p-2.5 sm:p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 sm:gap-3">
-                    <div class="w-11 sm:w-12 text-center shrink-0">
-                      <span class="text-[11px] sm:text-xs font-black text-slate-800 block">12:15</span>
-                      <span class="text-[9px] sm:text-[10px] font-semibold text-slate-400">Dzuhur</span>
-                    </div>
-                    <div class="h-8 w-1 rounded-full bg-[#a3e635] shrink-0"></div>
-                    <div class="flex-1 min-w-0">
-                      <div class="font-bold text-slate-800 text-[11px] sm:text-xs truncate">Adab Makan Siang & Sholat</div>
-                      <div class="text-[10px] sm:text-[11px] text-slate-400 truncate">Rombel Kelas 1 s/d 6</div>
-                    </div>
-                  </div>
-
+                <!-- Daftar 5 Murid (Hanya Nama, Kelas & Poin) -->
+                <div id="top5LowestPointList" class="space-y-2">
+                  <!-- Di-render dinamis via renderTop5LowestDashboard() -->
                 </div>
               </div>
 
-              <!-- Quick Ranking Shortcut Box -->
-              <div class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#2e1b4e] to-[#4c1d95] text-white flex items-center justify-between gap-2 shadow-md">
-                <div class="space-y-0.5 min-w-0">
-                  <div class="font-bold text-[11px] sm:text-xs flex items-center gap-1.5 truncate">
-                    <i class="fa-solid fa-triangle-exclamation text-rose-400 shrink-0"></i> Evaluasi Bimbingan
+              <!-- Sport Schedule (Agenda & Sidak Harian Kesiswaan) -->
+              <div class="bg-white/95 rounded-3xl p-4 sm:p-5 border border-white/60 shadow-xl space-y-3 sm:space-y-4">
+                <div>
+                  <div class="flex items-center justify-between pb-2 border-b border-slate-100 gap-2">
+                    <h3 class="font-bold text-slate-800 text-xs sm:text-sm truncate">Agenda & Sidak Harian</h3>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-mono shrink-0" id="labelTanggalHariIniAgenda">Hari Ini</span>
                   </div>
-                  <div class="text-[9px] sm:text-[10px] text-white/70 truncate">Pantau murid yang butuh atensi</div>
+
+                  <!-- Schedule Timeline Items (Luxoa Style) -->
+                  <div class="mt-3 space-y-2.5 sm:space-y-3">
+                    
+                    <div class="p-2.5 sm:p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 sm:gap-3">
+                      <div class="w-11 sm:w-12 text-center shrink-0">
+                        <span class="text-[11px] sm:text-xs font-black text-slate-800 block">07:00</span>
+                        <span class="text-[9px] sm:text-[10px] font-semibold text-slate-400">Pagi</span>
+                      </div>
+                      <div class="h-8 w-1 rounded-full bg-[#a3e635] shrink-0"></div>
+                      <div class="flex-1 min-w-0">
+                        <div class="font-bold text-slate-800 text-[11px] sm:text-xs truncate">Penyambutan & Senyum Sapa</div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-400 truncate">Pintu Gerbang Utama</div>
+                      </div>
+                    </div>
+
+                    <div class="p-2.5 sm:p-3 rounded-2xl bg-purple-50/70 border border-purple-200/80 flex items-center gap-2.5 sm:gap-3">
+                      <div class="w-11 sm:w-12 text-center shrink-0">
+                        <span class="text-[11px] sm:text-xs font-black text-brand-900 block">09:30</span>
+                        <span class="text-[9px] sm:text-[10px] font-semibold text-brand-600">Dhuha</span>
+                      </div>
+                      <div class="h-8 w-1 rounded-full bg-[#7c3aed] shrink-0"></div>
+                      <div class="flex-1 min-w-0">
+                        <div class="font-bold text-brand-950 text-[11px] sm:text-xs truncate">Monitoring Sholat Dhuha</div>
+                        <div class="text-[10px] sm:text-[11px] text-brand-700/80 truncate">Masjid SDIT Az Zahra</div>
+                      </div>
+                    </div>
+
+                    <div class="p-2.5 sm:p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 sm:gap-3">
+                      <div class="w-11 sm:w-12 text-center shrink-0">
+                        <span class="text-[11px] sm:text-xs font-black text-slate-800 block">12:15</span>
+                        <span class="text-[9px] sm:text-[10px] font-semibold text-slate-400">Dzuhur</span>
+                      </div>
+                      <div class="h-8 w-1 rounded-full bg-[#a3e635] shrink-0"></div>
+                      <div class="flex-1 min-w-0">
+                        <div class="font-bold text-slate-800 text-[11px] sm:text-xs truncate">Adab Makan Siang & Sholat</div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-400 truncate">Rombel Kelas 1 s/d 6</div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
-                <button onclick="switchTab('peringkat')" class="py-1 px-2.5 sm:py-1.5 sm:px-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-[10px] sm:text-xs transition active:scale-90 cursor-pointer shrink-0">
-                  Lihat Urutan
-                </button>
+
+                <!-- Quick Ranking Shortcut Box -->
+                <div class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#2e1b4e] to-[#4c1d95] text-white flex items-center justify-between gap-2 shadow-md">
+                  <div class="space-y-0.5 min-w-0">
+                    <div class="font-bold text-[11px] sm:text-xs flex items-center gap-1.5 truncate">
+                      <i class="fa-solid fa-ranking-star text-amber-300 shrink-0"></i> Evaluasi Bimbingan
+                    </div>
+                    <div class="text-[9px] sm:text-[10px] text-white/70 truncate">Urutan seluruh murid sekolah</div>
+                  </div>
+                  <button onclick="switchTab('peringkat')" class="py-1 px-2.5 sm:py-1.5 sm:px-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-[10px] sm:text-xs transition active:scale-90 cursor-pointer shrink-0">
+                    Buka Urutan
+                  </button>
+                </div>
               </div>
 
             </div>
@@ -4744,33 +4789,79 @@
         return;
       }
 
-      recentItems.forEach(item => {
-        const row = document.createElement('div');
-        const isPelanggaran = item.tipe === 'Pelanggaran';
-        const inisial = (item.nama || 'S').trim().charAt(0).toUpperCase();
-
-        row.className = 'p-2.5 sm:p-3 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 flex items-center justify-between gap-2.5 transition';
-        row.innerHTML = `
-          <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${isPelanggaran ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">
-              ${inisial}
+      recentItems.forEach(r => {
+        const isPelanggaran = r.tipe === 'Pelanggaran';
+        const item = document.createElement('div');
+        item.className = 'p-3 sm:p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 hover:bg-slate-100/70 transition';
+        item.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-xs shrink-0 ${isPelanggaran ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">
+              ${(r.nama || 'A').charAt(0).toUpperCase()}
             </div>
             <div class="min-w-0">
-              <div class="font-bold text-slate-800 text-xs truncate">${item.nama}</div>
-              <div class="text-[11px] text-slate-500 truncate flex items-center gap-1.5">
-                <span class="font-semibold text-brand-700">${item.kelas}</span>
-                <span>•</span>
-                <span class="truncate">${item.judul}</span>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${r.nama}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isPelanggaran ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}">${r.tipe}</span>
               </div>
+              <div class="text-[11px] text-slate-500 truncate">${r.judul} &bull; <span class="font-semibold text-brand-800">${r.kelas}</span></div>
             </div>
           </div>
           <div class="flex items-center gap-2 shrink-0">
-            <span class="px-2 py-0.5 rounded-lg text-xs font-mono font-black ${isPelanggaran ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}">
-              ${item.poin > 0 ? '+' : ''}${item.poin} pt
+            <span class="font-mono font-bold text-xs ${isPelanggaran ? 'text-rose-600' : 'text-emerald-700'}">
+              ${r.poin > 0 ? '+' : ''}${r.poin} pt
             </span>
-            <button onclick="bukaModalEditCatatan('${item.id}')" title="Koreksi" class="p-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs cursor-pointer">
-              <i class="fa-solid fa-pen-to-square"></i>
+            <button onclick="bukaModalEditCatatan('${r.id}')" title="Koreksi" class="w-7 h-7 rounded-xl bg-white hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-xs shadow-xs border border-slate-200 cursor-pointer">
+              <i class="fa-solid fa-pen-to-square text-[10px]"></i>
             </button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderTop5LowestDashboard() {
+      const container = document.getElementById('top5LowestPointList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const aktif = state.siswa.filter(s => s.status === 'Aktif');
+      if (aktif.length === 0) {
+        container.innerHTML = '<div class="py-4 text-center text-slate-400 text-xs">Belum ada data murid aktif</div>';
+        return;
+      }
+
+      // Ambil 5 murid dengan poin terendah
+      const sorted = [...aktif].sort((a, b) => Number(a.poin) - Number(b.poin)).slice(0, 5);
+
+      sorted.forEach((s, idx) => {
+        const poinNum = Number(s.poin);
+        let poinClass = 'text-rose-600 bg-rose-50 border-rose-200';
+        let rankClass = 'bg-rose-600 text-white';
+
+        if (poinNum >= 85) {
+          poinClass = 'text-emerald-700 bg-emerald-50 border-emerald-200';
+          rankClass = 'bg-emerald-600 text-white';
+        } else if (poinNum >= 75) {
+          poinClass = 'text-amber-700 bg-amber-50 border-amber-200';
+          rankClass = 'bg-amber-500 text-white';
+        }
+
+        const row = document.createElement('div');
+        row.className = 'p-2 sm:p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-2.5';
+        row.innerHTML = `
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-6 h-6 rounded-lg font-mono font-bold text-[11px] flex items-center justify-center shrink-0 ${rankClass}">
+              #${idx + 1}
+            </span>
+            <div class="min-w-0">
+              <div class="font-bold text-slate-800 text-xs truncate">${s.nama}</div>
+              <div class="text-[10px] text-brand-800 font-semibold truncate">${s.kelas}</div>
+            </div>
+          </div>
+          <div class="shrink-0">
+            <span class="font-mono font-black text-xs px-2.5 py-1 rounded-xl border ${poinClass}">
+              ${poinNum} pt
+            </span>
           </div>
         `;
         container.appendChild(row);
@@ -5007,6 +5098,9 @@
 
       // Render Live Feed Luxoa
       renderLuxoaFeed();
+
+      // Render 5 Siswa Poin Terendah di Dasbor
+      renderTop5LowestDashboard();
 
       // Render Tab Lainnya jika sedang aktif
       if (state.activeTab === 'peringkat') renderPeringkatSiswa();
